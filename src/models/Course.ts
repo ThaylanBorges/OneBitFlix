@@ -5,7 +5,7 @@ export interface Course {
   id: number;
   name: string;
   synopsis: string;
-  thumbnailUrl: string;
+  thumbnailUrl?: string;
   featured: boolean;
   categoryId: number;
 }
@@ -34,10 +34,12 @@ export const Course = sequelize.define<CourseInstance, Course>("Course", {
     type: DataTypes.TEXT,
   },
   thumbnailUrl: {
+    allowNull: true,
     type: DataTypes.STRING,
   },
   featured: {
     allowNull: false,
+    defaultValue: false,
     type: DataTypes.BOOLEAN,
   },
   categoryId: {
