@@ -11,6 +11,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@adminjs/bundler": "^3.0.0",
     "@adminjs/express": "^6.1.1",
     "@adminjs/sequelize": "^4.1.1",
     "@adminjs/upload": "^4.0.2",

@@ -51,6 +51,7 @@ export const Episode = sequelize.define<EpisodeInstance, Episode>("Episode", {
     },
     onUpdate: "CASCADE",
     onDelete: "RESTRICT",
+    allowNull: false,
     type: DataTypes.INTEGER,
   },
 });

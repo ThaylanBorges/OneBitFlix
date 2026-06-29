@@ -3,10 +3,12 @@ import AdminJSSequelize from "@adminjs/sequelize";
 import AdminExpress from "@adminjs/express";
 import { sequelize } from "../database/index.js";
 import { adminJsResources } from "./resources/index.js";
+import { componentLoader } from "./component-loader.js";
 
 AdminJS.registerAdapter(AdminJSSequelize);
 
 export const adminJs = new AdminJS({
+  componentLoader,
   databases: [sequelize],
   rootPath: "/admin",
   resources: adminJsResources,
@@ -24,5 +26,7 @@ export const adminJs = new AdminJS({
     },
   },
 });
+
+adminJs.watch();
 
 export const adminJsRouter = AdminExpress.buildRouter(adminJs);
