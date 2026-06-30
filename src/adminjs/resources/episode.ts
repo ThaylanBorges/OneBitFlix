@@ -1,6 +1,5 @@
 import uploadFileFeature from "@adminjs/upload";
 import { FeatureType, ResourceOptions } from "adminjs";
-import path from "node:path";
 import { componentLoader } from "../component-loader.js";
 import {
   ALLOED_VIDEO_MIMES,

@@ -1,7 +1,6 @@
 import { FeatureType, ResourceOptions } from "adminjs";
 import { componentLoader } from "../component-loader.js";
 import uploadFileFeature from "@adminjs/upload";
-import path from "node:path";
 import {
   ALLOWED_IMAGE_MIMES,
   MAX_IMAGE_SIZE,

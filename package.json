@@ -16,12 +16,14 @@
     "@adminjs/sequelize": "^4.1.1",
     "@adminjs/upload": "^4.0.2",
     "adminjs": "^7.8.17",
+    "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "express-formidable": "^1.2.0",
     "pg": "^8.22.0",
     "sequelize": "^6.37.8"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/node": "^26.0.1",
     "sequelize-cli": "^6.6.5",
