@@ -2,6 +2,11 @@ import uploadFileFeature from "@adminjs/upload";
 import { FeatureType, ResourceOptions } from "adminjs";
 import path from "node:path";
 import { componentLoader } from "../component-loader.js";
+import {
+  ALLOED_VIDEO_MIMES,
+  MAX_VIDEO_SIZE,
+  UPLOAD_DIR,
+} from "../constants.js";
 
 export const episodeResourceOptions: ResourceOptions = {
   navigation: "Catalogo",
@@ -35,8 +40,6 @@ export const episodeResourceOptions: ResourceOptions = {
   ],
 };
 
-const UPLOAD_DIR = path.join(process.cwd(), "uploads");
-
 export const episodeResourceFeatures: FeatureType[] = [
   uploadFileFeature({
     componentLoader,
@@ -51,6 +54,10 @@ export const episodeResourceFeatures: FeatureType[] = [
     properties: {
       key: "videoUrl",
       file: "uploadVideo",
+    },
+    validation: {
+      mimeTypes: ALLOED_VIDEO_MIMES,
+      maxSize: MAX_VIDEO_SIZE,
     },
     uploadPath: (record, filename) =>
       `videos/course-${record.params.courseId}/${filename}`,

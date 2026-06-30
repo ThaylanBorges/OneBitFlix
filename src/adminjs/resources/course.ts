@@ -2,6 +2,11 @@ import { FeatureType, ResourceOptions } from "adminjs";
 import { componentLoader } from "../component-loader.js";
 import uploadFileFeature from "@adminjs/upload";
 import path from "node:path";
+import {
+  ALLOWED_IMAGE_MIMES,
+  MAX_IMAGE_SIZE,
+  PUBLIC_DIR,
+} from "../constants.js";
 
 export const courseResourceOptions: ResourceOptions = {
   navigation: "Catalogo",
@@ -33,14 +38,12 @@ export const courseResourceOptions: ResourceOptions = {
   ],
 };
 
-const UPLOAD_DIR = path.join(process.cwd(), "public");
-
 export const courseResourceFeatures: FeatureType[] = [
   uploadFileFeature({
     componentLoader,
     provider: {
       local: {
-        bucket: UPLOAD_DIR,
+        bucket: PUBLIC_DIR,
         opts: {
           baseUrl: "/public",
         },
@@ -50,7 +53,10 @@ export const courseResourceFeatures: FeatureType[] = [
       key: "thumbnailUrl",
       file: "uploadThumbnail",
     },
-
+    validation: {
+      mimeTypes: ALLOWED_IMAGE_MIMES,
+      maxSize: MAX_IMAGE_SIZE,
+    },
     uploadPath: (record, filename) =>
       `thumbnails/course-${record.id()}/${filename}`,
   }),
