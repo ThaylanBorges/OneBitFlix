@@ -4,6 +4,7 @@ import AdminExpress from "@adminjs/express";
 import { sequelize } from "../database/index.js";
 import { adminJsResources } from "./resources/index.js";
 import { componentLoader } from "./component-loader.js";
+import { authenticate } from "./auth.js";
 
 AdminJS.registerAdapter(AdminJSSequelize);
 
@@ -29,4 +30,17 @@ export const adminJs = new AdminJS({
 
 adminJs.watch();
 
-export const adminJsRouter = AdminExpress.buildRouter(adminJs);
+export const adminJsRouter = AdminExpress.buildAuthenticatedRouter(
+  adminJs,
+  {
+    authenticate,
+    cookieName: "adminjs",
+    cookiePassword: "supersecretpassword",
+  },
+  null,
+  {
+    secret: "test",
+    resave: false,
+    saveUninitialized: false,
+  },
+);
