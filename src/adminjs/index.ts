@@ -5,6 +5,7 @@ import { sequelize } from "../database/index.js";
 import { adminJsResources } from "./resources/index.js";
 import { componentLoader } from "./component-loader.js";
 import { authenticate } from "./auth.js";
+import { locale } from "./locale.js";
 
 AdminJS.registerAdapter(AdminJSSequelize);
 
@@ -13,6 +14,7 @@ export const adminJs = new AdminJS({
   databases: [sequelize],
   rootPath: "/admin",
   resources: adminJsResources,
+  locale,
   branding: {
     companyName: "OneBitFlix",
     logo: "/onebitflix.svg",

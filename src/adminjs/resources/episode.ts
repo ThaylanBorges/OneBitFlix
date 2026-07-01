@@ -8,7 +8,7 @@ import {
 } from "../constants.js";
 
 export const episodeResourceOptions: ResourceOptions = {
-  navigation: "Catalogo",
+  navigation: "catalog",
   editProperties: [
     "name",
     "synopsis",
