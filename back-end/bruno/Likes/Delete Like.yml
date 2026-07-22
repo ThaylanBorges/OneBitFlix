@@ -1,0 +1,19 @@
+info:
+  name: Delete Like
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/likes/:courseId"
+  params:
+    - name: courseId
+      value: "2"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

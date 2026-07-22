@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "target": "esnext",
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"],
+    "jsx": "react-jsx",
+
+    "sourceMap": true,
+
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,19 @@
+info:
+  name: Stream an Episodes
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/episodes/stream?videoUrl=videos/course-2/bird.mp4"
+  params:
+    - name: videoUrl
+      value: videos/course-2/bird.mp4
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

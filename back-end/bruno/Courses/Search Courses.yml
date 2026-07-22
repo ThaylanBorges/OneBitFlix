@@ -1,0 +1,25 @@
+info:
+  name: Search Courses
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{baseUrl}}/courses/search/?name=A &page=&perPage="
+  params:
+    - name: name
+      value: "A "
+      type: query
+    - name: page
+      value: ""
+      type: query
+    - name: perPage
+      value: ""
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

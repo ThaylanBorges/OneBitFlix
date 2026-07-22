@@ -1,0 +1,21 @@
+info:
+  name: Like Courses
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/likes"
+  body:
+    type: json
+    data: |-
+      {
+        "courseId": 2
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

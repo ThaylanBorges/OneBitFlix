@@ -1,0 +1,21 @@
+info:
+  name: Favorites Courses
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/favorites"
+  body:
+    type: json
+    data: |-
+      {
+        "courseId": 1
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
