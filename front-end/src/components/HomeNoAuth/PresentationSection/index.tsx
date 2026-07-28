@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,19 +7,20 @@ export default function PresentationSection() {
     <div className="container mx-auto py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4">
         <div className="flex flex-col justify-center items-start">
-          <p className="font-bold sm:text-2xl text-light-red">
-            ACESSO LIMITADO
-          </p>
+          <p className="font-bold sm:text-2xl text-primary">ACESSO LIMITADO</p>
           <p className="font-bold text-3xl sm:text-5xl leading-10 sm:leading-15 pt-3">
             Tenha acesso aos melhores tutoriais de Programação.
           </p>
-          <p className="sm:text-2xl text-light-gray pt-5 pb-10">
+          <p className="sm:text-2xl text-muted-foreground pt-5 pb-10">
             Estude de onde estiver, a qualquer momento, e continue evoluindo
             como programador.
           </p>
-          <Link
-            href="/register"
-            className="border-2 border-light-red hover:border-dark-red font-bold text-white hover:text-light-gray rounded-xl p-4 flex items-center gap-6"
+          <Button
+            render={<Link href={"/register"} />}
+            nativeButton={false}
+            variant={"ghost"}
+            size={"xl"}
+            className="border-2 border-white hover:border-primary font-bold rounded-xl flex items-center gap-4 hover:scale-105 duration-100"
           >
             ACESSE AGORA
             <Image
@@ -27,7 +29,7 @@ export default function PresentationSection() {
               width={15}
               height={15}
             />
-          </Link>
+          </Button>
         </div>
         <div>
           <Image
@@ -36,6 +38,7 @@ export default function PresentationSection() {
             width={800}
             height={600}
             className="w-full h-auto"
+            priority
           />
         </div>
         <a
