@@ -42,7 +42,7 @@ const cardsData = [
 export default function CardsSection() {
   return (
     <div>
-      <p className="font-bold text-2xl text-center mt-12 mr-8">
+      <p className="font-bold text-2xl text-center mt-12">
         O QUE VOCÊ VAI ACESSAR
       </p>
       <div className="container mx-auto mt-10 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
