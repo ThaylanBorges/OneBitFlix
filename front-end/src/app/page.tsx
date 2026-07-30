@@ -1,5 +1,6 @@
 import CardsSection from "@/components/HomeNoAuth/CardsSection";
 import HeaderNoAuth from "@/components/HomeNoAuth/HeaderNoAuth";
+import NewestCoursesSection from "@/components/HomeNoAuth/NewestCoursesSection";
 import PresentationSection from "@/components/HomeNoAuth/PresentationSection";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
         <HeaderNoAuth />
         <PresentationSection />
         <CardsSection />
+        <NewestCoursesSection></NewestCoursesSection>
       </div>
     </main>
   );
