@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(adminJs.options.rootPath, adminJsRouter);
 app.use(route);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => {
   sequelize.authenticate().then(() => {
     console.log("db connection successful");
