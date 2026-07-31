@@ -7,8 +7,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { Button } from "../ui/button";
-import Link from "next/link";
 
 type SlideProps = {
   courses: Course[];
@@ -52,17 +50,6 @@ export default function Slide({ courses }: SlideProps) {
             <CarouselPrevious className="left-2" />
             <CarouselNext className="right-2" />
           </Carousel>
-          <div className="flex justify-center mt-5">
-            <Button
-              render={<Link href="/register" />}
-              nativeButton={false}
-              variant={"outline"}
-              size={"xl"}
-              className="border-white"
-            >
-              Se cadastre para acessar!
-            </Button>
-          </div>
         </div>
       )}
     </div>
