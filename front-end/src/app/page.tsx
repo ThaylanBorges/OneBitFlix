@@ -1,4 +1,5 @@
 import Footer from "@/components/Footer";
+import Animated from "@/components/HomeNoAuth/Animateds";
 import CardsSection from "@/components/HomeNoAuth/CardsSection";
 import HeaderNoAuth from "@/components/HomeNoAuth/HeaderNoAuth";
 import NewestCoursesSection from "@/components/HomeNoAuth/NewestCoursesSection";
@@ -10,13 +11,19 @@ export default function Home() {
   return (
     <main>
       <div className="bg-[linear-gradient(to_bottom,#8b8b8b1a,#151515),url('/homeNoAuth/backgroundPresentationSection.png')] bg-center bg-cover bg-no-repeat">
-        <HeaderNoAuth />
-        <PresentationSection />
-        <CardsSection />
+        <Animated type="fadeZoomIn">
+          <HeaderNoAuth />
+          <PresentationSection />
+        </Animated>
+        <Animated type="fadeRight">
+          <CardsSection />
+        </Animated>
         <Suspense fallback={<NewestCoursesSkeleton />}>
-          <NewestCoursesSection />
+          <Animated type="fadeUp">
+            <NewestCoursesSection />
+          </Animated>
         </Suspense>
-        <Footer></Footer>
+        <Footer />
       </div>
     </main>
   );
