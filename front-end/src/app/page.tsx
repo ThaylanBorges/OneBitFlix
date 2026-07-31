@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import CardsSection from "@/components/HomeNoAuth/CardsSection";
 import HeaderNoAuth from "@/components/HomeNoAuth/HeaderNoAuth";
 import NewestCoursesSection from "@/components/HomeNoAuth/NewestCoursesSection";
@@ -15,6 +16,7 @@ export default function Home() {
         <Suspense fallback={<NewestCoursesSkeleton />}>
           <NewestCoursesSection />
         </Suspense>
+        <Footer></Footer>
       </div>
     </main>
   );
