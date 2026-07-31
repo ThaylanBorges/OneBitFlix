@@ -1,7 +1,9 @@
 import CardsSection from "@/components/HomeNoAuth/CardsSection";
 import HeaderNoAuth from "@/components/HomeNoAuth/HeaderNoAuth";
 import NewestCoursesSection from "@/components/HomeNoAuth/NewestCoursesSection";
+import NewestCoursesSkeleton from "@/components/HomeNoAuth/NewestCoursesSection/Skeleton";
 import PresentationSection from "@/components/HomeNoAuth/PresentationSection";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -10,7 +12,9 @@ export default function Home() {
         <HeaderNoAuth />
         <PresentationSection />
         <CardsSection />
-        <NewestCoursesSection></NewestCoursesSection>
+        <Suspense fallback={<NewestCoursesSkeleton />}>
+          <NewestCoursesSection />
+        </Suspense>
       </div>
     </main>
   );
