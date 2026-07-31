@@ -3,7 +3,11 @@ import { api } from "./api";
 
 export const Courses = {
   getNewestCourses: async () => {
-    const res = await api("/courses/newest");
-    return CoursesArraySchema.parse(res);
+    try {
+      const res = await api("/courses/newest");
+      return CoursesArraySchema.parse(res);
+    } catch {
+      return [];
+    }
   },
 };
