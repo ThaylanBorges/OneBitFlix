@@ -36,7 +36,7 @@ export default function HeaderNoAuth() {
             nativeButton={false}
             variant="outline"
             size={"lg"}
-            className="border-2 sm:border-transparent border-muted-foreground text-muted-foreground hover:border-primary hover:bg-transparent transition-colors duration-300"
+            className="sm:border-transparent border-muted-foreground text-muted-foreground hover:border-primary hover:bg-transparent transition-colors duration-300"
           >
             Entrar
           </Button>
@@ -45,7 +45,7 @@ export default function HeaderNoAuth() {
             nativeButton={false}
             variant="outline"
             size={"lg"}
-            className="border-2 sm:border-transparent border-muted-foreground text-muted-foreground hover:border-primary hover:bg-transparent transition-colors duration-300"
+            className="sm:border-transparent border-muted-foreground text-muted-foreground hover:border-primary hover:bg-transparent transition-colors duration-300"
           >
             Quero fazer parte
           </Button>

@@ -15,7 +15,6 @@ export default async function NewestCoursesSection() {
           nativeButton={false}
           variant={"outline"}
           size={"xl"}
-          className="border-white"
         >
           Se cadastre para acessar!
         </Button>
