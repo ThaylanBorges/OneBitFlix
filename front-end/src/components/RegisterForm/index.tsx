@@ -30,8 +30,8 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="mx-auto max-w-dvh">
-      <h1 className="text-3xl my-12 font-bold">
+    <div className="mx-auto max-w-dvh px-4">
+      <h1 className="text-3xl my-12 font-bold text-center sm:text-start">
         Seja Bem Vindo(a) ao OneBitFlix
       </h1>
       <Card>
