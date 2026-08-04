@@ -1,4 +1,5 @@
 import Header from "@/components/HeaderGeneric";
+import { RegisterForm } from "@/components/RegisterForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,6 +10,7 @@ export default function Register() {
   return (
     <main>
       <Header logoUrl="/" btnUrl="/login" btnText="Fazer Login" />
+      <RegisterForm></RegisterForm>
     </main>
   );
 }
