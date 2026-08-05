@@ -3,9 +3,11 @@ import { api } from "./api";
 
 export const userService = {
   register: async (data: Register) => {
-    return api("/auth/register", {
+    const res = await api("/auth/register", {
       method: "POST",
       body: JSON.stringify(data),
     });
+
+    return res;
   },
 };

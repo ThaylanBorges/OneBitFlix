@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -7,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { Register, RegisterSchema } from "@/schemas/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/app/register/actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formatPhone = (value: string) => {
   return value
@@ -24,9 +27,13 @@ export function RegisterForm() {
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(RegisterSchema) });
 
+  const router = useRouter();
+
   const onSubmit = async (data: Register) => {
     const result = await registerUser(data);
-    if (!result.success) console.error(result.error);
+    if (!result.success) return toast.error(result.error);
+    toast.success("Conta criada com sucesso!");
+    router.push("/login?registered=true");
   };
 
   return (
