@@ -14,7 +14,7 @@ http:
         "lastName": "Lino",
         "phone": "999999999",
         "birth": "01-24-2004",
-        "email": "email-test@test.com",
+        "email": "email-test@tst.com",
         "password": "123456"
       }
   auth: inherit

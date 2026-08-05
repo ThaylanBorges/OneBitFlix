@@ -5,14 +5,13 @@ info:
 
 http:
   method: PUT
-  url: "{{baseUrl}}/users/current/update"
+  url: "{{baseUrl}}/users/current"
   body:
     type: json
     data: |-
       {
         "lastName": "Borges"
       }
-  auth: inherit
 
 settings:
   encodeUrl: true
