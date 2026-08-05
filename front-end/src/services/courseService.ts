@@ -1,7 +1,7 @@
 import { CoursesArraySchema } from "@/schemas/courseSchema";
 import { api } from "./api";
 
-export const Courses = {
+export const courseService = {
   getNewestCourses: async () => {
     try {
       const res = await api("/courses/newest");

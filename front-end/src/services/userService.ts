@@ -1,7 +1,7 @@
 import { Register } from "@/schemas/register";
 import { api } from "./api";
 
-export const User = {
+export const userService = {
   register: async (data: Register) => {
     return api("/auth/register", {
       method: "POST",

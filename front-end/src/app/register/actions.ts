@@ -1,10 +1,10 @@
 "use server";
 import { Register } from "@/schemas/register";
-import { User } from "@/service/user";
+import { userService } from "@/services/userService";
 
 export async function registerUser(data: Register) {
   try {
-    const response = await User.register(data);
+    const response = await userService.register(data);
 
     return {
       success: true,
