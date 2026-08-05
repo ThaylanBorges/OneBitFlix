@@ -49,7 +49,20 @@ export const authController = {
 
       const token = jwtService.signToken(payload, "7d");
 
-      return res.status(200).json({ authenticated: true, token });
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: "/",
+      });
+
+      return res
+        .status(200)
+        .json({
+          authenticated: true,
+          user: { id: user.id, firstName: user.firstName, email: user.email },
+        });
     } catch (err) {
       res.status(400).json({
         message: err instanceof Error ? err.message : "Internal error",

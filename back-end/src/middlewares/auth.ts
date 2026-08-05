@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { jwtService } from "../services/jwtService.js";
 
-interface TokenPayload {
+interface JwtPayload {
   id: number;
   firstName: string;
   email: string;
@@ -10,7 +10,7 @@ interface TokenPayload {
 declare global {
   namespace Express {
     interface Request {
-      user?: TokenPayload;
+      user?: JwtPayload;
     }
   }
 }
@@ -20,16 +20,14 @@ export function authMiddleware(
   res: Response,
   next: NextFunction,
 ) {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies.token;
 
-  if (!authHeader?.startsWith("Bearer ")) {
+  if (!token) {
     return res.status(401).json({ message: "Token not found" });
   }
 
-  const token = authHeader.split(" ")[1];
-
   try {
-    const payload = jwtService.verifyToken(token) as TokenPayload;
+    const payload = jwtService.verifyToken(token) as JwtPayload;
     req.user = payload;
     next();
   } catch (err) {
@@ -48,7 +46,7 @@ export function authMiddlewareQuery(
     return res.status(401).json({ message: "Token Not Found" });
 
   try {
-    const payload = jwtService.verifyToken(token) as TokenPayload;
+    const payload = jwtService.verifyToken(token) as JwtPayload;
     req.user = payload;
     next();
   } catch (err) {
