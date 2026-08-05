@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { favoritesService } from "../services/favoritesService.js";
+import { favoriteService } from "../services/favoriteService.js";
 
 export const favoritesController = {
   save: async (req: Request, res: Response) => {
@@ -7,7 +7,7 @@ export const favoritesController = {
     const { courseId } = req.body;
 
     try {
-      const favorite = await favoritesService.create(userId, courseId);
+      const favorite = await favoriteService.create(userId, courseId);
       res.status(201).json(favorite);
     } catch (err) {
       res.status(400).json({
@@ -20,7 +20,7 @@ export const favoritesController = {
     try {
       const userId = req.user!.id;
 
-      const favorites = await favoritesService.findByUserId(userId);
+      const favorites = await favoriteService.findByUserId(userId);
       res.json(favorites);
     } catch (err) {
       res.status(400).json({
@@ -34,7 +34,7 @@ export const favoritesController = {
       const userId = req.user!.id;
       const { courseId } = req.params;
 
-      await favoritesService.delete(userId, Number(courseId));
+      await favoriteService.delete(userId, Number(courseId));
       res.status(200).send();
     } catch (err) {
       res.status(400).json({

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { episodesService } from "../services/episodesService.js";
+import { episodeService } from "../services/episodeService.js";
 
 export const episodesController = {
   stream: async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ export const episodesController = {
 
       const range = req.headers.range;
 
-      await episodesService.streamEpisodeToResponse(videoUrl, res, range);
+      await episodeService.streamEpisodeToResponse(videoUrl, res, range);
     } catch (err) {
       res.status(400).json({
         message: err instanceof Error ? err.message : "Internal Error",
@@ -24,7 +24,7 @@ export const episodesController = {
     const { id } = req.params;
 
     try {
-      const watchTime = await episodesService.getWatchTime(userId, Number(id));
+      const watchTime = await episodeService.getWatchTime(userId, Number(id));
       res.json(watchTime);
     } catch (err) {
       res.status(400).json({
@@ -39,7 +39,7 @@ export const episodesController = {
     const { seconds } = req.body;
 
     try {
-      const watchTime = await episodesService.setWatchTime(
+      const watchTime = await episodeService.setWatchTime(
         userId,
         Number(id),
         seconds,

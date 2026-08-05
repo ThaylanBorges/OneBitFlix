@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { usersServices } from "../services/usersServices.js";
+import { usersServices } from "../services/userServices.js";
 import { jwtService } from "../services/jwtService.js";
 
 export const authController = {
@@ -57,12 +57,10 @@ export const authController = {
         path: "/",
       });
 
-      return res
-        .status(200)
-        .json({
-          authenticated: true,
-          user: { id: user.id, firstName: user.firstName, email: user.email },
-        });
+      return res.status(200).json({
+        authenticated: true,
+        user: { id: user.id, firstName: user.firstName, email: user.email },
+      });
     } catch (err) {
       res.status(400).json({
         message: err instanceof Error ? err.message : "Internal error",

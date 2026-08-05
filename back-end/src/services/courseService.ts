@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import { sequelize } from "../database/index.js";
 import { Course } from "../models/Course.js";
 
-export const coursesServices = {
+export const courseServices = {
   findById: async (id: number) => {
     const course = await Course.findOne({
       where: { id },

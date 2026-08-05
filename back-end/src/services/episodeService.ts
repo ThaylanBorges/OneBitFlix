@@ -3,7 +3,7 @@ import path from "path";
 import { createReadStream, promises as fsPromises } from "fs";
 import { WatchTime } from "../models/WatchTime.js";
 
-export const episodesService = {
+export const episodeService = {
   streamEpisodeToResponse: async (
     videoUrl: string,
     res: Response,

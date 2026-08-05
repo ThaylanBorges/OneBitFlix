@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { likesService } from "../services/likesServices.js";
+import { likeService } from "../services/likeServices.js";
 
 export const likesController = {
   save: async (req: Request, res: Response) => {
@@ -7,7 +7,7 @@ export const likesController = {
     const { courseId } = req.body;
 
     try {
-      const like = await likesService.create(userId, courseId);
+      const like = await likeService.create(userId, courseId);
       res.status(201).json(like);
     } catch (err) {
       res.status(400).json({
@@ -21,7 +21,7 @@ export const likesController = {
     const { courseId } = req.params;
 
     try {
-      await likesService.delete(userId, Number(courseId));
+      await likeService.delete(userId, Number(courseId));
       res.status(200).send();
     } catch (err) {
       res.status(400).json({

@@ -1,6 +1,6 @@
 import { Likes } from "../models/index.js";
 
-export const likesService = {
+export const likeService = {
   create: async (userId: number, courseId: number) => {
     const like = await Likes.create({ userId, courseId });
     return like;

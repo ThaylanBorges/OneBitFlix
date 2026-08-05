@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { usersServices } from "../services/usersServices.js";
+import { usersServices } from "../services/userServices.js";
 
 export const usersController = {
   watching: async (req: Request, res: Response) => {
