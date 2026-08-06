@@ -1,15 +1,21 @@
 import Image from "next/image";
 
-export default function Footer() {
+type FooterProsps = {
+  className?: string;
+};
+
+export default function Footer({ className }: FooterProsps) {
   return (
-    <div className="container mx-auto mt-20 mb-5 p-4 flex justify-between items-center">
+    <footer
+      className={`container mx-auto flex flex-col items-center justify-center gap-4 p-4 sm:flex-row sm:justify-between ${className}`}
+    >
       <Image
         src="/logoOnebitcode.svg"
         alt="Logo OnebitCode"
-        width={400}
-        height={400}
+        width={140}
+        height={40}
       ></Image>
-      <p className="text-2xl text-muted-foreground">OneBitCode</p>
-    </div>
+      <p className="text-muted-foreground">OneBitCode</p>
+    </footer>
   );
 }

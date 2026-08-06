@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function HeaderNoAuth() {
   return (
     <>
-      <div className="bg-primary flex justify-center items-center text-center gap-3 sm:gap-7   py-1">
+      <div className="bg-primary flex justify-center items-center text-center gap-3 sm:gap-7 px-4 py-1">
         <Image
           src="/homeNoAuth/logoCta.png"
           alt="Logo OneBitFlix"
@@ -22,7 +22,7 @@ export default function HeaderNoAuth() {
           priority
         />
       </div>
-      <div className="container mx-auto flex justify-center sm:justify-between flex-wrap mt-5 gap-5 px-4 py-4">
+      <div className="container mx-auto flex justify-center sm:justify-between flex-wrap mt-5 gap-5 py-4">
         <Image
           src="/logoOnebitflix.svg"
           alt="Logo OneBitFlix"

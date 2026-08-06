@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function PresentationSection() {
   return (
     <div className="container mx-auto py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="flex flex-col justify-center items-start">
           <p className="font-bold sm:text-2xl text-primary">ACESSO LIMITADO</p>
           <p className="font-bold text-3xl sm:text-5xl leading-10 sm:leading-15 pt-3">

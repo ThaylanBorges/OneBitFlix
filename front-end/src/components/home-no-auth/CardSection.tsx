@@ -45,7 +45,7 @@ export default function CardsSection() {
       <p className="font-bold text-2xl text-center mt-12">
         O QUE VOCÊ VAI ACESSAR
       </p>
-      <div className="container mx-auto mt-10 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
+      <div className="container mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
         {cardsData.map((card) => (
           <Card
             key={card.title}

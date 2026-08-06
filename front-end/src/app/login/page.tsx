@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import LoginForm from "@/components/forms/LoginForm";
 import HeaderGeneric from "@/components/HeaderGeneric";
 
@@ -7,18 +8,16 @@ export const metadata = {
 
 export default function Login() {
   return (
-    <main>
-      <HeaderGeneric
-        logoUrl="/"
-        btnText="Criar Conta"
-        btnUrl="/register"
-      ></HeaderGeneric>
-      <div className="mx-auto max-w-dvh px-4">
-        <h1 className="text-3xl my-12 font-bold text-center sm:text-start">
-          Bem-vindo(a) de volta!
-        </h1>
+    <div>
+      <main>
+        <HeaderGeneric
+          logoUrl="/"
+          btnText="Criar Conta"
+          btnUrl="/register"
+        ></HeaderGeneric>
         <LoginForm />
-      </div>
-    </main>
+      </main>
+      <Footer></Footer>
+    </div>
   );
 }

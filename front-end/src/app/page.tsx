@@ -9,22 +9,24 @@ import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <main>
-      <div className="bg-[linear-gradient(to_bottom,#8b8b8b1a,#151515),url('/homeNoAuth/backgroundPresentationSection.png')] bg-center bg-cover bg-no-repeat">
-        <Animated type="fadeZoomIn">
-          <HeaderNoAuth />
-          <PresentationSection />
-        </Animated>
-        <Animated type="fadeRight">
-          <CardsSection />
-        </Animated>
-        <Suspense fallback={<NewestCoursesSkeleton />}>
-          <Animated type="fadeUp">
-            <NewestCoursesSection />
+    <div>
+      <main className="bg-[linear-gradient(to_bottom,#8b8b8b1a,#151515),url('/homeNoAuth/backgroundPresentationSection.png')] bg-center bg-cover bg-no-repeat">
+        <HeaderNoAuth />
+        <div className="px-4">
+          <Animated type="fadeZoomIn">
+            <PresentationSection />
           </Animated>
-        </Suspense>
-        <Footer />
-      </div>
-    </main>
+          <Animated type="fadeRight">
+            <CardsSection />
+          </Animated>
+          <Suspense fallback={<NewestCoursesSkeleton />}>
+            <Animated type="fadeUp">
+              <NewestCoursesSection />
+            </Animated>
+          </Suspense>
+        </div>
+      </main>
+      <Footer className="mt-20" />
+    </div>
   );
 }
