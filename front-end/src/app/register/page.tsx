@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Register() {
   return (
     <main>
-      <Header logoUrl="/" btnUrl="/login" btnText="Fazer Login" />
+      <Header logoUrl="/logo" btnUrl="/login" btnText="Fazer Login" />
       <RegisterForm></RegisterForm>
     </main>
   );

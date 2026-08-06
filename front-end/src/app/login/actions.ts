@@ -1,10 +1,9 @@
-"use server";
-import { Register } from "@/schemas/registerSchema";
+import { Login } from "@/schemas/loginSchema";
 import { authService } from "@/services/authService";
 
-export async function registerUser(data: Register) {
+export async function login(data: Login) {
   try {
-    const response = await authService.register(data);
+    const response = await authService.login(data);
 
     return {
       success: true,

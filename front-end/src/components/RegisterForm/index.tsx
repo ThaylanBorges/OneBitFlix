@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useForm } from "react-hook-form";
-import { Register, RegisterSchema } from "@/schemas/register";
+import { Register, RegisterSchema } from "@/schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/app/register/actions";
 import { toast } from "sonner";
@@ -59,7 +59,7 @@ export function RegisterForm() {
               />
 
               {errors?.firstName && (
-                <p className="text-sm text-red-500  p-1">
+                <p className="text-sm text-red-500 p-1">
                   {errors?.firstName.message}
                 </p>
               )}
@@ -76,7 +76,7 @@ export function RegisterForm() {
               />
 
               {errors?.lastName && (
-                <p className="text-sm text-red-500" p-1>
+                <p className="text-sm text-red-5 p-1">
                   {errors?.lastName.message}
                 </p>
               )}
@@ -91,7 +91,7 @@ export function RegisterForm() {
               />
 
               {errors?.phone && (
-                <p className="text-sm text-red-500" p-1>
+                <p className="text-sm text-red-500 p-1">
                   {errors?.phone.message}
                 </p>
               )}
@@ -108,7 +108,7 @@ export function RegisterForm() {
               />
 
               {errors?.email && (
-                <p className="text-sm text-red-500" p-1>
+                <p className="text-sm text-red-500 p-1">
                   {errors?.email.message}
                 </p>
               )}
@@ -120,7 +120,7 @@ export function RegisterForm() {
               <Input id="birth" type="date" {...register("birth")}></Input>
 
               {errors?.birth && (
-                <p className="text-sm text-red-500" p-1>
+                <p className="text-sm text-red-500 p-1">
                   {errors?.birth.message}
                 </p>
               )}
@@ -137,7 +137,7 @@ export function RegisterForm() {
               />
 
               {errors?.password && (
-                <p className="text-sm text-red-500" p-1>
+                <p className="text-sm text-red-500 p-1">
                   {errors?.password.message}
                 </p>
               )}
@@ -154,7 +154,7 @@ export function RegisterForm() {
               />
 
               {errors?.confirmPassword && (
-                <p className="text-sm text-red-500" p-1>
+                <p className="text-sm text-red-500 p-1">
                   {errors?.confirmPassword.message}
                 </p>
               )}
