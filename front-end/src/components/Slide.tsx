@@ -6,7 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../ui/carousel";
+} from "./ui/carousel";
 
 type SlideProps = {
   courses: Course[];

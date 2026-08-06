@@ -1,5 +1,5 @@
+import LoginForm from "@/components/forms/LoginForm";
 import HeaderGeneric from "@/components/HeaderGeneric";
-import LoginForm from "@/components/LoginForm";
 
 export const metadata = {
   title: "Onebitflix - Login",

@@ -4,12 +4,13 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Register, RegisterSchema } from "@/schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/app/register/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import FormError from "./FormError";
 
 const formatPhone = (value: string) => {
   return value
@@ -19,13 +20,15 @@ const formatPhone = (value: string) => {
     .slice(0, 15);
 };
 
-export function RegisterForm() {
+export default function RegisterForm() {
   const {
     register,
     handleSubmit,
-    setValue,
+    control,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(RegisterSchema) });
+  } = useForm({
+    resolver: zodResolver(RegisterSchema),
+  });
 
   const router = useRouter();
 
@@ -49,19 +52,17 @@ export function RegisterForm() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nome</Label>
+              <Label htmlFor="firstName">Nome</Label>
 
               <Input
-                id="name"
+                id="firstName"
                 type="text"
                 placeholder="Digite o seu nome"
                 {...register("firstName")}
               />
 
               {errors?.firstName && (
-                <p className="text-sm text-red-500 p-1">
-                  {errors?.firstName.message}
-                </p>
+                <FormError message={errors.firstName.message} />
               )}
             </div>
 
@@ -76,25 +77,30 @@ export function RegisterForm() {
               />
 
               {errors?.lastName && (
-                <p className="text-sm text-red-5 p-1">
-                  {errors?.lastName.message}
-                </p>
+                <FormError message={errors.lastName.message} />
               )}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="phone">Celular</Label>
 
-              <Input
-                {...register("phone")}
-                onChange={(e) => setValue("phone", formatPhone(e.target.value))}
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    id="phone"
+                    {...field}
+                    value={field.value ?? ""}
+                    onChange={(e) => {
+                      field.onChange(formatPhone(e.target.value));
+                    }}
+                    placeholder="(xx) 9xxxx-xxxx"
+                  />
+                )}
               />
 
-              {errors?.phone && (
-                <p className="text-sm text-red-500 p-1">
-                  {errors?.phone.message}
-                </p>
-              )}
+              {errors?.phone && <FormError message={errors.phone.message} />}
             </div>
 
             <div className="space-y-2">
@@ -107,11 +113,7 @@ export function RegisterForm() {
                 {...register("email")}
               />
 
-              {errors?.email && (
-                <p className="text-sm text-red-500 p-1">
-                  {errors?.email.message}
-                </p>
-              )}
+              {errors?.email && <FormError message={errors.email.message} />}
             </div>
 
             <div className="space-y-2">
@@ -119,11 +121,7 @@ export function RegisterForm() {
 
               <Input id="birth" type="date" {...register("birth")}></Input>
 
-              {errors?.birth && (
-                <p className="text-sm text-red-500 p-1">
-                  {errors?.birth.message}
-                </p>
-              )}
+              {errors?.birth && <FormError message={errors.birth.message} />}
             </div>
 
             <div className="space-y-2">
@@ -137,9 +135,7 @@ export function RegisterForm() {
               />
 
               {errors?.password && (
-                <p className="text-sm text-red-500 p-1">
-                  {errors?.password.message}
-                </p>
+                <FormError message={errors.password.message} />
               )}
             </div>
 
@@ -154,9 +150,7 @@ export function RegisterForm() {
               />
 
               {errors?.confirmPassword && (
-                <p className="text-sm text-red-500 p-1">
-                  {errors?.confirmPassword.message}
-                </p>
+                <FormError message={errors.confirmPassword.message} />
               )}
             </div>
 

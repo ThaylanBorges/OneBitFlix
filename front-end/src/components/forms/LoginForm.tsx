@@ -9,13 +9,14 @@ import { Login, LoginSchema } from "@/schemas/loginSchema";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { login } from "@/app/login/actions";
+import FormError from "./FormError";
 
 export default function LoginForm() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<Login>({ resolver: zodResolver(LoginSchema) });
+  } = useForm({ resolver: zodResolver(LoginSchema) });
 
   const onSubmit = async (data: Login) => {
     const result = await login(data);
@@ -41,11 +42,7 @@ export default function LoginForm() {
               {...register("email")}
             />
 
-            {errors?.email && (
-              <p className="text-sm text-red-500 p-1">
-                {errors?.email.message}
-              </p>
-            )}
+            {errors?.email && <FormError message={errors.email.message} />}
           </div>
 
           <div className="space-y-2">
@@ -59,9 +56,7 @@ export default function LoginForm() {
             />
 
             {errors?.password && (
-              <p className="text-sm text-red-500 p-1">
-                {errors?.password.message}
-              </p>
+              <FormError message={errors.password.message} />
             )}
           </div>
 

@@ -1,10 +1,10 @@
 import Footer from "@/components/Footer";
-import Animated from "@/components/HomeNoAuth/Animateds";
-import CardsSection from "@/components/HomeNoAuth/CardsSection";
-import HeaderNoAuth from "@/components/HomeNoAuth/HeaderNoAuth";
-import NewestCoursesSection from "@/components/HomeNoAuth/NewestCoursesSection";
-import NewestCoursesSkeleton from "@/components/HomeNoAuth/NewestCoursesSection/Skeleton";
-import PresentationSection from "@/components/HomeNoAuth/PresentationSection";
+import Animated from "@/components/home-no-auth/Animateds";
+import CardsSection from "@/components/home-no-auth/CardSection";
+import HeaderNoAuth from "@/components/home-no-auth/HeaderNoAuth";
+import NewestCoursesSection from "@/components/home-no-auth/newest-courses-section/NewestCoursesSection";
+import NewestCoursesSkeleton from "@/components/home-no-auth/newest-courses-section/Skeleton";
+import PresentationSection from "@/components/home-no-auth/PresentationSection";
 import { Suspense } from "react";
 
 export default function Home() {
