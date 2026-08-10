@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
 
-export default function AuthHeader() {
+export default function Header() {
   const pathName = usePathname();
   const isLoginPage = pathName === "/auth/login";
 

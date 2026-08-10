@@ -1,6 +1,6 @@
-import AuthHeader from "@/components/AuthHeader";
 import Footer from "@/components/Footer";
 import { ReactNode } from "react";
+import Header from "@/components/Header";
 
 type AuthLayoutProps = {
   children: ReactNode;
@@ -9,7 +9,7 @@ type AuthLayoutProps = {
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <>
-      <AuthHeader />
+      <Header />
       <main>{children}</main>
       <Footer />
     </>
