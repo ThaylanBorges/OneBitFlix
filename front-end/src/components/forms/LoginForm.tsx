@@ -7,8 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Login, LoginSchema } from "@/schemas/loginSchema";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { login } from "@/app/login/actions";
+import { login } from "@/app/auth/login/actions";
 import FormError from "./FormError";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const {
@@ -17,10 +18,12 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(LoginSchema) });
 
+  const router = useRouter();
+
   const onSubmit = async (data: Login) => {
     const result = await login(data);
     if (!result.success) return toast.error(result.error);
-    toast.success("Login realizado com sucesso!");
+    router.replace("/home");
   };
 
   return (

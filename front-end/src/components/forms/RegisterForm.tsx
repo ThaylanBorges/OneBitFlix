@@ -7,7 +7,7 @@ import { Label } from "../ui/label";
 import { Controller, useForm } from "react-hook-form";
 import { Register, RegisterSchema } from "@/schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerUser } from "@/app/register/actions";
+import { registerUser } from "@/app/auth/register/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import FormError from "./FormError";
@@ -36,7 +36,7 @@ export default function RegisterForm() {
     const result = await registerUser(data);
     if (!result.success) return toast.error(result.error);
     toast.success("Conta criada com sucesso!");
-    router.push("/login?registered=true");
+    router.push("/auth/login?registered=true");
   };
 
   return (
@@ -119,7 +119,7 @@ export default function RegisterForm() {
             <div className="space-y-2">
               <Label htmlFor="birth">Data de nascimento</Label>
 
-              <Input id="birth" type="date" {...register("birth")}></Input>
+              <Input id="birth" type="date" {...register("birth")} />
 
               {errors?.birth && <FormError message={errors.birth.message} />}
             </div>

@@ -1,22 +1,17 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { usePathname } from "next/navigation";
 
-type HeaderProps = {
-  logoUrl: string;
-  btnUrl: string;
-  btnText: string;
-};
+export default function AuthHeader() {
+  const pathName = usePathname();
+  const isLoginPage = pathName === "/auth/login";
 
-export default function HeaderGeneric({
-  logoUrl,
-  btnUrl,
-  btnText,
-}: HeaderProps) {
   return (
     <header className="bg-black">
       <div className="container mx-auto flex flex-col gap-4 sm:flex-row items-center justify-between p-4">
-        <Link href={logoUrl}>
+        <Link href="/">
           <Image
             src="/logoOnebitflix.svg"
             alt="Logo Onebitflix"
@@ -25,12 +20,14 @@ export default function HeaderGeneric({
           />
         </Link>
         <Button
-          render={<Link href={btnUrl} />}
+          render={
+            <Link href={`${isLoginPage ? "/auth/register" : "/auth/login"}`} />
+          }
           variant="outline"
           size="lg"
           className="hover:bg-transparent hover:border-primary"
         >
-          {btnText}
+          {isLoginPage ? "Crie Sua Conta" : "Faça Login"}
         </Button>
       </div>
     </header>

@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 export async function api(endpoint: string, options: RequestInit = {}) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASEURL}${endpoint}`,
@@ -20,4 +22,18 @@ export async function api(endpoint: string, options: RequestInit = {}) {
   if (response.status === 204) return null;
 
   return response.json();
+}
+
+export async function apiWithAuth(endpoint: string, options: RequestInit = {}) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+
+  if (!token) throw new Error("Token not found");
+
+  return api(endpoint, {
+    headers: {
+      ...options.headers,
+      Cookie: `token=${token.value}`,
+    },
+  });
 }
