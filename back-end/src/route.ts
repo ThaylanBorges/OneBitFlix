@@ -12,6 +12,7 @@ const route = Router();
 
 route.post("/auth/register", authController.register);
 route.post("/auth/login", authController.login);
+route.post("/auth/logout", authController.logout);
 
 route.get("/users/current/watching", authMiddleware, usersController.watching);
 route.get("/users/current", authMiddleware, usersController.show);
