@@ -1,4 +1,3 @@
-"use server";
 import { Register } from "@/schemas/registerSchema";
 import { authService } from "@/services/authService";
 
