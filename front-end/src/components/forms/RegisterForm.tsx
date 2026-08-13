@@ -35,8 +35,8 @@ export default function RegisterForm() {
   const onSubmit = async (data: Register) => {
     const result = await registerUser(data);
     if (!result.success) return toast.error(result.error);
-    toast.success("Conta criada com sucesso!");
-    router.push("/auth/login");
+    router.replace("/home");
+    router.refresh();
   };
 
   return (
