@@ -1,4 +1,4 @@
-import LoginForm from "@/components/forms/LoginForm";
+import LoginForm from "@/components/login/LoginForm";
 
 export const metadata = {
   title: "Onebitflix - Login",

@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Login, LoginSchema } from "@/schemas/loginSchema";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import FormError from "./FormError";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
+import FormError from "../FormError";
 
 export default function LoginForm() {
   const {

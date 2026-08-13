@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/Footer";
 import Animated from "@/components/home-no-auth/Animateds";
 import CardsSection from "@/components/home-no-auth/CardSection";
 import HeaderNoAuth from "@/components/home-no-auth/HeaderNoAuth";

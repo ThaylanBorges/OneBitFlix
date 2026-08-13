@@ -9,7 +9,7 @@ import { Register, RegisterSchema } from "@/schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import FormError from "./FormError";
+import FormError from "../FormError";
 import { authService } from "@/services/authService";
 
 const formatPhone = (value: string) => {

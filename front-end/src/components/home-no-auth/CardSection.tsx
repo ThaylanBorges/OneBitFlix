@@ -1,4 +1,4 @@
-import Card from "@/components/Card";
+import CategoryCard from "./CategoryCard";
 
 const cardsData = [
   {
@@ -47,13 +47,13 @@ export default function CardsSection() {
       </p>
       <div className="container mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
         {cardsData.map((card) => (
-          <Card
+          <CategoryCard
             key={card.title}
             style={{ backgroundImage: `url(${card.image})` }}
           >
             <p className="font-bold text-2xl">{card.title}</p>
             <p className="text-muted-foreground">{card.description}</p>
-          </Card>
+          </CategoryCard>
         ))}
       </div>
     </div>

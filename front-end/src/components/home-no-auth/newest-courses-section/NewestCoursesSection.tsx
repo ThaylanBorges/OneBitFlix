@@ -1,4 +1,4 @@
-import Slide from "@/components/Slide";
+import Slide from "@/components/home-no-auth/Slide";
 import { Button } from "@/components/ui/button";
 import { courseService } from "@/services/courseService";
 import Link from "next/link";
