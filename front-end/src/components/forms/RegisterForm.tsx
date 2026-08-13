@@ -36,7 +36,7 @@ export default function RegisterForm() {
     const result = await registerUser(data);
     if (!result.success) return toast.error(result.error);
     toast.success("Conta criada com sucesso!");
-    router.push("/auth/login?registered=true");
+    router.push("/auth/login");
   };
 
   return (
