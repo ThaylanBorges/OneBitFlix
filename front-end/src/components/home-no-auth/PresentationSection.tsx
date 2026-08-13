@@ -16,7 +16,7 @@ export default function PresentationSection() {
             como programador.
           </p>
           <Button
-            render={<Link href={"/register"} />}
+            render={<Link href={"/auth/register"} />}
             nativeButton={false}
             variant={"ghost"}
             size={"xl"}

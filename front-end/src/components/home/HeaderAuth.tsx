@@ -2,17 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+import UserMenu from "./UserMenu";
 
 export default function HeaderAuth() {
   return (
     <div className="flex-col gap-5 sm:flex-row container mx-auto p-5 flex justify-between items-center">
-      <Link href="\">
+      <Link href="/home">
         <Image
           src="/logoOnebitflix.svg"
           alt="logo Onebitflix"
@@ -38,25 +33,7 @@ export default function HeaderAuth() {
             />
           </Button>
         </form>
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                variant="ghost"
-                className="bg-gray-400 px-2.5 py-6 rounded-full"
-              >
-                User
-              </Button>
-            }
-          ></DropdownMenuTrigger>
-
-          <DropdownMenuContent className="mt-1">
-            <DropdownMenuItem
-              render={<Link href="/profile">Meus Dados</Link>}
-            ></DropdownMenuItem>
-            <DropdownMenuItem>Sair</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <UserMenu></UserMenu>
       </div>
     </div>
   );

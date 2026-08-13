@@ -1,4 +1,4 @@
-import { apiWithAuth } from "./api";
+import { apiWithAuth } from "./apiWithAuth";
 
 export const userService = {
   getCurrentUser: async () => {
