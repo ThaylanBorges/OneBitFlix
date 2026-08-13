@@ -7,10 +7,10 @@ import { Label } from "../ui/label";
 import { Controller, useForm } from "react-hook-form";
 import { Register, RegisterSchema } from "@/schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerUser } from "@/app/auth/register/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import FormError from "./FormError";
+import { authService } from "@/services/authService";
 
 const formatPhone = (value: string) => {
   return value
@@ -33,10 +33,14 @@ export default function RegisterForm() {
   const router = useRouter();
 
   const onSubmit = async (data: Register) => {
-    const result = await registerUser(data);
-    if (!result.success) return toast.error(result.error);
-    router.replace("/home");
-    router.refresh();
+    try {
+      await authService.register(data);
+
+      router.replace("/home");
+      router.refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Internal Error.");
+    }
   };
 
   return (

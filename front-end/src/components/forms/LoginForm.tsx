@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Login, LoginSchema } from "@/schemas/loginSchema";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { login } from "@/app/auth/login/actions";
 import FormError from "./FormError";
 import { useRouter } from "next/navigation";
+import { authService } from "@/services/authService";
 
 export default function LoginForm() {
   const {
@@ -21,9 +21,12 @@ export default function LoginForm() {
   const router = useRouter();
 
   const onSubmit = async (data: Login) => {
-    const result = await login(data);
-    if (!result.success) return toast.error(result.error);
-    router.replace("/home");
+    try {
+      await authService.login(data);
+      router.replace("/home");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Internal Error.");
+    }
   };
 
   return (
