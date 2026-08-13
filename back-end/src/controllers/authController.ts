@@ -2,6 +2,24 @@ import { Request, Response } from "express";
 import { usersServices } from "../services/userServices.js";
 import { jwtService } from "../services/jwtService.js";
 
+type payloadJWT = {
+  id: number;
+  firstName: string;
+  email: string;
+};
+
+function setCookie(res: Response, payload: payloadJWT) {
+  const token = jwtService.signToken(payload, "7d");
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: "/",
+  });
+}
+
 export const authController = {
   register: async (req: Request, res: Response) => {
     const { firstName, lastName, phone, birth, email, password } = req.body;
@@ -21,7 +39,18 @@ export const authController = {
         role: "user",
       });
 
-      return res.status(201).json(user);
+      setCookie(res, {
+        id: user.id,
+        firstName: user.firstName,
+        email: user.email,
+      });
+
+      return res
+        .status(201)
+        .json({
+          authenticated: true,
+          user: { id: user.id, firstName: user.firstName, email: user.email },
+        });
     } catch (err) {
       res.status(400).json({
         message: err instanceof Error ? err.message : "Internal error",
@@ -41,20 +70,10 @@ export const authController = {
 
       if (!verifyPassword) throw new Error("Incorrect email or password");
 
-      const payload = {
+      setCookie(res, {
         id: user.id,
         firstName: user.firstName,
         email: user.email,
-      };
-
-      const token = jwtService.signToken(payload, "7d");
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        path: "/",
       });
 
       return res.status(200).json({
