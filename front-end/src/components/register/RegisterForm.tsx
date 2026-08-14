@@ -7,10 +7,10 @@ import { Label } from "../ui/label";
 import { Controller, useForm } from "react-hook-form";
 import { Register, RegisterSchema } from "@/schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import FormError from "../FormError";
 import { authService } from "@/services/authService";
+import { toast } from "sonner";
 
 const formatPhone = (value: string) => {
   return value
@@ -39,7 +39,9 @@ export default function RegisterForm() {
       router.replace("/home");
       router.refresh();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Internal Error.");
+      toast.error(`${err instanceof Error ? err.message : "Internal Error."}`, {
+        className: "mt-15",
+      });
     }
   };
 

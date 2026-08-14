@@ -5,11 +5,11 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Login, LoginSchema } from "@/schemas/loginSchema";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
 import FormError from "../FormError";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const {
@@ -25,12 +25,14 @@ export default function LoginForm() {
       await authService.login(data);
       router.replace("/home");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Internal Error.");
+      toast.error(`${err instanceof Error ? err.message : "Internal Error."}`, {
+        className: "mt-15",
+      });
     }
   };
 
   return (
-    <div className="mx-auto max-w-dvh pb-11">
+    <div className=" mx-auto max-w-dvh pb-11">
       <h1 className="text-3xl my-12 font-bold text-center sm:text-start">
         Bem-vindo(a) de volta!
       </h1>
