@@ -12,13 +12,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function UserMenu() {
-  const route = useRouter();
+  const router = useRouter();
 
   async function handleLogout() {
     try {
       await authService.logout();
-      route.replace("/");
-      route.refresh();
+      router.replace("/");
+      router.refresh();
     } catch {
       toast.error("Erro ao sair da conta");
     }

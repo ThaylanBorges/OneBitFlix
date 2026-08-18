@@ -33,7 +33,7 @@ export default function HeaderAuth() {
             />
           </Button>
         </form>
-        <UserMenu></UserMenu>
+        <UserMenu />
       </div>
     </div>
   );

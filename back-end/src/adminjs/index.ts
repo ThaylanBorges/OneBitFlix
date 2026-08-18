@@ -8,6 +8,7 @@ import { authenticate } from "./auth.js";
 import { locale } from "./locale.js";
 import { dashboardHandler } from "./handlers/Dashboard.js";
 import { brandingOptions } from "./brandingOptions.js";
+import { env } from "../config/env.js";
 
 AdminJS.registerAdapter(AdminJSSequelize);
 
@@ -24,18 +25,18 @@ export const adminJs = new AdminJS({
   },
 });
 
-adminJs.watch();
+if (env.NODE_ENV !== "production") adminJs.watch();
 
 export const adminJsRouter = AdminExpress.buildAuthenticatedRouter(
   adminJs,
   {
     authenticate,
     cookieName: "adminjs",
-    cookiePassword: "supersecretpassword",
+    cookiePassword: env.ADMIN_COOKIE_SECRET,
   },
   null,
   {
-    secret: "test",
+    secret: env.ADMIN_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   },

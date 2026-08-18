@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { categoriesController } from "./controllers/categoriesController.js";
+import { categoryController } from "./controllers/categoryController.js";
 import { coursesController } from "./controllers/coursesController.js";
 import { episodesController } from "./controllers/episodesController.js";
 import { authController } from "./controllers/authController.js";
@@ -23,8 +23,8 @@ route.put(
   usersController.updatePassword,
 );
 
-route.get("/categories", authMiddleware, categoriesController.index);
-route.get("/categories/:id", authMiddleware, categoriesController.show);
+route.get("/categories", authMiddleware, categoryController.index);
+route.get("/categories/:id", authMiddleware, categoryController.show);
 
 route.get("/courses/featured", authMiddleware, coursesController.featured);
 route.get("/courses/newest", coursesController.newest);

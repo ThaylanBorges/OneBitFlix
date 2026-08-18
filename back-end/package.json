@@ -24,7 +24,8 @@
     "express-formidable": "^1.2.0",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.22.0",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

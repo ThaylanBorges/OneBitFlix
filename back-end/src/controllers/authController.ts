@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { usersServices } from "../services/userServices.js";
 import { jwtService } from "../services/jwtService.js";
+import { env } from "../config/env.js";
 
 type payloadJWT = {
   id: number;
@@ -13,8 +14,8 @@ function setCookie(res: Response, payload: payloadJWT) {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: env.NODE_ENV === "production",
+    sameSite: env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: "/",
   });
@@ -27,7 +28,7 @@ export const authController = {
     try {
       const userAlreadyExists = await usersServices.findByEmail(email);
 
-      if (userAlreadyExists) throw new Error("This e-mail is already in use.");
+      if (userAlreadyExists) throw new Error("Failed to register user.");
 
       const user = await usersServices.create({
         firstName,
@@ -45,12 +46,10 @@ export const authController = {
         email: user.email,
       });
 
-      return res
-        .status(201)
-        .json({
-          authenticated: true,
-          user: { id: user.id, firstName: user.firstName, email: user.email },
-        });
+      return res.status(201).json({
+        authenticated: true,
+        user: { id: user.id, firstName: user.firstName, email: user.email },
+      });
     } catch (err) {
       res.status(400).json({
         message: err instanceof Error ? err.message : "Internal error",
@@ -90,8 +89,8 @@ export const authController = {
   logout: async (req: Request, res: Response) => {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
     });
     res.status(204).send();

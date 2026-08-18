@@ -30,7 +30,10 @@ function filterLastEpisodesByCourse(episodes: Episode[]) {
 
 export const usersServices = {
   findById: async (id: number) => {
-    const user = await User.findOne({ where: { id } });
+    const user = await User.findOne({
+      where: { id },
+      attributes: { exclude: ["password"] },
+    });
     return user;
   },
 

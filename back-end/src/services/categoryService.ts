@@ -1,6 +1,6 @@
 import { Category } from "../models/index.js";
 
-export const categorieService = {
+export const categoryService = {
   findAllPaginated: async (page: number, perPage: number) => {
     const offset = (page - 1) * perPage;
 
