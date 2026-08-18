@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Controller, useForm } from "react-hook-form";
-import { Register, RegisterSchema } from "@/schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import FormError from "../FormError";
 import { authService } from "@/services/authService";
 import { toast } from "sonner";
+import { Register, RegisterSchema } from "@/schemas/authSchemas";
 
 const formatPhone = (value: string) => {
   return value
@@ -35,7 +35,6 @@ export default function RegisterForm() {
   const onSubmit = async (data: Register) => {
     try {
       await authService.register(data);
-
       router.replace("/home");
       router.refresh();
     } catch (err) {

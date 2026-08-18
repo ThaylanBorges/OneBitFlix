@@ -4,12 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Login, LoginSchema } from "@/schemas/loginSchema";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
 import FormError from "../FormError";
 import { toast } from "sonner";
+import { Login, LoginSchema } from "@/schemas/authSchemas";
 
 export default function LoginForm() {
   const {

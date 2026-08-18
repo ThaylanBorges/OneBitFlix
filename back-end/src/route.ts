@@ -7,11 +7,13 @@ import { authMiddleware, authMiddlewareQuery } from "./middlewares/auth.js";
 import { favoritesController } from "./controllers/favoritesController.js";
 import { likesController } from "./controllers/likesController.js";
 import { usersController } from "./controllers/usersController.js";
+import { validate } from "./middlewares/validate.js";
+import { LoginSchema, RegisterSchema } from "./schemas/authSchema.js";
 
 const route = Router();
 
-route.post("/auth/register", authController.register);
-route.post("/auth/login", authController.login);
+route.post("/auth/register", validate(RegisterSchema), authController.register);
+route.post("/auth/login", validate(LoginSchema), authController.login);
 route.post("/auth/logout", authController.logout);
 
 route.get("/users/current/watching", authMiddleware, usersController.watching);

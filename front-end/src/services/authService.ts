@@ -1,6 +1,5 @@
-import { Register } from "@/schemas/registerSchema";
+import { Login, Register } from "@/schemas/authSchemas";
 import { api } from "./api";
-import { Login } from "@/schemas/loginSchema";
 
 export const authService = {
   register: async (data: Register) => {

@@ -1,8 +1,16 @@
 import HeaderAuth from "@/components/home/HeaderAuth";
 import { userService } from "@/services/userService";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const user = await userService.getCurrentUser();
+  let user;
+  try {
+    user = await userService.getCurrentUser();
+  } catch {
+    redirect("/auth/login");
+  }
+
+  if (!user) redirect("/auth/login");
 
   return (
     <div>
