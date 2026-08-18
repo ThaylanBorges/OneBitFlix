@@ -9,7 +9,18 @@ export const episodeService = {
     res: Response,
     range: string | undefined,
   ) => {
-    const filePath = path.join(process.cwd(), "uploads", videoUrl);
+    const uploadsDir = path.join(process.cwd(), "uploads");
+    const filePath = path.resolve(uploadsDir, videoUrl);
+
+    if (!filePath.startsWith(uploadsDir + path.sep)) {
+      return res.status(403).json({ message: "Access denied." });
+    }
+
+    const ext = path.extname(filePath).toLowerCase();
+    if (![".mp4", ".webm", ".mov"].includes(ext)) {
+      return res.status(403).json({ message: "File type not allowed." });
+    }
+
     const fileStat = await fsPromises.stat(filePath);
 
     if (range) {
