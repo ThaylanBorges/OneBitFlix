@@ -6,8 +6,19 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { env } from "./config/env.js";
 import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  message: { message: "Too many attempts. Try again late." },
+});
+
+const generalLimiter = rateLimit({ windowMs: 60 * 1000, limit: 100 });
 
 const app = express();
+app.use(generalLimiter);
+app.use("/auth", authLimiter);
 app.use(helmet());
 app.use(cookieParser());
 app.use(
@@ -19,7 +30,7 @@ app.use(
   }),
 );
 app.use(express.static("public"));
-app.use(express.json());
+app.use(express.json({ limit: "10kb" }));
 app.use(adminJs.options.rootPath, adminJsRouter);
 app.use(route);
 
