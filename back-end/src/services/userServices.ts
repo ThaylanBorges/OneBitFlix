@@ -49,9 +49,11 @@ export const usersServices = {
 
   update: async (
     id: number,
-    attributes: Omit<
-      UserCreationAttributes,
-      "id" | "password" | "createdAt" | "updatedAt" | "role"
+    attributes: Partial<
+      Omit<
+        UserCreationAttributes,
+        "id" | "password" | "createdAt" | "updatedAt" | "role"
+      >
     >,
   ) => {
     await User.update(attributes, { where: { id } });

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { usersServices } from "../services/userServices.js";
+import { UpdatePassword, UpdateUser } from "../schemas/userSchema.js";
 
 export const usersController = {
   watching: async (req: Request, res: Response) => {
@@ -31,16 +32,10 @@ export const usersController = {
 
   update: async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const { firstName, lastName, phone, birth, email } = req.body;
+    const attributes = req.dataBody as UpdateUser;
 
     try {
-      await usersServices.update(userId, {
-        firstName,
-        lastName,
-        phone,
-        birth,
-        email,
-      });
+      await usersServices.update(userId, attributes);
       res.status(200).send();
     } catch (err) {
       res.status(400).json({
@@ -51,7 +46,7 @@ export const usersController = {
 
   updatePassword: async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const { currentPassword, newPassword } = req.body;
+    const { currentPassword, newPassword } = req.dataBody as UpdatePassword;
 
     try {
       await usersServices.updatePassword(userId, currentPassword, newPassword);

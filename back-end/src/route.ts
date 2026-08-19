@@ -16,6 +16,10 @@ import { LoginSchema, RegisterSchema } from "./schemas/authSchema.js";
 import { PaginationSchema, ParamsIdSchema } from "./schemas/commonSchemas.js";
 import { CourseSearchSchema } from "./schemas/courseSchema.js";
 import { SecondsSchema, VideoUrlSchema } from "./schemas/episodeSchema.js";
+import {
+  UpdatePasswordSchema,
+  UpdateUserSchema,
+} from "./schemas/userSchema.js";
 
 const route = Router();
 
@@ -29,10 +33,16 @@ route.post("/auth/logout", authController.logout);
 
 route.get("/users/current/watching", authMiddleware, usersController.watching);
 route.get("/users/current", authMiddleware, usersController.show);
-route.put("/users/current", authMiddleware, usersController.update);
+route.put(
+  "/users/current",
+  authMiddleware,
+  validateBody(UpdateUserSchema),
+  usersController.update,
+);
 route.put(
   "/users/current/password",
   authMiddleware,
+  validateBody(UpdatePasswordSchema),
   usersController.updatePassword,
 );
 
