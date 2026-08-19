@@ -5,10 +5,10 @@ info:
 
 http:
   method: DELETE
-  url: "{{baseUrl}}/favorites/:courseId"
+  url: "{{baseUrl}}/favorites/:id"
   params:
-    - name: courseId
-      value: "1"
+    - name: id
+      value: ""
       type: path
   auth: inherit
 

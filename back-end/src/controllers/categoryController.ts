@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { categoryService } from "../services/categoryService.js";
-import { getPaginationParams } from "../helpers/getPaginationParams.js";
+import { Pagination, ParmasId } from "../schemas/commonSchemas.js";
 
 export const categoryController = {
   index: async (req: Request, res: Response) => {
-    const [page, perPage] = getPaginationParams(req);
+    const { page, perPage } = req.dataQuery as Pagination;
 
     try {
       const paginatedCategories = await categoryService.findAllPaginated(
@@ -21,10 +21,10 @@ export const categoryController = {
   },
 
   show: async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.dataParams as ParmasId;
 
     try {
-      const category = await categoryService.findByIdWithCourses(Number(id));
+      const category = await categoryService.findByIdWithCourses(id);
       res.json(category);
     } catch (err) {
       res.status(400).json({

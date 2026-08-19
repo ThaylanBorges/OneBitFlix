@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { courseServices } from "../services/courseService.js";
-import { getPaginationParams } from "../helpers/getPaginationParams.js";
 import { likeService } from "../services/likeServices.js";
 import { favoriteService } from "../services/favoriteService.js";
+import { ParmasId } from "../schemas/commonSchemas.js";
+import { CourseSearch } from "../schemas/courseSchema.js";
 
 export const coursesController = {
   featured: async (req: Request, res: Response) => {
@@ -17,17 +18,17 @@ export const coursesController = {
   },
 
   show: async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id: courseId } = req.dataParams as ParmasId;
     const userId = req.user!.id;
 
     try {
-      const course = await courseServices.findById(Number(id));
+      const course = await courseServices.findById(courseId);
 
       if (!course) return res.status(404).json({ message: "Course not found" });
 
-      const liked = await likeService.isLiked(userId, Number(id));
+      const liked = await likeService.isLiked(userId, courseId);
 
-      const favorited = await favoriteService.isFavorite(userId, Number(id));
+      const favorited = await favoriteService.isFavorite(userId, courseId);
 
       res.json({ ...course.get(), liked, favorited });
     } catch (err) {
@@ -40,7 +41,7 @@ export const coursesController = {
   popular: async (req: Request, res: Response) => {
     try {
       const topTen = await courseServices.getTopTenByLikes();
-      res.status(200).json(topTen ? topTen : []);
+      res.status(200).json(topTen ?? []);
     } catch (err) {
       res.status(400).json({
         message: err instanceof Error ? err.message : "Internal error",
@@ -60,19 +61,10 @@ export const coursesController = {
   },
 
   search: async (req: Request, res: Response) => {
-    const { name } = req.query;
-
-    const [page, perPage] = getPaginationParams(req);
+    const { name, page, perPage } = req.dataQuery as CourseSearch;
 
     try {
-      if (typeof name !== "string")
-        throw new Error("name param must br of type string");
-
-      const courses = await courseServices.findByName(
-        name.toString(),
-        page,
-        perPage,
-      );
+      const courses = await courseServices.findByName(name, page, perPage);
       res.json(courses);
     } catch (err) {
       res.status(400).json({

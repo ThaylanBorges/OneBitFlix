@@ -2,12 +2,10 @@ import { Category } from "../models/index.js";
 
 export const categoryService = {
   findAllPaginated: async (page: number, perPage: number) => {
-    const offset = (page - 1) * perPage;
-
     const { count, rows } = await Category.findAndCountAll({
       order: [["position", "ASC"]],
       limit: perPage,
-      offset,
+      offset: (page - 1) * perPage,
     });
 
     return {

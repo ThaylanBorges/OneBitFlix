@@ -7,13 +7,24 @@ import { authMiddleware, authMiddlewareQuery } from "./middlewares/auth.js";
 import { favoritesController } from "./controllers/favoritesController.js";
 import { likesController } from "./controllers/likesController.js";
 import { usersController } from "./controllers/usersController.js";
-import { validate } from "./middlewares/validate.js";
+import {
+  validateBody,
+  validateParams,
+  validateQuery,
+} from "./middlewares/validate.js";
 import { LoginSchema, RegisterSchema } from "./schemas/authSchema.js";
+import { PaginationSchema, ParamsIdSchema } from "./schemas/commonSchemas.js";
+import { CourseSearchSchema } from "./schemas/courseSchema.js";
+import { SecondsSchema, VideoUrlSchema } from "./schemas/episodeSchema.js";
 
 const route = Router();
 
-route.post("/auth/register", validate(RegisterSchema), authController.register);
-route.post("/auth/login", validate(LoginSchema), authController.login);
+route.post(
+  "/auth/register",
+  validateBody(RegisterSchema),
+  authController.register,
+);
+route.post("/auth/login", validateBody(LoginSchema), authController.login);
 route.post("/auth/logout", authController.logout);
 
 route.get("/users/current/watching", authMiddleware, usersController.watching);
@@ -25,36 +36,80 @@ route.put(
   usersController.updatePassword,
 );
 
-route.get("/categories", authMiddleware, categoryController.index);
-route.get("/categories/:id", authMiddleware, categoryController.show);
+route.get(
+  "/categories",
+  authMiddleware,
+  validateQuery(PaginationSchema),
+  categoryController.index,
+);
+route.get(
+  "/categories/:id",
+  validateParams(ParamsIdSchema),
+  authMiddleware,
+  categoryController.show,
+);
 
 route.get("/courses/featured", authMiddleware, coursesController.featured);
 route.get("/courses/newest", coursesController.newest);
 route.get("/courses/popular", coursesController.popular);
-route.get("/courses/search", authMiddleware, coursesController.search);
-route.get("/courses/:id", authMiddleware, coursesController.show);
+route.get(
+  "/courses/search",
+  authMiddleware,
+  validateQuery(CourseSearchSchema),
+  coursesController.search,
+);
+route.get(
+  "/courses/:id",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
+  coursesController.show,
+);
 
-route.get("/episodes/stream", authMiddlewareQuery, episodesController.stream);
+route.get(
+  "/episodes/stream",
+  authMiddlewareQuery,
+  validateQuery(VideoUrlSchema),
+  episodesController.stream,
+);
 route.get(
   "/episodes/:id/watchTime",
   authMiddleware,
+  validateParams(ParamsIdSchema),
   episodesController.getWatchTime,
 );
 route.post(
   "/episodes/:id/watchTime",
   authMiddleware,
+  validateParams(ParamsIdSchema),
+  validateBody(SecondsSchema),
   episodesController.setWatchTime,
 );
 
-route.post("/favorites", authMiddleware, favoritesController.save);
 route.get("/favorites", authMiddleware, favoritesController.index);
-route.delete(
-  "/favorites/:courseId",
+route.post(
+  "/favorites/:id",
   authMiddleware,
+  validateParams(ParamsIdSchema),
+  favoritesController.save,
+);
+route.delete(
+  "/favorites/:id",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
   favoritesController.delete,
 );
 
-route.post("/likes", authMiddleware, likesController.save);
-route.delete("/likes/:courseId", authMiddleware, likesController.delete);
+route.post(
+  "/likes/:id",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
+  likesController.save,
+);
+route.delete(
+  "/likes/:id",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
+  likesController.delete,
+);
 
 export default route;

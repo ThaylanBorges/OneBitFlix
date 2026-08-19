@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { favoriteService } from "../services/favoriteService.js";
+import { ParmasId } from "../schemas/commonSchemas.js";
 
 export const favoritesController = {
   save: async (req: Request, res: Response) => {
+    const { id: courseId } = req.dataParams as ParmasId;
     const userId = req.user!.id;
-    const { courseId } = req.body;
 
     try {
       const favorite = await favoriteService.create(userId, courseId);
@@ -17,9 +18,9 @@ export const favoritesController = {
   },
 
   index: async (req: Request, res: Response) => {
-    try {
-      const userId = req.user!.id;
+    const userId = req.user!.id;
 
+    try {
       const favorites = await favoriteService.findByUserId(userId);
       res.json(favorites);
     } catch (err) {
@@ -30,11 +31,11 @@ export const favoritesController = {
   },
 
   delete: async (req: Request, res: Response) => {
-    try {
-      const userId = req.user!.id;
-      const { courseId } = req.params;
+    const userId = req.user!.id;
+    const { id: courseId } = req.dataParams as ParmasId;
 
-      await favoriteService.delete(userId, Number(courseId));
+    try {
+      await favoriteService.delete(userId, courseId);
       res.status(200).send();
     } catch (err) {
       res.status(400).json({

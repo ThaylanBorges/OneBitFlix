@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { usersServices } from "../services/userServices.js";
 import { jwtService } from "../services/jwtService.js";
 import { env } from "../config/env.js";
+import { Login, Register } from "../schemas/authSchema.js";
 
 type payloadJWT = {
   id: number;
@@ -23,12 +24,14 @@ function setCookie(res: Response, payload: payloadJWT) {
 
 export const authController = {
   register: async (req: Request, res: Response) => {
-    const { firstName, lastName, phone, birth, email, password } = req.body;
+    const { firstName, lastName, phone, birth, email, password } =
+      req.dataBody as Register;
 
     try {
       const userAlreadyExists = await usersServices.findByEmail(email);
 
-      if (userAlreadyExists) throw new Error("Failed to register user.");
+      if (userAlreadyExists)
+        return res.status(409).json({ message: "Failed To Register User." });
 
       const user = await usersServices.create({
         firstName,
@@ -58,7 +61,7 @@ export const authController = {
   },
 
   login: async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { email, password } = req.dataBody as Login;
 
     try {
       const user = await usersServices.findByEmail(email);
