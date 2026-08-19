@@ -5,8 +5,10 @@ import route from "./route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { env } from "./config/env.js";
+import helmet from "helmet";
 
 const app = express();
+app.use(helmet());
 app.use(cookieParser());
 app.use(
   cors({
