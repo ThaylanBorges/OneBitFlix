@@ -2,6 +2,7 @@ import { Response } from "express";
 import path from "path";
 import { createReadStream, promises as fsPromises } from "fs";
 import { WatchTime } from "../models/WatchTime.js";
+import { AppError } from "../errors/AppError.js";
 
 export const episodeService = {
   streamEpisodeToResponse: async (
@@ -12,14 +13,12 @@ export const episodeService = {
     const uploadsDir = path.join(process.cwd(), "uploads");
     const filePath = path.resolve(uploadsDir, videoUrl);
 
-    if (!filePath.startsWith(uploadsDir + path.sep)) {
-      return res.status(403).json({ message: "Access denied." });
-    }
+    if (!filePath.startsWith(uploadsDir + path.sep))
+      throw new AppError("Access denied.", 403);
 
     const ext = path.extname(filePath).toLowerCase();
-    if (![".mp4", ".webm", ".mov"].includes(ext)) {
-      return res.status(403).json({ message: "File type not allowed." });
-    }
+    if (![".mp4", ".webm", ".mov"].includes(ext))
+      throw new AppError("File type not allowed.", 403);
 
     const fileStat = await fsPromises.stat(filePath);
 

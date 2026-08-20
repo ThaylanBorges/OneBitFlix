@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { likeService } from "../services/likeServices.js";
 import { ParmasId } from "../schemas/commonSchemas.js";
 
 export const likesController = {
-  save: async (req: Request, res: Response) => {
+  save: async (req: Request, res: Response, next: NextFunction) => {
     const { id: courseId } = req.dataQuery as ParmasId;
     const userId = req.user!.id;
 
@@ -11,13 +11,11 @@ export const likesController = {
       const like = await likeService.create(userId, courseId);
       res.status(201).json(like);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal Error",
-      });
+      next(err);
     }
   },
 
-  delete: async (req: Request, res: Response) => {
+  delete: async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user!.id;
     const { id: courseId } = req.dataParams as ParmasId;
 
@@ -25,9 +23,7 @@ export const likesController = {
       await likeService.delete(userId, courseId);
       res.status(200).send();
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal Error",
-      });
+      next(err);
     }
   },
 };

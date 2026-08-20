@@ -1,3 +1,4 @@
+import { AppError } from "../errors/AppError.js";
 import { Episode } from "../models/Episodes.js";
 import { User, UserCreationAttributes } from "../models/User.js";
 
@@ -66,10 +67,11 @@ export const usersServices = {
   ) => {
     const user = await User.findByPk(id);
 
-    if (!user) throw new Error("User not found");
+    if (!user) throw new AppError("User not found", 404);
 
-    if (!(await user.checkPassword(currentPassword)))
-      throw new Error("Current Password Incorrect");
+    const passwordMatch = await user.checkPassword(currentPassword);
+
+    if (!passwordMatch) throw new AppError("Current Password Incorrect", 400);
 
     user.password = password;
     await user.save();

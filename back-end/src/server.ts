@@ -7,19 +7,28 @@ import cookieParser from "cookie-parser";
 import { env } from "./config/env.js";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 10,
-  message: { message: "Too many attempts. Try again late." },
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: { message: "Too many attempts. Try again later." },
 });
 
-const generalLimiter = rateLimit({ windowMs: 60 * 1000, limit: 100 });
+const generalLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 100,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  skip: (req) => req.path.startsWith("/auth"),
+});
 
 const app = express();
+app.use(helmet());
 app.use(generalLimiter);
 app.use("/auth", authLimiter);
-app.use(helmet());
 app.use(cookieParser());
 app.use(
   cors({
@@ -33,6 +42,8 @@ app.use(express.static("public"));
 app.use(express.json({ limit: "10kb" }));
 app.use(adminJs.options.rootPath, adminJsRouter);
 app.use(route);
+
+app.use(errorHandler);
 
 const PORT = env.PORT || 3333;
 app.listen(PORT, () => {

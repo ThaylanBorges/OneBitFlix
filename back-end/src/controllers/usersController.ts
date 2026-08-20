@@ -1,36 +1,31 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { usersServices } from "../services/userServices.js";
 import { UpdatePassword, UpdateUser } from "../schemas/userSchema.js";
 
 export const usersController = {
-  watching: async (req: Request, res: Response) => {
+  watching: async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user!.id;
 
     try {
       const watchingList = await usersServices.getKeepWatchingList(userId);
-
       res.json(watchingList);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal Error",
-      });
+      next(err);
     }
   },
 
-  show: async (req: Request, res: Response) => {
+  show: async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user!.id;
 
     try {
       const user = await usersServices.findById(userId);
       res.json(user);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal Error",
-      });
+      next(err);
     }
   },
 
-  update: async (req: Request, res: Response) => {
+  update: async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user!.id;
     const attributes = req.dataBody as UpdateUser;
 
@@ -38,13 +33,11 @@ export const usersController = {
       await usersServices.update(userId, attributes);
       res.status(200).send();
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal Error",
-      });
+      next(err);
     }
   },
 
-  updatePassword: async (req: Request, res: Response) => {
+  updatePassword: async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user!.id;
     const { currentPassword, newPassword } = req.dataBody as UpdatePassword;
 
@@ -52,9 +45,7 @@ export const usersController = {
       await usersServices.updatePassword(userId, currentPassword, newPassword);
       res.status(200).send();
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal Error",
-      });
+      next(err);
     }
   },
 };

@@ -1,30 +1,29 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { courseServices } from "../services/courseService.js";
 import { likeService } from "../services/likeServices.js";
 import { favoriteService } from "../services/favoriteService.js";
 import { ParmasId } from "../schemas/commonSchemas.js";
 import { CourseSearch } from "../schemas/courseSchema.js";
+import { AppError } from "../errors/AppError.js";
 
 export const coursesController = {
-  featured: async (req: Request, res: Response) => {
+  featured: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const featuredCourses = await courseServices.getRandomFeaturedCourses();
       res.json(featuredCourses);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 
-  show: async (req: Request, res: Response) => {
+  show: async (req: Request, res: Response, next: NextFunction) => {
     const { id: courseId } = req.dataParams as ParmasId;
     const userId = req.user!.id;
 
     try {
       const course = await courseServices.findById(courseId);
 
-      if (!course) return res.status(404).json({ message: "Course not found" });
+      if (!course) throw new AppError("Course not found", 404);
 
       const liked = await likeService.isLiked(userId, courseId);
 
@@ -32,44 +31,36 @@ export const coursesController = {
 
       res.json({ ...course.get(), liked, favorited });
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 
-  popular: async (req: Request, res: Response) => {
+  popular: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const topTen = await courseServices.getTopTenByLikes();
       res.status(200).json(topTen ?? []);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 
-  newest: async (req: Request, res: Response) => {
+  newest: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newCourses = await courseServices.getTenNewCourses();
       res.json(newCourses);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 
-  search: async (req: Request, res: Response) => {
+  search: async (req: Request, res: Response, next: NextFunction) => {
     const { name, page, perPage } = req.dataQuery as CourseSearch;
 
     try {
       const courses = await courseServices.findByName(name, page, perPage);
       res.json(courses);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 };

@@ -2,7 +2,7 @@ import z from "zod";
 
 export const PaginationSchema = z.object({
   page: z.coerce.number().positive().default(1),
-  perPage: z.coerce.number().positive().default(10),
+  perPage: z.coerce.number().positive().max(100).default(10),
 });
 
 export type Pagination = z.infer<typeof PaginationSchema>;

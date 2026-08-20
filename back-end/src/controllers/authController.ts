@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { usersServices } from "../services/userServices.js";
 import { jwtService } from "../services/jwtService.js";
 import { env } from "../config/env.js";
 import { Login, Register } from "../schemas/authSchema.js";
+import { AppError } from "../errors/AppError.js";
 
 type payloadJWT = {
   id: number;
@@ -23,15 +24,14 @@ function setCookie(res: Response, payload: payloadJWT) {
 }
 
 export const authController = {
-  register: async (req: Request, res: Response) => {
+  register: async (req: Request, res: Response, next: NextFunction) => {
     const { firstName, lastName, phone, birth, email, password } =
       req.dataBody as Register;
 
     try {
       const userAlreadyExists = await usersServices.findByEmail(email);
 
-      if (userAlreadyExists)
-        return res.status(409).json({ message: "Failed To Register User." });
+      if (userAlreadyExists) throw new AppError("Failed To Register User", 409);
 
       const user = await usersServices.create({
         firstName,
@@ -54,23 +54,22 @@ export const authController = {
         user: { id: user.id, firstName: user.firstName, email: user.email },
       });
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 
-  login: async (req: Request, res: Response) => {
+  login: async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.dataBody as Login;
 
     try {
       const user = await usersServices.findByEmail(email);
 
-      if (!user) throw new Error("Incorrect email or password");
+      if (!user) throw new AppError("Incorrect email or password", 401);
 
       const verifyPassword = await user.checkPassword(password);
 
-      if (!verifyPassword) throw new Error("Incorrect email or password");
+      if (!verifyPassword)
+        throw new AppError("Incorrect email or password", 401);
 
       setCookie(res, {
         id: user.id,
@@ -83,9 +82,7 @@ export const authController = {
         user: { id: user.id, firstName: user.firstName, email: user.email },
       });
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 

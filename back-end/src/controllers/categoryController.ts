@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { categoryService } from "../services/categoryService.js";
 import { Pagination, ParmasId } from "../schemas/commonSchemas.js";
 
 export const categoryController = {
-  index: async (req: Request, res: Response) => {
+  index: async (req: Request, res: Response, next: NextFunction) => {
     const { page, perPage } = req.dataQuery as Pagination;
 
     try {
@@ -14,22 +14,18 @@ export const categoryController = {
 
       return res.json(paginatedCategories);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 
-  show: async (req: Request, res: Response) => {
+  show: async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.dataParams as ParmasId;
 
     try {
       const category = await categoryService.findByIdWithCourses(id);
       res.json(category);
     } catch (err) {
-      res.status(400).json({
-        message: err instanceof Error ? err.message : "Internal error",
-      });
+      next(err);
     }
   },
 };

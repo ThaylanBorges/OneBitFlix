@@ -21,9 +21,8 @@ export function authMiddleware(
   try {
     const payload = jwtService.verifyToken(token) as JwtPayload;
     req.user = payload;
-    next();
   } catch (err) {
-    return res.status(401).json({ message: "Token expired or invalid" });
+    next(err);
   }
 }
 
@@ -40,8 +39,7 @@ export function authMiddlewareQuery(
   try {
     const payload = jwtService.verifyToken(token) as JwtPayload;
     req.user = payload;
-    next();
   } catch (err) {
-    return res.status(401).json({ message: "Token expired or invalid" });
+    next(err);
   }
 }
