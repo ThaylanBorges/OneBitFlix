@@ -3,8 +3,19 @@ import path from "path";
 import { createReadStream, promises as fsPromises } from "fs";
 import { WatchTime } from "../models/WatchTime.js";
 import { AppError } from "../errors/AppError.js";
+import { Episode } from "../models/Episodes.js";
+
+const contentTypeMap: Record<string, string> = {
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
+  ".mov": "video/quicktime",
+};
 
 export const episodeService = {
+  findById: (id: number) => {
+    return Episode.findByPk(id);
+  },
+
   streamEpisodeToResponse: async (
     videoUrl: string,
     res: Response,
@@ -17,10 +28,12 @@ export const episodeService = {
       throw new AppError("Access denied.", 403);
 
     const ext = path.extname(filePath).toLowerCase();
-    if (![".mp4", ".webm", ".mov"].includes(ext))
-      throw new AppError("File type not allowed.", 403);
+    const contentType = contentTypeMap[ext];
+    if (!contentType) throw new AppError("File type not allowed.", 403);
 
-    const fileStat = await fsPromises.stat(filePath);
+    const fileStat = await fsPromises.stat(filePath).catch(() => {
+      throw new AppError("Episode file not found.", 404);
+    });
 
     if (range) {
       const parts = range.replace(/bytes=/, "").split("-");
@@ -36,7 +49,7 @@ export const episodeService = {
         "Content-Range": `bytes ${start}-${end}/${fileStat.size}`,
         "Accept-Ranges": "bytes",
         "Content-length": chunkSize,
-        "Content-Type": "video/mp4",
+        "Content-Type": contentType,
       };
 
       res.writeHead(206, head);
@@ -45,7 +58,7 @@ export const episodeService = {
     } else {
       const head = {
         "Content-length": fileStat.size,
-        "Content-Type": "video/mp4",
+        "Content-Type": contentType,
       };
 
       res.writeHead(200, head);

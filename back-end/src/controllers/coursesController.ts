@@ -17,6 +17,8 @@ export const coursesController = {
   },
 
   show: async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.params);
+
     const { id: courseId } = req.dataParams as ParmasId;
     const userId = req.user!.id;
 

@@ -15,7 +15,7 @@ import {
 import { LoginSchema, RegisterSchema } from "./schemas/authSchema.js";
 import { PaginationSchema, ParamsIdSchema } from "./schemas/commonSchemas.js";
 import { CourseSearchSchema } from "./schemas/courseSchema.js";
-import { SecondsSchema, VideoUrlSchema } from "./schemas/episodeSchema.js";
+import { SecondsSchema } from "./schemas/episodeSchema.js";
 import {
   UpdatePasswordSchema,
   UpdateUserSchema,
@@ -76,9 +76,9 @@ route.get(
 );
 
 route.get(
-  "/episodes/stream",
+  "/episodes/stream/:id",
   authMiddlewareQuery,
-  validateQuery(VideoUrlSchema),
+  validateParams(ParamsIdSchema),
   episodesController.stream,
 );
 route.get(

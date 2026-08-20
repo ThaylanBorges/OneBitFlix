@@ -1,16 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import { episodeService } from "../services/episodeService.js";
-import { Seconds, VideoUrl } from "../schemas/episodeSchema.js";
+import { Seconds } from "../schemas/episodeSchema.js";
 import { ParmasId } from "../schemas/commonSchemas.js";
+import { AppError } from "../errors/AppError.js";
 
 export const episodesController = {
   stream: async (req: Request, res: Response, next: NextFunction) => {
-    const { videoUrl } = req.dataQuery as VideoUrl;
+    const { id } = req.dataParams as ParmasId;
 
     try {
-      const range = req.headers.range;
+      const episode = await episodeService.findById(id);
 
-      await episodeService.streamEpisodeToResponse(videoUrl, res, range);
+      if (!episode) throw new AppError("Episode not found.", 404);
+
+      await episodeService.streamEpisodeToResponse(
+        episode.videoUrl,
+        res,
+        req.headers.range,
+      );
     } catch (err) {
       next(err);
     }

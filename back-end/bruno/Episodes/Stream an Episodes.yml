@@ -5,11 +5,11 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/episodes/stream?videoUrl=videos/course-2/bird.mp4"
+  url: "{{baseUrl}}/episodes/stream/:id"
   params:
-    - name: videoUrl
-      value: videos/course-2/bird.mp4
-      type: query
+    - name: id
+      value: ""
+      type: path
   auth: inherit
 
 settings:
