@@ -22,11 +22,26 @@ const generalLimiter = rateLimit({
   limit: 100,
   standardHeaders: "draft-8",
   legacyHeaders: false,
-  skip: (req) => req.path.startsWith("/auth"),
+  skip: (req) => req.path.startsWith("/auth") || req.path.startsWith("/admin"),
 });
 
 const app = express();
-app.use(helmet());
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "blob:"],
+        fontSrc: ["'self'", "data:"],
+        connectSrc: ["'self'"],
+      },
+    },
+  }),
+);
+
 app.use(generalLimiter);
 app.use("/auth", authLimiter);
 app.use(cookieParser());

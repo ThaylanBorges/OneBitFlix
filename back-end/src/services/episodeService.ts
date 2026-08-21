@@ -87,9 +87,7 @@ export const episodeService = {
       await watchTimeAlreadyExists.save();
       return watchTimeAlreadyExists;
     } else {
-      const watchTime = await WatchTime.create({ userId, episodeId, seconds });
-
-      return watchTime;
+      return WatchTime.create({ userId, episodeId, seconds });
     }
   },
 };

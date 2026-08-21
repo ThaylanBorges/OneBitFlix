@@ -4,7 +4,7 @@ import { ParmasId } from "../schemas/commonSchemas.js";
 
 export const likesController = {
   save: async (req: Request, res: Response, next: NextFunction) => {
-    const { id: courseId } = req.dataQuery as ParmasId;
+    const { id: courseId } = req.dataParams as ParmasId;
     const userId = req.user!.id;
 
     try {

@@ -2,13 +2,13 @@ import uploadFileFeature from "@adminjs/upload";
 import { FeatureType, ResourceOptions } from "adminjs";
 import { componentLoader } from "../component-loader.js";
 import {
-  ALLOED_VIDEO_MIMES,
+  ALLOwED_VIDEO_MIMES,
   MAX_VIDEO_SIZE,
   UPLOAD_DIR,
 } from "../constants.js";
 
 export const episodeResourceOptions: ResourceOptions = {
-  navigation: "catalog",
+  navigation: { name: "catalog" },
   editProperties: [
     "name",
     "synopsis",
@@ -55,7 +55,7 @@ export const episodeResourceFeatures: FeatureType[] = [
       file: "uploadVideo",
     },
     validation: {
-      mimeTypes: ALLOED_VIDEO_MIMES,
+      mimeTypes: ALLOwED_VIDEO_MIMES,
       maxSize: MAX_VIDEO_SIZE,
     },
     uploadPath: (record, filename) =>

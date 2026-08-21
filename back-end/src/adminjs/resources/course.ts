@@ -8,7 +8,7 @@ import {
 } from "../constants.js";
 
 export const courseResourceOptions: ResourceOptions = {
-  navigation: "catalog",
+  navigation: { name: "catalog" },
   editProperties: [
     "name",
     "synopsis",

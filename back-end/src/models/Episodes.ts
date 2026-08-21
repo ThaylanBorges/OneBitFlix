@@ -80,5 +80,16 @@ Episode.init(
       type: DataTypes.DATE,
     },
   },
-  { sequelize, modelName: "Episodes" },
+  {
+    sequelize,
+    modelName: "Episodes",
+    indexes: [
+      {
+        fields: ["course_id"],
+      },
+      {
+        fields: ["course_id", "order"],
+      },
+    ],
+  },
 );

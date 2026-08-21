@@ -15,6 +15,8 @@ const envSchema = z.object({
   ADMIN_SESSION_SECRET: z.string().min(1),
   NODE_ENV: z.enum(["development", "production"]).default("development"),
   BCRYPT_SALT_ROUNDS: z.coerce.number().positive().int().default(12),
+  ADMIN_PASSWORD: z.string().min(6).max(20).trim(),
+  ADMIN_EMAIL: z.email(),
 });
 
 const result = envSchema.safeParse(process.env);

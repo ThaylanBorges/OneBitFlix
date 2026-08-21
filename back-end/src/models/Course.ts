@@ -71,5 +71,16 @@ Course.init(
   {
     sequelize,
     modelName: "Course",
+    indexes: [
+      {
+        fields: ["category_id"],
+      },
+      {
+        fields: ["featured"],
+      },
+      {
+        fields: ["created_at"],
+      },
+    ],
   },
 );

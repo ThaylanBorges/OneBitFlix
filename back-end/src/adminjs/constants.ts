@@ -10,7 +10,7 @@ fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 export const MAX_VIDEO_SIZE = 1024 * 1024 * 100;
 export const MAX_IMAGE_SIZE = 1024 * 1024 * 5;
 
-export const ALLOED_VIDEO_MIMES = [
+export const ALLOwED_VIDEO_MIMES = [
   "video/mp4",
   "video/webm",
   "video/quicktime",
