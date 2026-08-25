@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { courseServices } from "../services/courseService.js";
-import { likeService } from "../services/likeServices.js";
+import { likeService } from "../services/likeService.js";
 import { favoriteService } from "../services/favoriteService.js";
 import { ParmasId } from "../schemas/commonSchemas.js";
 import { CourseSearch } from "../schemas/courseSchema.js";
@@ -17,8 +17,6 @@ export const coursesController = {
   },
 
   show: async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.params);
-
     const { id: courseId } = req.dataParams as ParmasId;
     const userId = req.user!.id;
 

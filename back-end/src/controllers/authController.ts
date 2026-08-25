@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { usersServices } from "../services/userServices.js";
+import { usersServices } from "../services/userService.js";
 import { jwtService } from "../services/jwtService.js";
 import { env } from "../config/env.js";
 import { Login, Register } from "../schemas/authSchema.js";

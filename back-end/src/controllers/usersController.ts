@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { usersServices } from "../services/userServices.js";
+import { usersServices } from "../services/userService.js";
 import { UpdatePassword, UpdateUser } from "../schemas/userSchema.js";
 
 export const usersController = {

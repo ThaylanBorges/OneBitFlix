@@ -15,9 +15,7 @@ export function authMiddleware(
 ) {
   const token = req.cookies.token;
 
-  if (!token) {
-    return res.status(401).json({ message: "Token not found" });
-  }
+  if (!token) return next(new AppError("Token not found", 401));
 
   try {
     const payload = jwtService.verifyToken(token) as JwtPayload;
@@ -36,7 +34,7 @@ export function authMiddlewareQuery(
   const { token } = req.query;
 
   if (!token || typeof token !== "string")
-    throw new AppError("Token Not Found", 404);
+    return next(new AppError("Token not found", 401));
 
   try {
     const payload = jwtService.verifyToken(token) as JwtPayload;

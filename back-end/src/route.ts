@@ -23,13 +23,9 @@ import {
 
 const route = Router();
 
-route.post(
-  "/auth/register",
-  validateBody(RegisterSchema),
-  authController.register,
-);
-route.post("/auth/login", validateBody(LoginSchema), authController.login);
-route.post("/auth/logout", authController.logout);
+route.post("/register", validateBody(RegisterSchema), authController.register);
+route.post("/login", validateBody(LoginSchema), authController.login);
+route.post("/logout", authController.logout);
 
 route.get("/users/current/watching", authMiddleware, usersController.watching);
 route.get("/users/current", authMiddleware, usersController.show);

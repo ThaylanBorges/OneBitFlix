@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { likeService } from "../services/likeServices.js";
+import { likeService } from "../services/likeService.js";
 import { ParmasId } from "../schemas/commonSchemas.js";
 
 export const likesController = {
