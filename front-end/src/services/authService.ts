@@ -3,19 +3,19 @@ import { api } from "./api";
 
 export const authService = {
   register: async (data: Register) => {
-    return api("/auth/register", {
+    return api("/register", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
   login: async (data: Login) => {
-    return api("/auth/login", {
+    return api("/login", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
   logout: async () => {
-    return api("/auth/logout", {
+    return api("/logout", {
       method: "POST",
     });
   },

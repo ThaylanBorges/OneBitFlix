@@ -32,7 +32,7 @@ export default function HeaderNoAuth() {
         />
         <div className="flex gap-5">
           <Button
-            render={<Link href="/auth/login" />}
+            render={<Link href="/login" />}
             nativeButton={false}
             variant="outline"
             size={"lg"}
@@ -41,7 +41,7 @@ export default function HeaderNoAuth() {
             Entrar
           </Button>
           <Button
-            render={<Link href="/auth/register" />}
+            render={<Link href="/register" />}
             nativeButton={false}
             variant="outline"
             size={"lg"}

@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 
 export default function Header() {
   const pathName = usePathname();
-  const isLoginPage = pathName === "/auth/login";
+  const isLoginPage = pathName === "/login";
 
   return (
     <header className="bg-black">
@@ -20,9 +20,7 @@ export default function Header() {
           />
         </Link>
         <Button
-          render={
-            <Link href={`${isLoginPage ? "/auth/register" : "/auth/login"}`} />
-          }
+          render={<Link href={`${isLoginPage ? "/register" : "/login"}`} />}
           variant="outline"
           size="lg"
           className="hover:bg-transparent hover:border-primary"
