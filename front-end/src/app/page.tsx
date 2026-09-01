@@ -2,10 +2,12 @@ import Footer from "@/components/layout/Footer";
 import Animated from "@/components/home-no-auth/Animateds";
 import CardsSection from "@/components/home-no-auth/CardSection";
 import HeaderNoAuth from "@/components/home-no-auth/HeaderNoAuth";
-import NewestCoursesSection from "@/components/home-no-auth/newest-courses-section/NewestCoursesSection";
-import NewestCoursesSkeleton from "@/components/home-no-auth/newest-courses-section/Skeleton";
 import PresentationSection from "@/components/home-no-auth/PresentationSection";
 import { Suspense } from "react";
+import NewestCoursesSkeleton from "@/components/newest-courses-section/Skeleton";
+import NewestCoursesSection from "@/components/newest-courses-section/NewestCoursesSection";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -19,11 +21,27 @@ export default function Home() {
           <Animated type="fadeRight">
             <CardsSection />
           </Animated>
-          <Suspense fallback={<NewestCoursesSkeleton />}>
-            <Animated type="fadeUp">
-              <NewestCoursesSection />
-            </Animated>
-          </Suspense>
+          <div className="mt-20">
+            <p className="text-2xl font-bold text-center">
+              AULAS JÁ DISPONÍVEIS
+            </p>
+
+            <Suspense fallback={<NewestCoursesSkeleton />}>
+              <Animated type="fadeUp">
+                <NewestCoursesSection />
+                <div className="flex justify-center mt-10">
+                  <Button
+                    render={<Link href="/register" />}
+                    nativeButton={false}
+                    variant={"outline"}
+                    size={"xl"}
+                  >
+                    Se cadastre para acessar!
+                  </Button>
+                </div>
+              </Animated>
+            </Suspense>
+          </div>
         </div>
       </main>
       <Footer className="mt-20" />

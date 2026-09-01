@@ -6,7 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../ui/carousel";
+} from "@/components/ui/carousel";
 
 type SlideProps = {
   courses: Course[];
@@ -14,7 +14,7 @@ type SlideProps = {
 
 export default function Slide({ courses }: SlideProps) {
   return (
-    <div className="container mt-20 p-4 m-auto">
+    <div className="container p-4 m-auto">
       {courses.length === 0 ? (
         <div className="text-center text-muted-foreground">
           Não foi possível carregar os cursos no momento. Tente novamente mais
@@ -22,7 +22,6 @@ export default function Slide({ courses }: SlideProps) {
         </div>
       ) : (
         <div>
-          <p className="text-2xl font-bold text-center">AULAS JÁ DISPONÍVEIS</p>
           <Carousel>
             <CarouselContent>
               {courses.map((course) => (
