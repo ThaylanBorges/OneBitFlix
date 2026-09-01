@@ -1,6 +1,7 @@
-import CategotyList from "@/components/home/CategoryList";
+import CategoryList from "@/components/home/CategoryList";
 import FavoriteSection from "@/components/home/FavoriteCoursesSection";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
+import Footer from "@/components/layout/Footer";
 import NewestCoursesSection from "@/components/NewestCoursesSection";
 import CoursesSlideSkeleton from "@/components/SkeletonCursesSlide";
 import { userService } from "@/services/userService";
@@ -23,9 +24,12 @@ export default async function Home() {
       </div>
       <div className="container mx-auto mt-20">
         <p className="px-4 text-2xl font-bold">Minha lista</p>
-        <FavoriteSection />
+        <Suspense fallback={<CoursesSlideSkeleton />}>
+          <FavoriteSection />
+        </Suspense>
       </div>
-      <CategotyList />
+      <CategoryList />
+      <Footer />
     </main>
   );
 }
