@@ -1,3 +1,4 @@
+import CategotyList from "@/components/home/CategoryList";
 import FavoriteSection from "@/components/home/FavoriteCoursesSection";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import NewestCoursesSection from "@/components/NewestCoursesSection";
@@ -24,6 +25,7 @@ export default async function Home() {
         <p className="px-4 text-2xl font-bold">Minha lista</p>
         <FavoriteSection />
       </div>
+      <CategotyList />
     </main>
   );
 }
