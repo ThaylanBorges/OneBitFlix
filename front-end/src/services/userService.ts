@@ -2,6 +2,11 @@ import { apiWithAuth } from "./apiWithAuth";
 
 export const userService = {
   getCurrentUser: async () => {
-    return apiWithAuth("/users/current");
+    try {
+      const user = await apiWithAuth("/users/current");
+      return { ...user, success: true };
+    } catch {
+      return { success: false };
+    }
   },
 };

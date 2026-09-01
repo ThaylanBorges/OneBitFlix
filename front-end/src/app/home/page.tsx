@@ -3,15 +3,9 @@ import { userService } from "@/services/userService";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  let user;
+  const user = await userService.getCurrentUser();
 
-  try {
-    user = await userService.getCurrentUser();
-  } catch {
-    redirect("/login");
-  }
-
-  if (!user) redirect("/login");
+  if (!user.success) redirect("/login");
 
   return (
     <div>

@@ -5,11 +5,11 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
 import FormError from "../FormError";
 import { toast } from "sonner";
 import { Login, LoginSchema } from "@/schemas/authSchemas";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const {
@@ -24,6 +24,7 @@ export default function LoginForm() {
     try {
       await authService.login(data);
       router.replace("/home");
+      router.refresh();
     } catch (err) {
       toast.error(`${err instanceof Error ? err.message : "Internal Error."}`, {
         className: "mt-15",
