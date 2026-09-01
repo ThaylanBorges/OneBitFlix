@@ -1,4 +1,4 @@
-export default function NewestCoursesSkeleton() {
+export default function CoursesSlideSkeleton() {
   return (
     <div className="container mt-20 p-4 m-auto">
       <div className="h-8 w-64 mx-auto bg-muted rounded animate-pulse mb-10" />

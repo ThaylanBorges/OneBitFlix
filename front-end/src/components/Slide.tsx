@@ -10,15 +10,17 @@ import {
 
 type SlideProps = {
   courses: Course[];
+  errorMessage?: string;
 };
 
-export default function Slide({ courses }: SlideProps) {
+export default function Slide({ courses, errorMessage }: SlideProps) {
   return (
     <div className="container p-4 m-auto">
       {courses.length === 0 ? (
         <div className="text-center text-muted-foreground">
-          Não foi possível carregar os cursos no momento. Tente novamente mais
-          tarde.
+          {errorMessage
+            ? errorMessage
+            : "   Não foi possível carregar os cursos no momento. Tente novamente mais tarde."}
         </div>
       ) : (
         <div>

@@ -5,13 +5,13 @@ info:
 
 http:
   method: POST
-  url: "{{baseUrl}}/auth/login"
+  url: "{{baseUrl}}/login"
   body:
     type: json
     data: |-
       {
-        "email": "email-test@tst.com",
-        "password": "123456" 
+        "email": "taylan@hotmail.com",
+        "password": "150963" 
       }
 
 settings:
@@ -19,3 +19,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

@@ -5,13 +5,14 @@ info:
 
 http:
   method: POST
-  url: "{{baseUrl}}/favorites"
+  url: "{{baseUrl}}/favorites/:id"
+  params:
+    - name: id
+      value: "2"
+      type: path
   body:
     type: json
-    data: |-
-      {
-        "id": 1
-      }
+    data: ""
   auth: inherit
 
 settings:
@@ -19,3 +20,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

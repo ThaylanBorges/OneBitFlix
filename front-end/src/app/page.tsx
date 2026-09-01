@@ -4,10 +4,10 @@ import CardsSection from "@/components/home-no-auth/CardSection";
 import HeaderNoAuth from "@/components/home-no-auth/HeaderNoAuth";
 import PresentationSection from "@/components/home-no-auth/PresentationSection";
 import { Suspense } from "react";
-import NewestCoursesSkeleton from "@/components/newest-courses-section/Skeleton";
-import NewestCoursesSection from "@/components/newest-courses-section/NewestCoursesSection";
+import NewestCoursesSection from "@/components/NewestCoursesSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import CoursesSlideSkeleton from "@/components/SkeletonCursesSlide";
 
 export default function Home() {
   return (
@@ -26,7 +26,7 @@ export default function Home() {
               AULAS JÁ DISPONÍVEIS
             </p>
 
-            <Suspense fallback={<NewestCoursesSkeleton />}>
+            <Suspense fallback={<CoursesSlideSkeleton />}>
               <Animated type="fadeUp">
                 <NewestCoursesSection />
                 <div className="flex justify-center mt-10">

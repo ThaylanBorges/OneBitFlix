@@ -19,4 +19,33 @@ export const courseService = {
       return [];
     }
   },
+  addToFavorites: async (courseId: string) => {
+    try {
+      await apiWithAuth(`/favorites/${courseId}`, {
+        method: "POST",
+      });
+      return false;
+    } catch {
+      return false;
+    }
+  },
+  removeFromFavorites: async (courseId: string) => {
+    try {
+      await apiWithAuth(`/favorites/${courseId}`, {
+        method: "DELETE",
+      });
+      return false;
+    } catch {
+      return false;
+    }
+  },
+  getFavorites: async () => {
+    try {
+      const { courses } = await apiWithAuth("/favorites");
+
+      return CoursesArraySchema.parse(courses);
+    } catch {
+      return [];
+    }
+  },
 };
