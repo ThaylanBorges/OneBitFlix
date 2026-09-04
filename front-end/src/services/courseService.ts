@@ -24,7 +24,7 @@ export const courseService = {
       await apiWithAuth(`/favorites/${courseId}`, {
         method: "POST",
       });
-      return false;
+      return true;
     } catch {
       return false;
     }
@@ -34,7 +34,7 @@ export const courseService = {
       await apiWithAuth(`/favorites/${courseId}`, {
         method: "DELETE",
       });
-      return false;
+      return true;
     } catch {
       return false;
     }

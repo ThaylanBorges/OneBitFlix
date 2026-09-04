@@ -2,12 +2,7 @@ import { categoryService } from "@/services/categoryService";
 import CategorySection from "./CategorySection";
 import { Suspense } from "react";
 import CoursesSlideSkeleton from "../SkeletonCursesSlide";
-
-type Category = {
-  id: number;
-  name: string;
-  position: number;
-};
+import { Category } from "@/types/category";
 
 export default async function CategoryList() {
   const categories = await categoryService.getCategories();

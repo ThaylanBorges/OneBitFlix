@@ -6,7 +6,7 @@ import UserMenu from "./UserMenu";
 
 export default function HeaderAuth() {
   return (
-    <div className="flex-col w-full gap-5 sm:flex-row container mx-auto p-5 flex justify-between items-center">
+    <div className="flex-col w-full gap-5 sm:flex-row container mx-auto p-4 flex justify-between items-center">
       <Link href="/home">
         <Image
           src="/logoOnebitflix.svg"

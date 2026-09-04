@@ -1,22 +1,26 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { authService } from "@/services/authService";
-import FormError from "../FormError";
 import { toast } from "sonner";
-import { Login, LoginSchema } from "@/schemas/authSchemas";
+import { Login, LoginSchema } from "@/schemas/userSchemas";
 import { useRouter } from "next/navigation";
+import { FieldGroup } from "../ui/field";
+import { FormField } from "../ui/form-field";
 
 export default function LoginForm() {
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(LoginSchema) });
+    formState: { isSubmitting },
+  } = useForm<Login>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const router = useRouter();
 
@@ -26,64 +30,39 @@ export default function LoginForm() {
       router.replace("/home");
       router.refresh();
     } catch (err) {
-      toast.error(`${err instanceof Error ? err.message : "Internal Error."}`, {
+      toast.error(err instanceof Error ? err.message : "Internal Error.", {
         className: "mt-15",
       });
     }
   };
 
   return (
-    <div className=" mx-auto max-w-dvh pb-11">
-      <h1 className="text-3xl my-12 font-bold text-center sm:text-start">
-        Bem-vindo(a) de volta!
-      </h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Faça seu Login</CardTitle>
-        </CardHeader>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FieldGroup className="gap-4 mt-2">
+        <FormField
+          control={control}
+          name="email"
+          label="E-mail"
+          type="email"
+          placeholder="Digite o seu e-mail"
+        />
 
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">E-mail</Label>
+        <FormField
+          control={control}
+          name="password"
+          label="Senha"
+          type="password"
+          placeholder="Digite a sua senha"
+        />
 
-              <Input
-                id="email"
-                type="email"
-                placeholder="Digite o seu e-mail"
-                {...register("email")}
-              />
-
-              {errors?.email && <FormError message={errors.email.message} />}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
-
-              <Input
-                id="password"
-                type="password"
-                placeholder="Digite a sua senha (Min: 6 | Max: 20)"
-                {...register("password")}
-              />
-
-              {errors?.password && (
-                <FormError message={errors.password.message} />
-              )}
-            </div>
-
-            <Button
-              type="submit"
-              size={"xl"}
-              variant="default"
-              className="w-full font-bold "
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Entrando..." : "Entrar"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+        <Button
+          type="submit"
+          className="w-auto font-bold h-12 rounded-4xl"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Entrando..." : "Entrar"}
+        </Button>
+      </FieldGroup>
+    </form>
   );
 }

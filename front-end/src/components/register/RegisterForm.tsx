@@ -1,33 +1,32 @@
 "use client";
 
 import { Button } from "../ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import FormError from "../FormError";
-import { authService } from "@/services/authService";
 import { toast } from "sonner";
-import { Register, RegisterSchema } from "@/schemas/authSchemas";
-
-const formatPhone = (value: string) => {
-  return value
-    .replace(/\D/g, "")
-    .replace(/^(\d{2})(\d)/, "($1) $2")
-    .replace(/(\d{5})(\d)/, "$1-$2")
-    .slice(0, 15);
-};
+import { Register, RegisterSchema } from "@/schemas/userSchemas";
+import { FieldGroup } from "../ui/field";
+import { authService } from "@/services/authService";
+import { formatPhone } from "@/utils/formatter";
+import { FormField } from "../ui/form-field";
 
 export default function RegisterForm() {
   const {
-    register,
-    handleSubmit,
     control,
-    formState: { errors, isSubmitting },
-  } = useForm({
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<Register>({
     resolver: zodResolver(RegisterSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      birth: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   const router = useRouter();
@@ -35,142 +34,77 @@ export default function RegisterForm() {
   const onSubmit = async (data: Register) => {
     try {
       await authService.register(data);
+
       router.replace("/home");
       router.refresh();
     } catch (err) {
-      toast.error(`${err instanceof Error ? err.message : "Internal Error."}`, {
+      toast.error(err instanceof Error ? err.message : "Internal Error.", {
         className: "mt-15",
       });
     }
   };
 
   return (
-    <div className="mx-auto max-w-dvh">
-      <h1 className="text-3xl my-15 font-bold text-center sm:text-start">
-        Seja Bem Vindo(a) ao OneBitFlix
-      </h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Criar conta</CardTitle>
-        </CardHeader>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FieldGroup className="gap-4">
+        <FormField
+          control={control}
+          name="firstName"
+          label="Nome"
+          placeholder="Digite seu nome"
+        />
 
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">Nome</Label>
+        <FormField
+          control={control}
+          name="lastName"
+          label="Sobrenome"
+          placeholder="Digite seu sobrenome"
+        />
 
-              <Input
-                id="firstName"
-                type="text"
-                placeholder="Digite o seu nome"
-                {...register("firstName")}
-              />
+        <FormField
+          control={control}
+          name="phone"
+          label="Telefone"
+          placeholder="Digite seu Telefone"
+          onChange={formatPhone}
+        />
 
-              {errors?.firstName && (
-                <FormError message={errors.firstName.message} />
-              )}
-            </div>
+        <FormField
+          control={control}
+          name="birth"
+          label="Data de nascimento"
+          type="date"
+        />
+        <FormField
+          control={control}
+          name="email"
+          label="E-mail"
+          type="email"
+          placeholder="Digite seu e-mail"
+        />
 
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Sobrenome</Label>
+        <FormField
+          control={control}
+          name="password"
+          label="Digite a senha"
+          type="password"
+        />
 
-              <Input
-                id="lastName"
-                type="text"
-                placeholder="Digite o seu sobrenome"
-                {...register("lastName")}
-              />
+        <FormField
+          control={control}
+          name="confirmPassword"
+          label="Digite novamente a senha"
+          type="password"
+        />
 
-              {errors?.lastName && (
-                <FormError message={errors.lastName.message} />
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Celular</Label>
-
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    id="phone"
-                    {...field}
-                    value={field.value ?? ""}
-                    onChange={(e) => {
-                      field.onChange(formatPhone(e.target.value));
-                    }}
-                    placeholder="(xx) 9xxxx-xxxx"
-                  />
-                )}
-              />
-
-              {errors?.phone && <FormError message={errors.phone.message} />}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">E-mail</Label>
-
-              <Input
-                id="email"
-                type="email"
-                placeholder="Digite o seu e-mail"
-                {...register("email")}
-              />
-
-              {errors?.email && <FormError message={errors.email.message} />}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="birth">Data de nascimento</Label>
-
-              <Input id="birth" type="date" {...register("birth")} />
-
-              {errors?.birth && <FormError message={errors.birth.message} />}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
-
-              <Input
-                id="password"
-                type="password"
-                placeholder="Digite a sua senha (Min: 6 | Max: 20)"
-                {...register("password")}
-              />
-
-              {errors?.password && (
-                <FormError message={errors.password.message} />
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirmar senha</Label>
-
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirme a sua senha (Min: 6 | Max: 20)"
-                {...register("confirmPassword")}
-              />
-
-              {errors?.confirmPassword && (
-                <FormError message={errors.confirmPassword.message} />
-              )}
-            </div>
-
-            <Button
-              type="submit"
-              size={"lg"}
-              variant="default"
-              className="w-full font-bold "
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Criando a conta..." : "Criar conta"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+        <Button
+          type="submit"
+          className="w-full h-12 font-bold rounded-4xl"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Cadastrando..." : "Registrar"}
+        </Button>
+      </FieldGroup>
+    </form>
   );
 }
