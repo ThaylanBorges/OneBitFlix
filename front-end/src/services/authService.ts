@@ -1,4 +1,4 @@
-import { Login, Register } from "@/schemas/authSchemas";
+import { Login, Register } from "@/schemas/userSchemas";
 import { api } from "./api";
 
 export const authService = {
