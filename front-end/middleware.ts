@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 const PUBLIC_PATHS = ["/", "/login", "/register"];
-const PROTECTED_PREFIXES = ["/home"];
+const PROTECTED_PREFIXES = ["/home", "/profile"];
 
 const isValidToken = async (token: string) => {
   try {
@@ -54,5 +54,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/register", "/home/:path*"],
+  matcher: ["/", "/login", "/register", "/home/:path*", "/profile"],
 };

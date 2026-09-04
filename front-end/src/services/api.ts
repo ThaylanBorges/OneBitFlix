@@ -17,7 +17,12 @@ export async function api(endpoint: string, options: RequestInit = {}) {
     throw new Error(error.message || "Request Error");
   }
 
-  if (response.status === 204) return null;
+  if (
+    response.status === 204 ||
+    response.headers.get("content-length") === "0"
+  ) {
+    return null;
+  }
 
   return response.json();
 }
