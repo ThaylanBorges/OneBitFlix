@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import UserMenu from "./UserMenu";
+import { Search } from "./Search";
 
 export default function HeaderAuth() {
   return (
@@ -17,22 +16,7 @@ export default function HeaderAuth() {
       </Link>
 
       <div className="flex w-full sm:w-auto gap-4 items-center">
-        <form className="flex min-w-0 flex-1 gap-1">
-          <Input
-            type="search"
-            name="search"
-            placeholder="Pesquisar"
-            className="w-full sm:w-64"
-          />
-          <Button type="submit" variant={"ghost"}>
-            <Image
-              src="/homeAuth/iconSearch.svg"
-              alt="Logo de pesquisa"
-              width={15}
-              height={15}
-            />
-          </Button>
-        </form>
+        <Search />
         <UserMenu />
       </div>
     </div>

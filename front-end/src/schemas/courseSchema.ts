@@ -10,3 +10,9 @@ export const CourseSchema = z.object({
 export const CoursesArraySchema = z.array(CourseSchema);
 
 export type Course = z.infer<typeof CourseSchema>;
+
+export const SearchCourseSchema = z.object({
+  name: z.string().max(100),
+});
+
+export type SeachCourse = z.infer<typeof SearchCourseSchema>;

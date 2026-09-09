@@ -48,4 +48,13 @@ export const courseService = {
       return [];
     }
   },
+  search: async (name: string) => {
+    try {
+      const { courses } = await apiWithAuth(`/courses/search/?name=${name}`);
+
+      return CoursesArraySchema.parse(courses);
+    } catch {
+      return [];
+    }
+  },
 };

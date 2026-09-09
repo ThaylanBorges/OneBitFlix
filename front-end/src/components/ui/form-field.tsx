@@ -5,7 +5,7 @@ import { Input } from "./input";
 type FormFieldProsp<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  label: string;
+  label?: string;
   placeholder?: string;
   type?: string;
   onChange?: (value: string) => void;
@@ -25,12 +25,12 @@ export function FormField<T extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
-          <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+          {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
           <Input
             {...field}
             id={field.name}
             type={type}
-            className="h-12 text-base"
+            className="h-12 text-base w-full"
             placeholder={placeholder}
             onChange={(e) =>
               onChange
