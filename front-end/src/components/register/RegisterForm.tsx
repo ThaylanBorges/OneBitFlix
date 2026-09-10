@@ -65,6 +65,7 @@ export default function RegisterForm() {
           control={control}
           name="phone"
           label="Telefone"
+          type="tel"
           placeholder="Digite seu Telefone"
           onChange={formatPhone}
         />

@@ -15,7 +15,7 @@ export default function HeaderAuth() {
         ></Image>
       </Link>
 
-      <div className="flex w-full sm:w-auto gap-4 items-center">
+      <div className="flex w-full sm:w-auto gap-4 justify-center items-center">
         <Search />
         <UserMenu />
       </div>

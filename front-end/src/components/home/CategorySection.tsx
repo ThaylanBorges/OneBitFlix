@@ -8,7 +8,9 @@ type CategoryListProps = {
 export default async function CategorySection({
   categoryId,
 }: CategoryListProps) {
-  const { courses } = await categoryService.getCoursesWithCategorie(categoryId);
+  const category = await categoryService.getCoursesWithCategory(categoryId);
 
-  return <Slide courses={courses} />;
+  if (!category.success) return null;
+
+  return <Slide courses={category.data.courses} />;
 }

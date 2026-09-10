@@ -25,7 +25,7 @@ export default function EditPasswordForm() {
     const result = await editPasswordAction(data);
 
     if (!result.success) {
-      toast.error(result.message, {
+      return toast.error(result.message, {
         className: "mt-15",
       });
     }

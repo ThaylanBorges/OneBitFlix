@@ -1,89 +1,50 @@
 "use client";
-import {
-  Course,
-  SeachCourse,
-  SearchCourseSchema,
-} from "@/schemas/courseSchema";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { FieldGroup } from "../ui/field";
-import { FormField } from "../ui/form-field";
-import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { searchCourseAction } from "@/actions/searchCourseAction";
+import { Course } from "@/schemas/courseSchema";
 import { useState } from "react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import Link from "next/link";
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "../ui/combobox";
+import { searchCourseAction } from "@/actions/searchCourseAction";
+import { useRouter } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 export function Search() {
-  const [courses, setCourses] = useState<Course[]>();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const router = useRouter();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SeachCourse>({
-    resolver: zodResolver(SearchCourseSchema),
-    defaultValues: {
-      name: "",
-    },
-  });
-
-  const onSubmit = async (data: SeachCourse) => {
-    const result = await searchCourseAction(data.name);
+  const onSubmit = useDebouncedCallback(async (name: string) => {
+    const result = await searchCourseAction(name);
     setCourses(result);
-  };
+  }, 500);
 
   return (
-    <DropdownMenu>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex min-w-64 justify-center items-center flex-1 gap-2"
-      >
-        <FieldGroup>
-          <FormField
-            control={control}
-            name="name"
-            type="search"
-            placeholder="Pesquise o curso"
-          />
-        </FieldGroup>
-        <DropdownMenuTrigger>
-          <Button
-            type="submit"
-            variant={"ghost"}
-            className="p-3 w-auto h-full"
-            disabled={isSubmitting}
-          >
-            <Image
-              src="/homeAuth/iconSearch.svg"
-              alt="Logo de pesquisa"
-              width={25}
-              height={25}
-            />
-          </Button>
-        </DropdownMenuTrigger>
-      </form>
-
-      <DropdownMenuContent align="end" className="w-64 mt-3">
-        {courses && courses.length > 0 ? (
-          courses.map((c) => (
-            <DropdownMenuItem
-              key={c.id}
-              render={<Link href={`courses/${c.id}`} />}
-            >
-              {c.name}
-            </DropdownMenuItem>
-          ))
-        ) : (
-          <DropdownMenuItem disabled>Nenhum curso encontrado</DropdownMenuItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Combobox
+      items={courses}
+      onValueChange={(value) => {
+        const course = courses?.find((c) => c.name === value);
+        if (course) router.push(`/courses/${course.id}`);
+      }}
+    >
+      <ComboboxInput
+        className="w-80 h-12"
+        onChange={(e) => onSubmit(e.target.value)}
+        placeholder="Pesquise por um curso..."
+      />
+      <ComboboxContent className="mt-3">
+        <ComboboxEmpty>No items found.</ComboboxEmpty>
+        <ComboboxList>
+          {(item) => (
+            <ComboboxItem key={item.id} value={item.name}>
+              {item.name}
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
   );
 }

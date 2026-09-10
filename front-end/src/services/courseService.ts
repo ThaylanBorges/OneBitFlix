@@ -1,8 +1,25 @@
-import { CoursesArraySchema } from "@/schemas/courseSchema";
+import {
+  CoursesArraySchema,
+  CourseWithEpisodes,
+  CourseWithEpisodesSchema,
+} from "@/schemas/courseSchema";
 import { api } from "./api";
 import { apiWithAuth } from "./apiWithAuth";
 
 export const courseService = {
+  getById: async (
+    id: number,
+  ): Promise<
+    { data: CourseWithEpisodes; success: true } | { success: false }
+  > => {
+    try {
+      const res = await apiWithAuth(`/courses/${id}`);
+      const course = CourseWithEpisodesSchema.parse(res);
+      return { data: course, success: true };
+    } catch {
+      return { success: false };
+    }
+  },
   getNewestCourses: async () => {
     try {
       const res = await api("/courses/newest");

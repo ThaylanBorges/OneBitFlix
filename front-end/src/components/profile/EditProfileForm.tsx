@@ -34,7 +34,7 @@ export default function EditProfileForm({ user }: EditProfileUserProps) {
     const result = await editProfileAction(data);
 
     if (!result.success) {
-      toast.error(result.message, {
+      return toast.error(result.message, {
         className: "mt-15",
       });
     }

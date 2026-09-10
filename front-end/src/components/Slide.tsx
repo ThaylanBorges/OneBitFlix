@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Course } from "@/schemas/courseSchema";
+import { CourseArray } from "@/schemas/courseSchema";
 import {
   Carousel,
   CarouselContent,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 
 type SlideProps = {
-  courses: Course[];
+  courses: CourseArray;
   errorMessage?: string;
 };
 
