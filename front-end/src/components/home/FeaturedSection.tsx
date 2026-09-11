@@ -14,6 +14,10 @@ export async function FeaturedSection() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
+      <div className="relative z-20 bg-black">
+        <HeaderAuth />
+      </div>
+
       <Image
         src={`${apiUrl}/${featured.thumbnailUrl}`}
         alt={`Foto ${featured.name}`}
@@ -23,10 +27,6 @@ export async function FeaturedSection() {
       />
 
       <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/40 to-transparent" />
-
-      <div className="relative z-20">
-        <HeaderAuth />
-      </div>
 
       <div className="absolute inset-0 z-10 flex items-center">
         <div className="container mx-auto px-5 text-white">
