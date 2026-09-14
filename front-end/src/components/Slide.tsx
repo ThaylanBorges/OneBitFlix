@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Link from "next/link";
 
 type SlideProps = {
   courses: CourseArray;
@@ -32,12 +33,14 @@ export default function Slide({ courses, errorMessage }: SlideProps) {
                   className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 cursor-pointer"
                 >
                   <div className="relative aspect-square mt-10 overflow-hidden rounded-lg">
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BASEURL}/${course.thumbnailUrl}`}
-                      alt={`Foto ${course.name}`}
-                      fill
-                      className="object-cover rounded-lg transition-transform duration-300 hover:scale-105"
-                    />
+                    <Link href={`/courses/${course.id}`}>
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_BASEURL}/${course.thumbnailUrl}`}
+                        alt={`Foto ${course.name}`}
+                        fill
+                        className="object-cover rounded-lg transition-transform duration-300 hover:scale-105"
+                      />
+                    </Link>
                   </div>
                   <div className="mt-2 min-h-15.5">
                     <p className="font-bold line-clamp-2">{course.name}</p>
