@@ -23,6 +23,7 @@ export default function Header() {
           render={<Link href={`${isLoginPage ? "/register" : "/login"}`} />}
           variant="outline"
           size="lg"
+          nativeButton={false}
           className="hover:bg-transparent hover:border-primary"
         >
           {isLoginPage ? "Crie Sua Conta" : "Faça Login"}
