@@ -1,7 +1,7 @@
-import { getCourseByIdAction } from "@/actions/getCourseByIdAction";
 import { SectionButtonsReact } from "@/components/course/SectionButtonsReact";
 import HeaderAuth from "@/components/home/HeaderAuth";
 import { Button } from "@/components/ui/button";
+import { courseService } from "@/services/courseService";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -14,7 +14,7 @@ const apiUrl = process.env.NEXT_PUBLIC_BASEURL;
 
 export default async function CoursePage({ params }: CoursePageProps) {
   const { id } = await params;
-  const course = await getCourseByIdAction(Number(id));
+  const course = await courseService.getById(Number(id));
 
   if (!course) redirect("/home");
 

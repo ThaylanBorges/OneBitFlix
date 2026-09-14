@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { CourseArray } from "@/schemas/courseSchema";
 import {

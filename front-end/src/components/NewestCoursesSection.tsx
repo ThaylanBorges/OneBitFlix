@@ -1,5 +1,5 @@
-import Slide from "@/components/Slide";
 import { courseService } from "@/services/courseService";
+import Slide from "./Slide";
 
 export default async function NewestCoursesSection() {
   const courses = await courseService.getNewestCourses();
