@@ -5,13 +5,14 @@ info:
 
 http:
   method: POST
-  url: "{{baseUrl}}/likes"
+  url: "{{baseUrl}}/likes/:id"
+  params:
+    - name: id
+      value: "1"
+      type: path
   body:
     type: json
-    data: |-
-      {
-        "id": 2
-      }
+    data: ""
   auth: inherit
 
 settings:
@@ -19,3 +20,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

@@ -8,7 +8,7 @@ http:
   url: "{{baseUrl}}/favorites/:id"
   params:
     - name: id
-      value: "2"
+      value: "1"
       type: path
   body:
     type: json
