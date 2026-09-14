@@ -2,9 +2,9 @@
 import { courseService } from "@/services/courseService";
 
 export async function addLikeAction(courseId: number) {
-  await courseService.(courseId);
+  return courseService.addLike(courseId);
 }
 
 export async function removeLikeAction(courseId: number) {
-  await courseService.(courseId);
+  return courseService.removeLike(courseId);
 }

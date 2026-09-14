@@ -2,9 +2,9 @@
 import { courseService } from "@/services/courseService";
 
 export async function addFavoriteAction(courseId: number) {
-  await courseService.addToFavorites(courseId);
+  return courseService.addToFavorites(courseId);
 }
 
 export async function removeFavoriteAction(courseId: number) {
-  await courseService.removeFromFavorites(courseId);
+  return courseService.removeFromFavorites(courseId);
 }

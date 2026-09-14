@@ -6,6 +6,7 @@ import {
   addFavoriteAction,
   removeFavoriteAction,
 } from "@/actions/favoriteCourseAction";
+import { addLikeAction, removeLikeAction } from "@/actions/likeCourseAction";
 
 type SectionButtonsReactProps = {
   liked: boolean;
@@ -23,43 +24,50 @@ export function SectionButtonsReact({
 
   const handlerClickFavorite = async (courseId: number) => {
     if (!favorite) {
-      await addFavoriteAction(courseId);
-      setFavorite(true);
+      const success = await addFavoriteAction(courseId);
+      if (success) setFavorite(true);
     } else {
-      await removeFavoriteAction(courseId);
-      setFavorite(false);
+      const success = await removeFavoriteAction(courseId);
+      if (success) setFavorite(false);
     }
   };
 
   const handlerClickLike = async (courseId: number) => {
-    if (!favorite) {
-      await addLikeAction(courseId);
-      setLike(true);
+    if (!like) {
+      const success = await addLikeAction(courseId);
+      if (success) setLike(true);
     } else {
-      await removeLikeAction(courseId);
-      setLike(false);
+      const success = await removeLikeAction(courseId);
+      if (success) setLike(false);
     }
   };
 
   return (
     <div>
-      <Button variant="ghost" className="h-10">
+      <Button
+        variant="ghost"
+        className="h-10"
+        onClick={() => handlerClickLike(courseId)}
+      >
         <Image
           src={like ? "/course/iconLiked.svg" : "/course/iconLike.svg"}
-          alt="imagem Like"
+          alt="imagem de like"
           width={30}
           height={30}
         />
       </Button>
-      <Button variant="ghost" className="h-10">
+      <Button
+        variant="ghost"
+        className="h-10"
+        onClick={() => handlerClickFavorite(courseId)}
+      >
         <Image
           src={
             favorite ? "/course/iconFavorited.svg" : "/course/iconAddFav.svg"
           }
-          alt="imagem Like"
+          alt="imagem de favorito"
           width={30}
           height={30}
-          onClick={() => handlerClickFavorite(courseId)}
         />
       </Button>
     </div>

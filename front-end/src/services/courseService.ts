@@ -13,8 +13,6 @@ export const courseService = {
     { data: CourseWithEpisodes; success: true } | { success: false }
   > => {
     try {
-      console.log("Tá certo");
-
       const res = await apiWithAuth(`/courses/${id}`);
       const course = CourseWithEpisodesSchema.parse(res);
       return { data: course, success: true };
@@ -58,6 +56,25 @@ export const courseService = {
       return false;
     }
   },
+  addLike: async (courseId: number) => {
+    try {
+      await apiWithAuth(`/likes/${courseId}`, {
+        method: "POST",
+      });
+
+      return true;
+    } catch {
+      return false;
+    }
+  },
+  removeLike: async (courseId: number) => {
+    try {
+      await apiWithAuth(`/likes/${courseId}`, { method: "DELETE" });
+      return true;
+    } catch {
+      return false;
+    }
+  },
   getFavorites: async () => {
     try {
       const { courses } = await apiWithAuth("/favorites");
@@ -67,6 +84,7 @@ export const courseService = {
       return [];
     }
   },
+
   search: async (name: string) => {
     try {
       const { courses } = await apiWithAuth(`/courses/search/?name=${name}`);

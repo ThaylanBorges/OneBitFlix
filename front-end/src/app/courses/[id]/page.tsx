@@ -4,6 +4,7 @@ import HeaderAuth from "@/components/home/HeaderAuth";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 interface CoursePageProps {
   params: Promise<{ id: string }>;
@@ -15,7 +16,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const { id } = await params;
   const course = await getCourseByIdAction(Number(id));
 
-  if (!course.success) return;
+  if (!course.success) redirect("/home");
 
   return (
     <div>
@@ -45,7 +46,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 size="xl"
                 className="mt-10 inline-flex gap-4 rounded-xl border-2 border-white font-bold duration-100 hover:scale-105 hover:border-primary"
               >
-                ASSISTIR AGORA!
+                VER AULAS!
                 <Image
                   src="/buttonPlay.svg"
                   alt="Ícone de Play"
