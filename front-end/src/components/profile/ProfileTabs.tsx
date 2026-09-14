@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import EditProfileForm from "./EditProfileForm";
-import { User } from "@/types/user";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import EditPasswordForm from "./EditPasswordForm";
+import { User } from "@/schemas/userSchemas";
 
 type ProfileTabsProps = {
   user: User;

@@ -17,7 +17,7 @@ const calculateAge = (birthDate: Date): number => {
   return age;
 };
 
-const UserBase = z.object({
+export const UserSchema = z.object({
   firstName: z
     .string()
     .min(3, "O nome deve ter no mínimo 3 caracteres.")
@@ -33,13 +33,15 @@ const UserBase = z.object({
   email: z.email("E-mail inválido."),
 });
 
+export type User = z.infer<typeof UserSchema>;
+
 const Password = z
   .string()
   .min(6, "A senha deve ter no mínimo 6 caracteres.")
   .max(20, "A senha deve ter no máximo 20 caracteres.")
   .trim();
 
-export const RegisterSchema = UserBase.extend({
+export const RegisterSchema = UserSchema.extend({
   birth: z
     .string()
     .min(1, "A data de nascimento é obrigatória.")
@@ -71,7 +73,7 @@ export const LoginSchema = z.object({
 
 export type Login = z.infer<typeof LoginSchema>;
 
-export const EditProfileSchema = UserBase;
+export const EditProfileSchema = UserSchema;
 
 export type EditProfile = z.infer<typeof EditProfileSchema>;
 

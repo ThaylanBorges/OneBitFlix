@@ -16,7 +16,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const { id } = await params;
   const course = await getCourseByIdAction(Number(id));
 
-  if (!course.success) redirect("/home");
+  if (!course) redirect("/home");
 
   return (
     <div>
@@ -26,8 +26,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
             <HeaderAuth />
           </div>
           <Image
-            src={`${apiUrl}/${course.data.thumbnailUrl}`}
-            alt={`foto curso ${course.data.name}`}
+            src={`${apiUrl}/${course.thumbnailUrl}`}
+            alt={`foto curso ${course.name}`}
             fill
           ></Image>
 
@@ -35,12 +35,12 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
           <div className="absolute inset-0 z-10 flex items-center">
             <div className="container mx-auto px-5 text-white">
-              <h1 className="text-5xl">{course.data.name}</h1>
+              <h1 className="text-5xl">{course.name}</h1>
 
-              <p className="mt-10 text-2xl">{course.data.synopsis}</p>
+              <p className="mt-10 text-2xl">{course.synopsis}</p>
 
               <Button
-                render={<Link href={`/courses/${course.data.id}`} />}
+                render={<Link href={`/courses/${course.id}`} />}
                 nativeButton={false}
                 variant="ghost"
                 size="xl"
@@ -56,9 +56,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
               </Button>
               <div className="my-5 flex gap-2">
                 <SectionButtonsReact
-                  favorited={course.data.favorited}
-                  liked={course.data.liked}
-                  courseId={course.data.id}
+                  favorited={course.favorited}
+                  liked={course.liked}
+                  courseId={course.id}
                 />
               </div>
             </div>

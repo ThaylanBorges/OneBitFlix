@@ -1,4 +1,4 @@
-import { EditPassword, EditProfile } from "@/schemas/userSchemas";
+import { EditPassword, EditProfile, UserSchema } from "@/schemas/userSchemas";
 import { apiWithAuth } from "./apiWithAuth";
 import { cache } from "react";
 
@@ -6,9 +6,9 @@ export const userService = {
   getCurrentUser: cache(async () => {
     try {
       const user = await apiWithAuth("/users/current");
-      return { ...user, success: true };
+      return UserSchema.parse(user);
     } catch {
-      return { success: false };
+      return null;
     }
   }),
   editUser: async (data: EditProfile) => {

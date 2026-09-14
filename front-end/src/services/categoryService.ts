@@ -1,9 +1,6 @@
 import { CategoryArraySchema } from "@/schemas/categorySchema";
 import { apiWithAuth } from "./apiWithAuth";
-import {
-  CoursesWithCategory,
-  CoursesWithCategorySchema,
-} from "@/schemas/courseSchema";
+import { CoursesWithCategorySchema } from "@/schemas/courseSchema";
 
 export const categoryService = {
   getCategories: async () => {
@@ -15,20 +12,13 @@ export const categoryService = {
       return [];
     }
   },
-  getCoursesWithCategory: async (
-    categoryId: number,
-  ): Promise<
-    { data: CoursesWithCategory; success: true } | { success: false }
-  > => {
+  getCoursesWithCategory: async (categoryId: number) => {
     try {
       const category = await apiWithAuth(`/categories/${categoryId}`);
 
-      return {
-        data: CoursesWithCategorySchema.parse(category),
-        success: true,
-      };
+      return CoursesWithCategorySchema.parse(category);
     } catch {
-      return { success: false };
+      return null;
     }
   },
 };

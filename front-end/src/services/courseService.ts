@@ -1,23 +1,17 @@
 import {
   CoursesArraySchema,
-  CourseWithEpisodes,
   CourseWithEpisodesSchema,
 } from "@/schemas/courseSchema";
 import { api } from "./api";
 import { apiWithAuth } from "./apiWithAuth";
 
 export const courseService = {
-  getById: async (
-    id: number,
-  ): Promise<
-    { data: CourseWithEpisodes; success: true } | { success: false }
-  > => {
+  getById: async (id: number) => {
     try {
       const res = await apiWithAuth(`/courses/${id}`);
-      const course = CourseWithEpisodesSchema.parse(res);
-      return { data: course, success: true };
+      return CourseWithEpisodesSchema.parse(res);
     } catch {
-      return { success: false };
+      return null;
     }
   },
   getNewestCourses: async () => {

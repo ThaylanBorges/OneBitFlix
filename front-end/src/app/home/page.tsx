@@ -4,15 +4,9 @@ import { FeaturedSection } from "@/components/home/FeaturedSection";
 import Footer from "@/components/layout/Footer";
 import NewestCoursesSection from "@/components/NewestCoursesSection";
 import CoursesSlideSkeleton from "@/components/SkeletonCursesSlide";
-import { userService } from "@/services/userService";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function Home() {
-  const user = await userService.getCurrentUser();
-
-  if (!user.success) redirect("/login");
-
   return (
     <main>
       <FeaturedSection />

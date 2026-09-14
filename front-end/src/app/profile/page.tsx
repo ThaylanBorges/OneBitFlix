@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export default async function Profile() {
   const user = await userService.getCurrentUser();
 
-  if (!user.success) redirect("/login");
+  if (!user) redirect("/login");
 
   return (
     <main>

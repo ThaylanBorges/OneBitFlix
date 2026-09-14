@@ -10,7 +10,5 @@ export default async function CategorySection({
 }: CategoryListProps) {
   const category = await categoryService.getCoursesWithCategory(categoryId);
 
-  if (!category.success) return null;
-
-  return <Slide courses={category.data.courses} />;
+  return <Slide courses={category ? category.courses : []} />;
 }
