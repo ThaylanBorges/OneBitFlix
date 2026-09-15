@@ -4,16 +4,17 @@ import {
 } from "@/schemas/courseSchema";
 import { api } from "./api";
 import { apiWithAuth } from "./apiWithAuth";
+import { cache } from "react";
 
 export const courseService = {
-  getById: async (id: number) => {
+  getById: cache(async (id: number) => {
     try {
       const res = await apiWithAuth(`/courses/${id}`);
       return CourseWithEpisodesSchema.parse(res);
     } catch {
       return null;
     }
-  },
+  }),
   getNewestCourses: async () => {
     try {
       const res = await api("/courses/newest");
