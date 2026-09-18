@@ -10,7 +10,7 @@ export default function HeaderAuth({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-end">
       <div className="flex-col w-full gap-5 sm:flex-row container mx-auto p-4 flex justify-between items-center">
         <Link href="/home">
           <Image
@@ -26,7 +26,7 @@ export default function HeaderAuth({
           <UserMenu />
         </div>
       </div>
-      <div className="pr-5">{children}</div>
+      <div className="pr-5 pb-5">{children}</div>
     </div>
   );
 }

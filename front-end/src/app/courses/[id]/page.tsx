@@ -1,5 +1,7 @@
+import React from "react";
 import { SectionButtonsReact } from "@/components/course/SectionButtonsReact";
 import HeaderAuth from "@/components/home/HeaderAuth";
+import { SidebarEpisodes } from "@/components/SidebarEpisodes";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { courseService } from "@/services/courseService";
@@ -20,50 +22,86 @@ export default async function CoursePage({
   if (!course) redirect("/home");
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      <div className="relative z-20 bg-black">
-        <HeaderAuth>
-          <SidebarTrigger size="lg" />
-        </HeaderAuth>
+    <div className="flex h-screen flex-col overflow-hidden bg-black">
+      <div className="relative z-20 shrink-0 bg-black">
+        <HeaderAuth />
       </div>
 
-      <Image
-        src={`${apiUrl}/${course.thumbnailUrl}`}
-        alt={`foto curso ${course.name}`}
-        fill
-      ></Image>
+      <div className="relative flex min-h-0 flex-1">
+        <div className="relative flex-1 overflow-hidden">
+          <Image
+            src={`${apiUrl}/${course.thumbnailUrl}`}
+            alt={`Thumbnail do curso ${course.name}`}
+            className="object-cover object-center"
+            fill
+            priority
+          />
+          <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/50 to-black/20" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
-      <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/40 to-transparent" />
+          <div className="relative z-10 flex h-full gap-5 flex-col justify-center px-10 pb-10 text-white lg:px-16">
+            {course.category && (
+              <span className="mb-4 w-fit rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-white/70 backdrop-blur-sm">
+                {course.category.name}
+              </span>
+            )}
 
-      <div className="absolute inset-0 z-10 flex items-center">
-        <div className="container mx-auto px-5 text-white">
-          <h1 className="text-5xl">{course.name}</h1>
+            <h1 className="max-w-xl text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
+              {course.name}
+            </h1>
 
-          <p className="mt-10 text-2xl">{course.synopsis}</p>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-white/70 lg:text-lg">
+              {course.synopsis}
+            </p>
 
-          <Button
-            render={<Link href={`/courses/${course.id}`} />}
-            nativeButton={false}
-            variant="ghost"
-            size="xl"
-            className="mt-10 inline-flex gap-4 rounded-xl border-2 border-white font-bold duration-100 hover:scale-105 hover:border-primary"
-          >
-            VER AULAS!
-            <Image
-              src="/buttonPlay.svg"
-              alt="Ícone de Play"
-              width={15}
-              height={15}
-            />
-          </Button>
-          <div className="my-5 flex gap-2">
-            <SectionButtonsReact
-              favorited={course.favorited}
-              liked={course.liked}
-              courseId={course.id}
-            />
+            {course.episodes?.length > 0 && (
+              <p className="text-sm text-white/40">
+                {course.episodes.length}{" "}
+                {course.episodes.length === 1 ? "episódio" : "episódios"}{" "}
+                disponíveis
+              </p>
+            )}
+
+            <div className="flex flex-wrap items-center gap-4">
+              <Button
+                render={<Link href={`/courses/${course.id}`} />}
+                nativeButton={false}
+                variant="ghost"
+                size="xl"
+                className="inline-flex items-center gap-3 rounded-xl border-2 border-white font-bold transition-all duration-150 hover:scale-105 hover:border-primary hover:text-primary"
+              >
+                Comece Aqui!
+                <Image
+                  src="/buttonPlay.svg"
+                  alt=""
+                  aria-hidden="true"
+                  width={15}
+                  height={15}
+                />
+              </Button>
+
+              <div className="flex items-center gap-2">
+                <SectionButtonsReact
+                  favorited={course.favorited}
+                  liked={course.liked}
+                  courseId={course.id}
+                />
+              </div>
+            </div>
           </div>
         </div>
+
+        <aside className="relative translate-x-0">
+          <SidebarEpisodes id={id} />
+        </aside>
+
+        <SidebarTrigger
+          title="Episodes"
+          className="
+            absolute top-6 right-6 z-20
+            transition-all hover:scale-105
+          "
+        />
       </div>
     </div>
   );
