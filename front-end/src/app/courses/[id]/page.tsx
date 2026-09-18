@@ -1,9 +1,7 @@
-import React from "react";
 import { SectionButtonsReact } from "@/components/course/SectionButtonsReact";
 import HeaderAuth from "@/components/home/HeaderAuth";
 import { SidebarEpisodes } from "@/components/SidebarEpisodes";
 import { Button } from "@/components/ui/button";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { courseService } from "@/services/courseService";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,6 +15,7 @@ export default async function CoursePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
   const course = await courseService.getById(Number(id));
 
   if (!course) redirect("/home");
@@ -39,7 +38,7 @@ export default async function CoursePage({
           <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/50 to-black/20" />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
-          <div className="relative z-10 flex h-full gap-5 flex-col justify-center px-10 pb-10 text-white lg:px-16">
+          <div className="container mx-auto relative z-10 flex h-full gap-5 flex-col justify-center p-4 text-white">
             {course.category && (
               <span className="mb-4 w-fit rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-white/70 backdrop-blur-sm">
                 {course.category.name}
@@ -63,22 +62,28 @@ export default async function CoursePage({
             )}
 
             <div className="flex flex-wrap items-center gap-4">
-              <Button
-                render={<Link href={`/courses/${course.id}`} />}
-                nativeButton={false}
-                variant="ghost"
-                size="xl"
-                className="inline-flex items-center gap-3 rounded-xl border-2 border-white font-bold transition-all duration-150 hover:scale-105 hover:border-primary hover:text-primary"
-              >
-                Comece Aqui!
-                <Image
-                  src="/buttonPlay.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={15}
-                  height={15}
-                />
-              </Button>
+              {course.episodes.length > 0 && (
+                <Button
+                  render={
+                    <Link
+                      href={`/courses/${course.id}/episodes/${course.episodes[0].id}`}
+                    />
+                  }
+                  nativeButton={false}
+                  variant="ghost"
+                  size="xl"
+                  className="inline-flex items-center gap-3 rounded-xl border-2 border-white font-bold transition-all duration-150 hover:scale-105 hover:border-primary hover:text-primary"
+                >
+                  Comece Aqui!
+                  <Image
+                    src="/buttonPlay.svg"
+                    alt=""
+                    aria-hidden="true"
+                    width={15}
+                    height={15}
+                  />
+                </Button>
+              )}
 
               <div className="flex items-center gap-2">
                 <SectionButtonsReact
@@ -94,14 +99,6 @@ export default async function CoursePage({
         <aside className="relative translate-x-0">
           <SidebarEpisodes id={id} />
         </aside>
-
-        <SidebarTrigger
-          title="Episodes"
-          className="
-            absolute top-6 right-6 z-20
-            transition-all hover:scale-105
-          "
-        />
       </div>
     </div>
   );
