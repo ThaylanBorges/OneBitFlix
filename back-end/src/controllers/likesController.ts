@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { likeService } from "../services/likeService.js";
-import { ParmasId } from "../schemas/commonSchemas.js";
+import { ParamsId } from "../schemas/commonSchemas.js";
 
 export const likesController = {
   save: async (req: Request, res: Response, next: NextFunction) => {
-    const { id: courseId } = req.dataParams as ParmasId;
+    const { id: courseId } = req.dataParams as ParamsId;
     const userId = req.user!.id;
 
     try {
@@ -17,7 +17,7 @@ export const likesController = {
 
   delete: async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user!.id;
-    const { id: courseId } = req.dataParams as ParmasId;
+    const { id: courseId } = req.dataParams as ParamsId;
 
     try {
       await likeService.delete(userId, courseId);

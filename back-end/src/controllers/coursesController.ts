@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { courseServices } from "../services/courseService.js";
 import { likeService } from "../services/likeService.js";
 import { favoriteService } from "../services/favoriteService.js";
-import { ParmasId } from "../schemas/commonSchemas.js";
 import { CourseSearch } from "../schemas/courseSchema.js";
 import { AppError } from "../errors/AppError.js";
+import { ParamsId } from "../schemas/commonSchemas.js";
 
 export const coursesController = {
   featured: async (req: Request, res: Response, next: NextFunction) => {
@@ -17,17 +17,23 @@ export const coursesController = {
   },
 
   show: async (req: Request, res: Response, next: NextFunction) => {
-    const { id: courseId } = req.dataParams as ParmasId;
+    const { id: courseId } = req.dataParams as ParamsId;
     const userId = req.user!.id;
 
     try {
-      const course = await courseServices.findById(courseId);
+      const coursePromise = courseServices.findById(courseId);
+
+      const likedPromise = likeService.isLiked(userId, courseId);
+
+      const favoritedPromise = favoriteService.isFavorite(userId, courseId);
+
+      const [course, liked, favorited] = await Promise.all([
+        coursePromise,
+        likedPromise,
+        favoritedPromise,
+      ]);
 
       if (!course) throw new AppError("Course not found", 404);
-
-      const liked = await likeService.isLiked(userId, courseId);
-
-      const favorited = await favoriteService.isFavorite(userId, courseId);
 
       res.json({ ...course.get(), liked, favorited });
     } catch (err) {

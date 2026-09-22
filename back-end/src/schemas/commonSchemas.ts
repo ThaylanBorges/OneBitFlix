@@ -11,4 +11,4 @@ export const ParamsIdSchema = z.object({
   id: z.coerce.number().positive().int(),
 });
 
-export type ParmasId = z.infer<typeof ParamsIdSchema>;
+export type ParamsId = z.infer<typeof ParamsIdSchema>;

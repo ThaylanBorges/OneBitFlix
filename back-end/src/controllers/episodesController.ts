@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { episodeService } from "../services/episodeService.js";
 import { Seconds } from "../schemas/episodeSchema.js";
-import { ParmasId } from "../schemas/commonSchemas.js";
 import { AppError } from "../errors/AppError.js";
+import { ParamsId } from "../schemas/commonSchemas.js";
 
 export const episodesController = {
   stream: async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.dataParams as ParmasId;
+    const { id } = req.dataParams as ParamsId;
 
     try {
       const episode = await episodeService.findById(id);
@@ -25,7 +25,7 @@ export const episodesController = {
 
   getWatchTime: async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user!.id;
-    const { id: episodeId } = req.dataParams as ParmasId;
+    const { id: episodeId } = req.dataParams as ParamsId;
 
     try {
       const watchTime = await episodeService.getWatchTime(userId, episodeId);
@@ -36,7 +36,7 @@ export const episodesController = {
   },
 
   setWatchTime: async (req: Request, res: Response, next: NextFunction) => {
-    const { id: episodeId } = req.dataParams as ParmasId;
+    const { id: episodeId } = req.dataParams as ParamsId;
     const { seconds } = req.dataBody as Seconds;
     const userId = req.user?.id;
 

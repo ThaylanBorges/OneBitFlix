@@ -5,9 +5,8 @@ import { FieldGroup } from "../ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { User } from "@/types/user";
 import { formatPhone } from "@/utils/formatter";
-import { EditProfile, EditProfileSchema } from "@/schemas/userSchemas";
+import { EditProfile, EditProfileSchema, User } from "@/schemas/userSchemas";
 import { editProfileAction } from "@/actions/editProfileAction";
 import { FormField } from "../ui/form-field";
 
