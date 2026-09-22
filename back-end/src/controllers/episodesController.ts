@@ -38,7 +38,7 @@ export const episodesController = {
   setWatchTime: async (req: Request, res: Response, next: NextFunction) => {
     const { id: episodeId } = req.dataParams as ParamsId;
     const { seconds } = req.dataBody as Seconds;
-    const userId = req.user?.id;
+    const userId = req.user!.id;
 
     try {
       const watchTime = await episodeService.setWatchTime(

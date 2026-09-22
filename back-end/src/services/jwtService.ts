@@ -14,6 +14,13 @@ export const jwtService = {
     });
   },
 
+  singTokenVideo: (payload: string | object | Buffer, expiration: number) => {
+    return jwt.sign(payload, secret, {
+      audience: "streaming",
+      expiresIn: expiration + 3600,
+    });
+  },
+
   verifyToken: (token: string) => {
     return jwt.verify(token, secret);
   },

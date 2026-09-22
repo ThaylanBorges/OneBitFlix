@@ -39,11 +39,15 @@ app.use(
         connectSrc: ["'self'"],
       },
     },
+    crossOriginResourcePolicy: {
+      policy: "cross-origin",
+    },
   }),
 );
 
 app.use(generalLimiter);
-app.use("/auth", authLimiter);
+app.use("/login", authLimiter);
+app.use("/register", authLimiter);
 app.use(cookieParser());
 app.use(
   cors({
