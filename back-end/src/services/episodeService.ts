@@ -75,19 +75,6 @@ export const episodeService = {
   },
 
   setWatchTime: async (userId: number, episodeId: number, seconds: number) => {
-    const watchTimeAlreadyExists = await WatchTime.findOne({
-      where: {
-        userId,
-        episodeId,
-      },
-    });
-
-    if (watchTimeAlreadyExists) {
-      watchTimeAlreadyExists.seconds = seconds;
-      await watchTimeAlreadyExists.save();
-      return watchTimeAlreadyExists;
-    } else {
-      return WatchTime.create({ userId, episodeId, seconds });
-    }
+    return WatchTime.upsert({ userId, episodeId, seconds });
   },
 };

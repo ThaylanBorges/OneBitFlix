@@ -1,33 +1,7 @@
+import { sequelize } from "../database/index.js";
 import { AppError } from "../errors/AppError.js";
 import { Episode } from "../models/Episodes.js";
 import { User, UserCreationAttributes } from "../models/User.js";
-
-function filterLastEpisodesByCourse(episodes: Episode[]) {
-  const courseOnList: number[] = [];
-
-  const lastEpisodes = episodes.reduce((currentList, episode) => {
-    if (!courseOnList.includes(episode.courseId)) {
-      courseOnList.push(episode.courseId);
-      currentList.push(episode);
-      return currentList;
-    }
-
-    const episodeFromSameCourse = currentList.find(
-      (ep) => ep.courseId === episode.courseId,
-    );
-
-    if (episodeFromSameCourse!.order > episode.order) return currentList;
-
-    const listWithoutEpisodeFromSameCourse = currentList.filter(
-      (ep) => ep.courseId !== episode.courseId,
-    );
-    listWithoutEpisodeFromSameCourse.push(episode);
-
-    return listWithoutEpisodeFromSameCourse;
-  }, [] as Episode[]);
-
-  return lastEpisodes;
-}
 
 export const usersServices = {
   findById: async (id: number) => {
@@ -78,40 +52,17 @@ export const usersServices = {
   },
 
   getKeepWatchingList: async (id: number) => {
-    const userWithWachingList = await User.findByPk(id, {
-      include: {
-        association: "watchingEpisodes",
-
-        attributes: [
-          "id",
-          "name",
-          "synopsis",
-          "order",
-          ["video_url", "videoUrl"],
-          ["seconds_long", "secondsLong"],
-          ["course_id", "courseId"],
-        ],
-        include: [
-          {
-            association: "course",
-            attributes: ["id", "name", ["thumbnail_url", "thumbnailUrl"]],
-          },
-        ],
-        through: {
-          as: "watchTime",
-          attributes: ["seconds", "updatedAt"],
-        },
-      },
-    });
-
-    if (!userWithWachingList) throw new Error("User not found");
-
-    const keepWatchingList = filterLastEpisodesByCourse(
-      userWithWachingList.watchingEpisodes!,
+    const [keepWatchingList] = await sequelize.query(
+      `
+      SELECT DISTINCT ON (course_id) * 
+      FROM watch_times
+      JOIN episodes ON episodes.id = watch_times.episode_id
+      JOIN courses ON courses.id = episodes.course_id
+      WHERE watch_times.user_id = :id
+      ORDER BY course_id, updated_at DESC  
+    `,
+      { replacements: { id } },
     );
-
-    return keepWatchingList.sort((a, b) =>
-      a.watchTime!.updatedAt < b.watchTime!.updatedAt ? 1 : -1,
-    );
+    return keepWatchingList;
   },
 };

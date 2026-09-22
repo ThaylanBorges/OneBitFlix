@@ -1,6 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../database/index.js";
-import { Episode } from "./Episodes.js";
 
 export interface WatchTimeAttributes {
   userId: number;
