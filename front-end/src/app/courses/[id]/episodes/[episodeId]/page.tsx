@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { SidebarEpisodes } from "@/components/SidebarEpisodes";
 import { courseService } from "@/services/courseService";
 import { redirect } from "next/navigation";
@@ -16,6 +17,11 @@ export default async function EpisodePage({
   params: Promise<{ episodeId: string; id: string }>;
 }) {
   const { episodeId, id } = await params;
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+
+  if (!token) redirect("/home");
 
   const course = await courseService.getById(Number(id));
   if (!course) redirect("/home");
@@ -46,13 +52,11 @@ export default async function EpisodePage({
                   key={episode.id}
                   controls
                   className="h-full w-full object-cover"
-                  poster={
-                    course.thumbnailUrl
-                      ? `${apiUrl}/${course.thumbnailUrl}`
-                      : undefined
-                  }
                 >
-                  <source src={episode.videoUrl} type="video/mp4" />
+                  <source
+                    src={`${apiUrl}/episodes/stream/${episode.id}?token=${token.value}`}
+                    type="video/mp4"
+                  />
                   Seu navegador não suporta vídeo HTML5.
                 </video>
               </div>
