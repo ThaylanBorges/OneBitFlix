@@ -4,15 +4,10 @@ import { jwtService } from "../services/jwtService.js";
 import { env } from "../config/env.js";
 import { Login, Register } from "../schemas/authSchema.js";
 import { AppError } from "../errors/AppError.js";
+import { SessionPayload } from "../@types/express/index.js";
 
-type payloadJWT = {
-  id: number;
-  firstName: string;
-  email: string;
-};
-
-function setCookie(res: Response, payload: payloadJWT) {
-  const token = jwtService.signToken(payload, "7d");
+function setCookie(res: Response, payload: SessionPayload) {
+  const token = jwtService.signSessionToken(payload, "7d");
 
   res.cookie("token", token, {
     httpOnly: true,
@@ -44,6 +39,7 @@ export const authController = {
       });
 
       setCookie(res, {
+        kind: "session",
         id: user.id,
         firstName: user.firstName,
         email: user.email,
@@ -72,6 +68,7 @@ export const authController = {
         throw new AppError("Incorrect email or password", 401);
 
       setCookie(res, {
+        kind: "session",
         id: user.id,
         firstName: user.firstName,
         email: user.email,

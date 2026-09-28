@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { SidebarEpisodes } from "@/components/SidebarEpisodes";
 import { courseService } from "@/services/courseService";
 import { redirect } from "next/navigation";
@@ -8,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import HeaderAuth from "@/components/home/HeaderAuth";
 import { formatDuration } from "@/utils/formatDuration";
+import { episodeService } from "@/services/episodeService";
 
 const apiUrl = process.env.NEXT_PUBLIC_BASEURL;
 
@@ -18,8 +18,7 @@ export default async function EpisodePage({
 }) {
   const { episodeId, id } = await params;
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token");
+  const token = await episodeService.getTokenStream(Number(episodeId));
 
   if (!token) redirect("/home");
 
@@ -54,7 +53,7 @@ export default async function EpisodePage({
                   className="h-full w-full object-cover"
                 >
                   <source
-                    src={`${apiUrl}/episodes/stream/${episode.id}?token=${token.value}`}
+                    src={`${apiUrl}/episodes/stream/${episode.id}?token=${token}`}
                     type="video/mp4"
                   />
                   Seu navegador não suporta vídeo HTML5.

@@ -1,13 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { usersServices } from "../services/userService.js";
-import { UpdatePassword, UpdateUser } from "../schemas/userSchema.js";
+import {
+  UpdatePassword,
+  UpdatePasswordSchema,
+  UpdateUser,
+  UpdateUserSchema,
+} from "../schemas/userSchema.js";
 
 export const usersController = {
   watching: async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user!.id;
-
     try {
-      const watchingList = await usersServices.getKeepWatchingList(userId);
+      const watchingList = await usersServices.getKeepWatchingList(
+        req.user!.id,
+      );
       res.json(watchingList);
     } catch (err) {
       next(err);
@@ -15,10 +20,8 @@ export const usersController = {
   },
 
   show: async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user!.id;
-
     try {
-      const user = await usersServices.findById(userId);
+      const user = await usersServices.findById(req.user!.id);
       res.json(user);
     } catch (err) {
       next(err);
@@ -26,11 +29,10 @@ export const usersController = {
   },
 
   update: async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user!.id;
-    const attributes = req.dataBody as UpdateUser;
+    const attributes = UpdateUserSchema.parse(req.dataBody);
 
     try {
-      await usersServices.update(userId, attributes);
+      await usersServices.update(req.user!.id, attributes);
       res.status(200).send();
     } catch (err) {
       next(err);
@@ -38,11 +40,16 @@ export const usersController = {
   },
 
   updatePassword: async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user!.id;
-    const { currentPassword, newPassword } = req.dataBody as UpdatePassword;
+    const { currentPassword, newPassword } = UpdatePasswordSchema.parse(
+      req.dataBody,
+    );
 
     try {
-      await usersServices.updatePassword(userId, currentPassword, newPassword);
+      await usersServices.updatePassword(
+        req.user!.id,
+        currentPassword,
+        newPassword,
+      );
       res.status(200).send();
     } catch (err) {
       next(err);

@@ -5,10 +5,12 @@ import { ParamsId } from "../schemas/commonSchemas.js";
 export const likesController = {
   save: async (req: Request, res: Response, next: NextFunction) => {
     const { id: courseId } = req.dataParams as ParamsId;
-    const userId = req.user!.id;
 
     try {
-      const like = await likeService.create(userId, courseId);
+      const like = await likeService.create(req.user!.id, courseId);
+
+      if (!like) return res.status(200).send();
+
       res.status(201).json(like);
     } catch (err) {
       next(err);
@@ -16,11 +18,10 @@ export const likesController = {
   },
 
   delete: async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user!.id;
     const { id: courseId } = req.dataParams as ParamsId;
 
     try {
-      await likeService.delete(userId, courseId);
+      await likeService.delete(req.user!.id, courseId);
       res.status(200).send();
     } catch (err) {
       next(err);

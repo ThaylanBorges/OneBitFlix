@@ -1,29 +1,47 @@
-import CategoryList from "@/components/home/CategoryList";
 import FavoriteSection from "@/components/home/FavoriteCoursesSection";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import Footer from "@/components/layout/Footer";
 import NewestCoursesSection from "@/components/NewestCoursesSection";
 import CoursesSlideSkeleton from "@/components/SkeletonCursesSlide";
+import CategoryList from "@/components/home/CategoryList";
+import SectionHeading from "@/components/home/SectionHeading";
+import Animated from "@/components/Animated";
 import { Suspense } from "react";
 
 export default async function Home() {
   return (
     <main>
       <FeaturedSection />
-      <div className="container mx-auto mt-20">
-        <p className="px-4 text-2xl font-bold">Lançamentos</p>
+      <div
+        id="lancamentos"
+        className="container mx-auto mt-16 scroll-mt-8 sm:mt-20"
+      >
+        <Animated type="fadeUp">
+          <SectionHeading
+            title="Lançamentos"
+            description="Os cursos mais recentes da plataforma"
+          />
+        </Animated>
         <Suspense fallback={<CoursesSlideSkeleton />}>
           <NewestCoursesSection />
         </Suspense>
       </div>
-      <div className="container mx-auto mt-20">
-        <p className="px-4 text-2xl font-bold">Minha lista</p>
+
+      <div className="container mx-auto mt-16 sm:mt-20">
+        <Animated type="fadeUp">
+          <SectionHeading
+            title="Minha lista"
+            description="Cursos que você favoritou"
+          />
+        </Animated>
         <Suspense fallback={<CoursesSlideSkeleton />}>
           <FavoriteSection />
         </Suspense>
       </div>
+
       <CategoryList />
-      <Footer />
+
+      <Footer className="mt-20" />
     </main>
   );
 }

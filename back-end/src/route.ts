@@ -70,7 +70,12 @@ route.get(
   validateParams(ParamsIdSchema),
   coursesController.show,
 );
-
+route.get(
+  "/episodes/:id/token",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
+  episodesController.getTokenStream,
+);
 route.get(
   "/episodes/stream/:id",
   authMiddlewareQuery,

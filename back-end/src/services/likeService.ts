@@ -1,9 +1,18 @@
+import { UniqueConstraintError } from "sequelize";
 import { Likes } from "../models/index.js";
 
 export const likeService = {
   create: async (userId: number, courseId: number) => {
-    const like = await Likes.create({ userId, courseId });
-    return like;
+    try {
+      const like = await Likes.create({ userId, courseId });
+      return like;
+    } catch (err) {
+      if (err instanceof UniqueConstraintError) {
+        return null;
+      } else {
+        throw err;
+      }
+    }
   },
 
   delete: async (userId: number, courseId: number) => {

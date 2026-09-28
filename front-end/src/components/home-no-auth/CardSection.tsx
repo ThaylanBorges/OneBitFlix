@@ -41,7 +41,7 @@ const cardsData = [
 
 export default function CardsSection() {
   return (
-    <div>
+    <div id="next-section" className="scroll-mt-8">
       <p className="font-bold text-2xl text-center mt-12">
         O QUE VOCÊ VAI ACESSAR
       </p>

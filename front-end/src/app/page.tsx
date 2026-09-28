@@ -1,5 +1,4 @@
 import Footer from "@/components/layout/Footer";
-import Animated from "@/components/home-no-auth/Animateds";
 import CardsSection from "@/components/home-no-auth/CardSection";
 import HeaderNoAuth from "@/components/home-no-auth/HeaderNoAuth";
 import PresentationSection from "@/components/home-no-auth/PresentationSection";
@@ -8,6 +7,7 @@ import NewestCoursesSection from "@/components/NewestCoursesSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import CoursesSlideSkeleton from "@/components/SkeletonCursesSlide";
+import Animated from "@/components/Animated";
 
 export default function Home() {
   return (

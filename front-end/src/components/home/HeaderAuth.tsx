@@ -3,16 +3,19 @@ import Link from "next/link";
 import UserMenu from "./UserMenu";
 import { Search } from "./Search";
 import React from "react";
+import { userService } from "@/services/userService";
 
-export default function HeaderAuth({
+export default async function HeaderAuth({
   children,
 }: {
   children?: React.ReactNode;
 }) {
+  const user = await userService.getCurrentUser();
+
   return (
     <div className="flex justify-center items-end">
       <div className="flex-col w-full gap-5 sm:flex-row container mx-auto p-4 flex justify-between items-center">
-        <Link href="/home">
+        <Link href="/home" className="shrink-0">
           <Image
             src="/logoOnebitflix.svg"
             alt="logo Onebitflix"
@@ -23,7 +26,7 @@ export default function HeaderAuth({
 
         <div className="flex w-full sm:w-auto gap-4 justify-center items-center">
           <Search />
-          <UserMenu />
+          <UserMenu user={user} />
         </div>
       </div>
       <div className="pr-5 pb-5">{children}</div>

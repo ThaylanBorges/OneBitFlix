@@ -4,18 +4,18 @@ import { NextRequest, NextResponse } from "next/server";
 const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 const PUBLIC_PATHS = ["/", "/login", "/register"];
-const PROTECTED_PREFIXES = ["/home", "/profile"];
+const PROTECTED_PREFIXES = ["/home", "/profile", "/courses/"];
 
 const isValidToken = async (token: string) => {
   try {
-    await jwtVerify(token, SECRET);
+    await jwtVerify(token, SECRET, { audience: "session" });
     return true;
   } catch {
     return false;
   }
 };
 
-export default async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const tokenCookie = request.cookies.get("token");
   const token = tokenCookie?.value;
@@ -54,5 +54,12 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/register", "/home/:path*", "/profile"],
+  matcher: [
+    "/",
+    "/login",
+    "/register",
+    "/home/:path*",
+    "/profile",
+    "/courses/:path*",
+  ],
 };

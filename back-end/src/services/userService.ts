@@ -1,4 +1,3 @@
-import { sequelize } from "../database/index.js";
 import { AppError } from "../errors/AppError.js";
 import { Episode } from "../models/Episodes.js";
 import { User, UserCreationAttributes } from "../models/User.js";
@@ -105,7 +104,7 @@ export const usersServices = {
       },
     });
 
-    if (!userWithWachingList) throw new Error("User not found");
+    if (!userWithWachingList) throw new AppError("User not found", 404);
 
     const keepWatchingList = filterLastEpisodesByCourse(
       userWithWachingList.watchingEpisodes!,

@@ -3,13 +3,38 @@ import { episodeService } from "../services/episodeService.js";
 import { Seconds } from "../schemas/episodeSchema.js";
 import { AppError } from "../errors/AppError.js";
 import { ParamsId } from "../schemas/commonSchemas.js";
+import { jwtService } from "../services/jwtService.js";
 
 export const episodesController = {
-  stream: async (req: Request, res: Response, next: NextFunction) => {
+  getTokenStream: async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.dataParams as ParamsId;
 
     try {
       const episode = await episodeService.findById(id);
+
+      if (!episode) throw new AppError("Episode not found.", 404);
+
+      const token = jwtService.signStreamToken(
+        { kind: "stream", episodeId: id, userId: req.user!.id },
+        episode.secondsLong ?? 0,
+      );
+
+      res.status(200).json(token);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  stream: async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.dataParams as ParamsId;
+
+    const streamPayload = req.stream;
+
+    if (!streamPayload || streamPayload.episodeId !== id)
+      return next(new AppError("Unauthorized", 401));
+
+    try {
+      const episode = await episodeService.findById(streamPayload.episodeId);
 
       if (!episode) throw new AppError("Episode not found.", 404);
 
@@ -24,11 +49,13 @@ export const episodesController = {
   },
 
   getWatchTime: async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user!.id;
     const { id: episodeId } = req.dataParams as ParamsId;
 
     try {
-      const watchTime = await episodeService.getWatchTime(userId, episodeId);
+      const watchTime = await episodeService.getWatchTime(
+        req.user!.id,
+        episodeId,
+      );
       res.json(watchTime);
     } catch (err) {
       next(err);
@@ -38,11 +65,10 @@ export const episodesController = {
   setWatchTime: async (req: Request, res: Response, next: NextFunction) => {
     const { id: episodeId } = req.dataParams as ParamsId;
     const { seconds } = req.dataBody as Seconds;
-    const userId = req.user!.id;
 
     try {
       const watchTime = await episodeService.setWatchTime(
-        userId,
+        req.user!.id,
         episodeId,
         seconds,
       );

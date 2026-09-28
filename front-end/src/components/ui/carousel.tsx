@@ -193,6 +193,12 @@ function CarouselPrevious({
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
+      // O botão nasce desabilitado (não há slide anterior) e a base-ui
+      // omite o atributo `disabled` nativo no HTML do SSR, adicionando-o
+      // só na hidratação. É um bug conhecido e em aberto da lib
+      // (https://github.com/mui/base-ui/issues/5726); o estado funcional
+      // já é o mesmo dos dois lados, então só silenciamos o aviso.
+      suppressHydrationWarning
       {...props}
     >
       <ChevronLeftIcon />
@@ -223,6 +229,7 @@ function CarouselNext({
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
+      suppressHydrationWarning
       {...props}
     >
       <ChevronRightIcon />

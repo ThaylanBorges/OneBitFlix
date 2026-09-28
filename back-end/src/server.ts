@@ -22,7 +22,10 @@ const generalLimiter = rateLimit({
   limit: 100,
   standardHeaders: "draft-8",
   legacyHeaders: false,
-  skip: (req) => req.path.startsWith("/auth") || req.path.startsWith("/admin"),
+  skip: (req) =>
+    req.path.startsWith("/login") ||
+    req.path.startsWith("/register") ||
+    req.path.startsWith("/admin"),
 });
 
 const app = express();

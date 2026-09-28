@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { authService } from "@/services/authService";
 import { toast } from "sonner";
 import { Login, LoginSchema } from "@/schemas/userSchemas";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FieldGroup } from "../ui/field";
 import { FormField } from "../ui/form-field";
 
@@ -24,10 +24,13 @@ export default function LoginForm() {
 
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const search = searchParams.get("callbackUrl");
+
   const onSubmit = async (data: Login) => {
     try {
       await authService.login(data);
-      router.replace("/home");
+      router.replace(search || "home");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Internal Error.", {

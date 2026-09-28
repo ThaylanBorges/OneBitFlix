@@ -41,9 +41,18 @@ export const episodeService = {
       const start = parseInt(parts[0], 10);
       const end = parts[1] ? parseInt(parts[1], 10) : fileStat.size - 1;
 
+      if (Number.isNaN(start) || Number.isNaN(end))
+        throw new AppError("Range not satisfiable", 416);
+
+      if (start > end) throw new AppError("Range not satisfiable", 416);
+
+      if (end > fileStat.size) throw new AppError("Range not satisfiable", 416);
+
       const chunkSize = end - start + 1;
 
       const file = createReadStream(filePath, { start, end });
+
+      file.on("error", () => res.end());
 
       const head = {
         "Content-Range": `bytes ${start}-${end}/${fileStat.size}`,
@@ -56,13 +65,16 @@ export const episodeService = {
 
       file.pipe(res);
     } else {
+      const file = createReadStream(filePath);
+      file.on("error", () => res.end());
+
       const head = {
         "Content-length": fileStat.size,
         "Content-Type": contentType,
       };
 
       res.writeHead(200, head);
-      createReadStream(filePath).pipe(res);
+      file.pipe(res);
     }
   },
 

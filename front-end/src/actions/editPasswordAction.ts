@@ -7,7 +7,10 @@ export async function editPasswordAction(data: EditPassword) {
   try {
     await userService.editPassword(data);
     return { success: true };
-  } catch {
-    return { success: false, message: "Senha atual incorreta" };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "Falha ao editar senha.",
+    };
   }
 }

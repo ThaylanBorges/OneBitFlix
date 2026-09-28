@@ -1,6 +1,7 @@
-import { Op } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 import { sequelize } from "../database/index.js";
 import { Course } from "../models/Course.js";
+import { PopularCourseArraySchema } from "../schemas/courseSchema.js";
 
 export const courseServices = {
   findById: async (id: number) => {
@@ -76,8 +77,8 @@ export const courseServices = {
         courses.id,
         courses.name,
         courses.synopsis,
-        courses.thumbnail_url AS thumbnailUrl, 
-        COUNT(likes.user_id) AS likes
+        courses.thumbnail_url AS "thumbnailUrl", 
+        CAST(COUNT(likes.user_id) AS INT)  AS likes
       FROM courses
         LEFT OUTER JOIN likes
           ON courses.id = likes.course_id
@@ -85,11 +86,9 @@ export const courseServices = {
       ORDER BY likes DESC
       LIMIT 10;
       `,
+      { type: QueryTypes.SELECT },
     );
 
-    if (!result) return null;
-
-    const [topTen] = result;
-    return topTen;
+    return PopularCourseArraySchema.parse(result);
   },
 };
