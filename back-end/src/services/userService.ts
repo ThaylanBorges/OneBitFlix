@@ -53,7 +53,7 @@ export const usersServices = {
     attributes: Partial<
       Omit<
         UserCreationAttributes,
-        "id" | "password" | "createdAt" | "updatedAt" | "role"
+        "id" | "password" | "createdAt" | "updatedAt" | "role" | "birth"
       >
     >,
   ) => {

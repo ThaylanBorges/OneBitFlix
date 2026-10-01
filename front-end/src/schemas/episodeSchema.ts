@@ -5,8 +5,8 @@ export const EpisodeSchema = z.object({
   name: z.string(),
   synopsis: z.string(),
   order: z.number().positive().int(),
-  videoUrl: z.string(),
-  secondsLong: z.number(),
+  videoUrl: z.string().nullable(),
+  secondsLong: z.number().nullable(),
 });
 
 export type Episode = z.infer<typeof EpisodeSchema>;

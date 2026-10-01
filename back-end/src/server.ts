@@ -30,23 +30,42 @@ const generalLimiter = rateLimit({
 
 const app = express();
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:", "blob:"],
-        fontSrc: ["'self'", "data:"],
-        connectSrc: ["'self'"],
-      },
+app.set("trust proxy", 1);
+
+const adminPath = adminJs.options.rootPath;
+
+const apiHelmet = helmet({
+  contentSecurityPolicy: {
+    useDefaults: false,
+    directives: {
+      defaultSrc: ["'none'"],
+      frameAncestors: ["'none'"],
+      baseUri: ["'none'"],
+      formAction: ["'none'"],
     },
-    crossOriginResourcePolicy: {
-      policy: "cross-origin",
+  },
+  xFrameOptions: { action: "deny" },
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+});
+
+const adminHelmet = helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "blob:"],
+      fontSrc: ["'self'", "data:"],
+      connectSrc: ["'self'"],
     },
-  }),
-);
+  },
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+});
+
+app.use((req, res, next) => {
+  if (req.path.startsWith(adminPath)) return adminHelmet(req, res, next);
+  return apiHelmet(req, res, next);
+});
 
 app.use(generalLimiter);
 app.use("/login", authLimiter);
@@ -67,11 +86,16 @@ app.use(route);
 
 app.use(errorHandler);
 
-const PORT = env.PORT || 3333;
+const PORT = env.PORT;
 app.listen(PORT, () => {
-  sequelize.authenticate().then(() => {
-    console.log("db connection successful");
-  });
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log("db connection successful");
+    })
+    .catch(() => {
+      console.log("db connection faild");
+    });
 
   console.log(`Server started successfully at port ${PORT}`);
 });

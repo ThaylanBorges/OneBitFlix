@@ -2,8 +2,16 @@ import { Op, QueryTypes } from "sequelize";
 import { sequelize } from "../database/index.js";
 import { Course } from "../models/Course.js";
 import { PopularCourseArraySchema } from "../schemas/courseSchema.js";
+import { AppError } from "../errors/AppError.js";
 
 export const courseServices = {
+  findOrFailByPrimaryKey: async (key: string | number) => {
+    const course = await Course.findByPk(key);
+
+    if (!course) throw new AppError("Course not found", 404);
+
+    return course;
+  },
   findById: async (id: number) => {
     const course = await Course.findOne({
       where: { id },
@@ -24,6 +32,10 @@ export const courseServices = {
             ["seconds_long", "secondsLong"],
           ],
         },
+      ],
+      order: [
+        ["episodes", "order", "ASC"],
+        ["episodes", "id", "ASC"],
       ],
     });
     return course;
@@ -58,6 +70,10 @@ export const courseServices = {
           [Op.iLike]: `%${name}%`,
         },
       },
+      order: [
+        ["name", "ASC"],
+        ["id", "ASC"],
+      ],
       limit: perPage,
       offset: (page - 1) * perPage,
     });

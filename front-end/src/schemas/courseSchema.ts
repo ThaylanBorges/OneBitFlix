@@ -6,7 +6,7 @@ export const CourseSchema = z.object({
   id: z.number().positive(),
   name: z.string(),
   synopsis: z.string(),
-  thumbnailUrl: z.string(),
+  thumbnailUrl: z.string().nullable(),
 });
 
 export type Course = z.infer<typeof CourseSchema>;

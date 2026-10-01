@@ -5,6 +5,8 @@ import { env } from "../config/env.js";
 import { Login, Register } from "../schemas/authSchema.js";
 import { AppError } from "../errors/AppError.js";
 import { SessionPayload } from "../@types/express/index.js";
+import { DUMMY_HASH } from "../constants/dummy-hash.js";
+import bcrypt from "bcrypt";
 
 function setCookie(res: Response, payload: SessionPayload) {
   const token = jwtService.signSessionToken(payload, "7d");
@@ -60,11 +62,10 @@ export const authController = {
     try {
       const user = await usersServices.findByEmail(email);
 
-      if (!user) throw new AppError("Incorrect email or password", 401);
+      const hashToCompare = user ? user.password : DUMMY_HASH;
+      const passwordMatches = await bcrypt.compare(password, hashToCompare);
 
-      const verifyPassword = await user.checkPassword(password);
-
-      if (!verifyPassword)
+      if (!user || !passwordMatches)
         throw new AppError("Incorrect email or password", 401);
 
       setCookie(res, {

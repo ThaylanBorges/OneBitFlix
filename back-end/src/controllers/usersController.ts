@@ -1,11 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { usersServices } from "../services/userService.js";
-import {
-  UpdatePassword,
-  UpdatePasswordSchema,
-  UpdateUser,
-  UpdateUserSchema,
-} from "../schemas/userSchema.js";
+import { UpdatePassword, UpdateUser } from "../schemas/userSchema.js";
 
 export const usersController = {
   watching: async (req: Request, res: Response, next: NextFunction) => {
@@ -29,7 +24,7 @@ export const usersController = {
   },
 
   update: async (req: Request, res: Response, next: NextFunction) => {
-    const attributes = UpdateUserSchema.parse(req.dataBody);
+    const attributes = req.dataBody as UpdateUser;
 
     try {
       await usersServices.update(req.user!.id, attributes);
@@ -40,9 +35,7 @@ export const usersController = {
   },
 
   updatePassword: async (req: Request, res: Response, next: NextFunction) => {
-    const { currentPassword, newPassword } = UpdatePasswordSchema.parse(
-      req.dataBody,
-    );
+    const { currentPassword, newPassword } = req.dataBody as UpdatePassword;
 
     try {
       await usersServices.updatePassword(

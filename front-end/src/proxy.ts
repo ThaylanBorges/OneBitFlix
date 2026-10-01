@@ -1,10 +1,10 @@
 import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
+import { PROTECTED_PREFIXES } from "./constants/routes";
 
 const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 const PUBLIC_PATHS = ["/", "/login", "/register"];
-const PROTECTED_PREFIXES = ["/home", "/profile", "/courses/"];
 
 const isValidToken = async (token: string) => {
   try {
@@ -15,7 +15,7 @@ const isValidToken = async (token: string) => {
   }
 };
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const tokenCookie = request.cookies.get("token");
   const token = tokenCookie?.value;

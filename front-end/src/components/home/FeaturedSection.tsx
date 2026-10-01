@@ -23,7 +23,7 @@ export async function FeaturedSection() {
         src={`${apiUrl}/${featured.thumbnailUrl}`}
         alt={`Foto ${featured.name}`}
         fill
-        priority
+        preload
         className="object-cover"
       />
 

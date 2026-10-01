@@ -38,7 +38,7 @@ export default function PresentationSection() {
             width={800}
             height={600}
             className="w-full h-auto"
-            priority
+            preload
           />
         </div>
         <a

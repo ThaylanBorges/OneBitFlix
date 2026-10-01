@@ -11,7 +11,7 @@ export default function HeaderNoAuth() {
           alt="Logo OneBitFlix"
           width={40}
           height={40}
-          priority
+          preload
         />
         <p>Se cadastre para ter acesso aos cursos</p>
         <Image
@@ -19,7 +19,7 @@ export default function HeaderNoAuth() {
           alt="Logo OneBitFlix"
           width={40}
           height={40}
-          priority
+          preload
         />
       </div>
       <div className="container mx-auto flex justify-center sm:justify-between flex-wrap mt-5 gap-5 py-4">
@@ -28,7 +28,7 @@ export default function HeaderNoAuth() {
           alt="Logo OneBitFlix"
           width={215}
           height={215}
-          priority
+          preload
         />
         <div className="flex gap-5">
           <Button

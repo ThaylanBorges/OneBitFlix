@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, TargetAndTransition } from "framer-motion";
 import { ReactNode } from "react";
+import { motion, TargetAndTransition } from "motion/react";
 
 type AnimationType = "fadeUp" | "fadeRight" | "fadeZoomIn";
 

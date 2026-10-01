@@ -7,6 +7,7 @@ import {
   removeFavoriteAction,
 } from "@/actions/favoriteCourseAction";
 import { addLikeAction, removeLikeAction } from "@/actions/likeCourseAction";
+import { toast } from "sonner";
 
 type SectionButtonsReactProps = {
   liked: boolean;
@@ -25,20 +26,24 @@ export function SectionButtonsReact({
   const handlerClickFavorite = async (courseId: number) => {
     if (!favorite) {
       const success = await addFavoriteAction(courseId);
-      if (success) setFavorite(true);
+      if (!success) return toast("Falha ao favoritar");
+      setFavorite(true);
     } else {
       const success = await removeFavoriteAction(courseId);
-      if (success) setFavorite(false);
+      if (!success) return toast("Falha ao remover dos favoritos");
+      setFavorite(false);
     }
   };
 
   const handlerClickLike = async (courseId: number) => {
     if (!like) {
       const success = await addLikeAction(courseId);
-      if (success) setLike(true);
+      if (!success) return toast("Falha ao curtir");
+      setLike(true);
     } else {
       const success = await removeLikeAction(courseId);
-      if (success) setLike(false);
+      if (!success) return toast("Falha ao remover curtida");
+      setLike(false);
     }
   };
 

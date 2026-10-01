@@ -8,6 +8,7 @@ import { Login, LoginSchema } from "@/schemas/userSchemas";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FieldGroup } from "../ui/field";
 import { FormField } from "../ui/form-field";
+import { internalRouteSchema } from "@/schemas/urlSchema";
 
 export default function LoginForm() {
   const {
@@ -30,7 +31,12 @@ export default function LoginForm() {
   const onSubmit = async (data: Login) => {
     try {
       await authService.login(data);
-      router.replace(search || "home");
+
+      const result = internalRouteSchema.safeParse(search);
+
+      const redirectUrl = result.success ? result.data : "/home";
+
+      router.replace(redirectUrl);
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Internal Error.", {

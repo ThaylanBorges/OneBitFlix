@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PasswordSchema } from "./commonSchemas.js";
 
 const calculateAge = (birthDate: Date): number => {
   const today = new Date();
@@ -29,14 +30,14 @@ export const RegisterSchema = z.object({
     const age = calculateAge(date);
     return date >= new Date("1900-01-01") && date <= new Date() && age >= 16;
   }, "You must be at least 16 years old."),
-  password: z.string().min(6).max(20).trim(),
+  password: PasswordSchema,
 });
 
 export type Register = z.infer<typeof RegisterSchema>;
 
 export const LoginSchema = z.object({
   email: z.email(),
-  password: z.string().min(6).max(20),
+  password: PasswordSchema,
 });
 
 export type Login = z.infer<typeof LoginSchema>;

@@ -116,9 +116,9 @@ export default async function EpisodePage({
                   variant="ghost"
                   size="sm"
                   className="shrink-0 border border-white/10 text-white/40 hover:border-white/20 hover:text-white/80"
-                >
-                  <Link href={`/courses/${id}`}>Ver curso</Link>
-                </Button>
+                  nativeButton={false}
+                  render={<Link href={`/courses/${id}`}>Ver curso</Link>}
+                ></Button>
 
                 <div className="flex flex-1 justify-end">
                   {nextEpisode ? (

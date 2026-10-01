@@ -1,8 +1,6 @@
+import { DUMMY_HASH } from "../constants/dummy-hash.js";
 import { User } from "../models/User.js";
 import bycrypt from "bcrypt";
-
-const DUMMY_HASH =
-  "$2b$10$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUV.WXY";
 
 interface AdminSession {
   id: number;

@@ -12,3 +12,5 @@ export const ParamsIdSchema = z.object({
 });
 
 export type ParamsId = z.infer<typeof ParamsIdSchema>;
+
+export const PasswordSchema = z.string().min(6).max(64).trim();

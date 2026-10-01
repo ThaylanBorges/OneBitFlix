@@ -46,7 +46,8 @@ export const episodeService = {
 
       if (start > end) throw new AppError("Range not satisfiable", 416);
 
-      if (end > fileStat.size) throw new AppError("Range not satisfiable", 416);
+      if (end >= fileStat.size)
+        throw new AppError("Range not satisfiable", 416);
 
       const chunkSize = end - start + 1;
 
@@ -87,6 +88,10 @@ export const episodeService = {
   },
 
   setWatchTime: async (userId: number, episodeId: number, seconds: number) => {
+    const verifyEpisode = await Episode.findByPk(episodeId);
+
+    if (!verifyEpisode) throw new AppError("Episode not found.", 404);
+
     return WatchTime.upsert({ userId, episodeId, seconds });
   },
 };

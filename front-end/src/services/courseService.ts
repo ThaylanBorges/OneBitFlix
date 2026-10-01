@@ -80,14 +80,10 @@ export const courseService = {
     }
   },
   search: async (name: string) => {
-    try {
-      const { courses } = await apiWithAuth(
-        `/courses/search/?name=${encodeURIComponent(name)}`,
-      );
+    const { courses } = await apiWithAuth(
+      `/courses/search/?name=${encodeURIComponent(name)}`,
+    );
 
-      return CoursesArraySchema.parse(courses);
-    } catch {
-      return [];
-    }
+    return CoursesArraySchema.parse(courses);
   },
 };

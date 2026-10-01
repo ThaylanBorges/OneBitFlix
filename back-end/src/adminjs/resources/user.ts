@@ -16,15 +16,7 @@ export const userResourceOptions: ResourceOptions = {
       ],
     },
   },
-  editProperties: [
-    "firstName",
-    "lastName",
-    "phone",
-    "birth",
-    "email",
-    "password",
-    "role",
-  ],
+  editProperties: ["firstName", "lastName", "phone", "birth", "email", "role"],
   filterProperties: [
     "firstName",
     "lastName",

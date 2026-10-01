@@ -33,7 +33,7 @@ export default async function CoursePage({
             alt={`Thumbnail do curso ${course.name}`}
             className="object-cover object-center"
             fill
-            priority
+            preload
           />
           <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/50 to-black/20" />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
