@@ -8,8 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import HeaderAuth from "@/components/home/HeaderAuth";
 import { formatDuration } from "@/utils/formatDuration";
 import { episodeService } from "@/services/episodeService";
+import { EpisodePlayer } from "@/components/episode/EpisodePlayer";
 
-const apiUrl = process.env.NEXT_PUBLIC_BASEURL;
+const apiUrl = process.env.NEXT_PUBLIC_BASEURL!;
 
 export default async function EpisodePage({
   params,
@@ -24,6 +25,8 @@ export default async function EpisodePage({
 
   const course = await courseService.getById(Number(id));
   if (!course) redirect("/home");
+
+  const savedSeconds = await episodeService.getWatchTime(Number(episodeId));
 
   const episodeIndex = course.episodes.findIndex(
     (ep) => ep.id === Number(episodeId),
@@ -47,17 +50,12 @@ export default async function EpisodePage({
           <div className="px-8 pt-8 flex justify-center">
             <div className="w-full max-w-[80%] overflow-hidden rounded-2xl bg-white/5 shadow-2xl shadow-black/60">
               <div className="aspect-video w-full">
-                <video
+                <EpisodePlayer
                   key={episode.id}
-                  controls
-                  className="h-full w-full object-cover"
-                >
-                  <source
-                    src={`${apiUrl}/episodes/stream/${episode.id}?token=${token}`}
-                    type="video/mp4"
-                  />
-                  Seu navegador não suporta vídeo HTML5.
-                </video>
+                  episodeId={episode.id}
+                  videoUrl={`${apiUrl}/episodes/stream/${episodeId}?token=${token}`}
+                  secondsWatched={savedSeconds}
+                />
               </div>
             </div>
           </div>
