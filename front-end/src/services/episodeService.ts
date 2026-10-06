@@ -20,4 +20,16 @@ export const episodeService = {
       return 0;
     }
   },
+  setWatchTime: async (episodeId: number, seconds: number) => {
+    try {
+      await apiWithAuth(`/episodes/${episodeId}/watchTime`, {
+        method: "POST",
+        body: JSON.stringify({ seconds }),
+      });
+
+      return true;
+    } catch {
+      return false;
+    }
+  },
 };

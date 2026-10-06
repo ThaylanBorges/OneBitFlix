@@ -1,5 +1,6 @@
 "use client";
 
+import { setWatchTimeAction } from "@/actions/setWatchTimeAction";
 import { useCallback, useEffect, useRef } from "react";
 
 type EpisodePlayerReactProps = {
@@ -17,22 +18,58 @@ export function EpisodePlayer({
   const hasAppliedInitialTime = useRef(false);
 
   const handleTimeWatch = useCallback(() => {
-    if (videoRef.current) {
-      if (!hasAppliedInitialTime.current) {
-        if (videoRef.current.duration >= secondsWatched) {
-          videoRef.current.currentTime = secondsWatched;
-          hasAppliedInitialTime.current = true;
-          console.log(videoRef.current.duration);
-        }
-      }
+    if (
+      videoRef.current &&
+      !hasAppliedInitialTime.current &&
+      videoRef.current.duration >= secondsWatched
+    ) {
+      videoRef.current.currentTime = secondsWatched;
+      hasAppliedInitialTime.current = true;
     }
   }, [secondsWatched]);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      if (videoRef.current.readyState >= 1) handleTimeWatch();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const stopInterval = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
+  }, []);
+
+  const saveWatchTime = useCallback(async () => {
+    if (videoRef.current) {
+      const currentTime = videoRef.current.currentTime;
+
+      await setWatchTimeAction(
+        episodeId,
+        videoRef.current.ended ? 0 : Math.floor(currentTime),
+      );
+    }
+  }, [episodeId]);
+
+  const pauseAndSave = useCallback(() => {
+    stopInterval();
+    saveWatchTime();
+  }, [saveWatchTime, stopInterval]);
+
+  const startInterval = useCallback(() => {
+    stopInterval();
+
+    if (videoRef.current && !videoRef.current.paused) {
+      intervalRef.current = setInterval(() => {
+        saveWatchTime();
+      }, 60 * 1000);
+    }
+  }, [saveWatchTime, stopInterval]);
+
+  useEffect(() => {
+    if (videoRef.current && videoRef.current.readyState >= 1) handleTimeWatch();
   }, [handleTimeWatch]);
+
+  useEffect(() => {
+    return () => stopInterval();
+  }, [stopInterval]);
 
   return (
     <video
@@ -40,6 +77,8 @@ export function EpisodePlayer({
       key={episodeId}
       onLoadedMetadata={handleTimeWatch}
       onDurationChange={handleTimeWatch}
+      onPause={pauseAndSave}
+      onPlay={startInterval}
       className="h-full w-full object-cover"
       controls
     >
