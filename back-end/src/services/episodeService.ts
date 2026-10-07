@@ -94,4 +94,20 @@ export const episodeService = {
 
     return WatchTime.upsert({ userId, episodeId, seconds });
   },
+
+  setCompleted: async (userId: number, episodeId: number, seconds: number) => {
+    const verifyEpisode = await Episode.findByPk(episodeId);
+
+    if (!verifyEpisode) throw new AppError("Episode not found.", 404);
+
+    if (seconds < verifyEpisode.secondsLong - 5)
+      throw new AppError("Episode not finished", 400);
+
+    return WatchTime.upsert({
+      userId,
+      episodeId,
+      seconds,
+      completedAt: new Date(),
+    });
+  },
 };

@@ -95,6 +95,13 @@ route.post(
   validateBody(SecondsSchema),
   episodesController.setWatchTime,
 );
+route.post(
+  "/episodes/:id/complete",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
+  validateBody(SecondsSchema),
+  episodesController.setCompleted,
+);
 
 route.get("/favorites", authMiddleware, favoritesController.index);
 route.post(
