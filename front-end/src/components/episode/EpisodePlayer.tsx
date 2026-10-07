@@ -1,5 +1,6 @@
 "use client";
 
+import { setCompletedEpisodeAction } from "@/actions/setCompletedEpisodeAction";
 import { setWatchTimeAction } from "@/actions/setWatchTimeAction";
 import { useCallback, useEffect, useRef } from "react";
 
@@ -41,10 +42,7 @@ export function EpisodePlayer({
     if (videoRef.current) {
       const currentTime = videoRef.current.currentTime;
 
-      await setWatchTimeAction(
-        episodeId,
-        videoRef.current.ended ? 0 : Math.floor(currentTime),
-      );
+      await setWatchTimeAction(episodeId, Math.floor(currentTime));
     }
   }, [episodeId]);
 
@@ -63,6 +61,17 @@ export function EpisodePlayer({
     }
   }, [saveWatchTime, stopInterval]);
 
+  const completeEpisode = useCallback(async () => {
+    stopInterval();
+
+    const teste = await setCompletedEpisodeAction(
+      episodeId,
+      videoRef.current!.currentTime,
+    );
+
+    console.log(teste);
+  }, [episodeId, stopInterval]);
+
   useEffect(() => {
     if (videoRef.current && videoRef.current.readyState >= 1) handleTimeWatch();
   }, [handleTimeWatch]);
@@ -79,6 +88,7 @@ export function EpisodePlayer({
       onDurationChange={handleTimeWatch}
       onPause={pauseAndSave}
       onPlay={startInterval}
+      onEnded={completeEpisode}
       className="h-full w-full object-cover"
       controls
     >

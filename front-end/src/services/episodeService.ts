@@ -44,4 +44,16 @@ export const episodeService = {
       return null;
     }
   },
+  setCompleted: async (id: number, seconds: number) => {
+    try {
+      await apiWithAuth(`/episodes/${id}/complete`, {
+        method: "POST",
+        body: JSON.stringify({ seconds }),
+      });
+    } catch (err) {
+      console.log(err);
+
+      return null;
+    }
+  },
 };
