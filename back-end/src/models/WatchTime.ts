@@ -5,13 +5,14 @@ export interface WatchTimeAttributes {
   userId: number;
   episodeId: number;
   seconds: number;
+  completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface WatchTimeCreationAttributes extends Optional<
   WatchTimeAttributes,
-  "createdAt" | "updatedAt"
+  "completedAt" | "createdAt" | "updatedAt"
 > {}
 
 export class WatchTime extends Model<
@@ -21,6 +22,7 @@ export class WatchTime extends Model<
   declare userId: number;
   declare episodeId: number;
   declare seconds: number;
+  declare completedAt: Date | null;
   declare createdAt: Date;
   declare updatedAt: Date;
 }
@@ -46,6 +48,10 @@ WatchTime.init(
     seconds: {
       allowNull: false,
       type: DataTypes.INTEGER,
+    },
+    completedAt: {
+      allowNull: true,
+      type: DataTypes.DATE,
     },
     createdAt: {
       allowNull: false,
