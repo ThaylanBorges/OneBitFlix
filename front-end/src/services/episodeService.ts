@@ -1,4 +1,7 @@
-import { WatchTimeSchema } from "@/schemas/episodeSchema";
+import {
+  EpisodeWatchingArraySchema,
+  WatchTimeSchema,
+} from "@/schemas/episodeSchema";
 import { apiWithAuth } from "./apiWithAuth";
 
 export const episodeService = {
@@ -30,6 +33,15 @@ export const episodeService = {
       return true;
     } catch {
       return false;
+    }
+  },
+  getWating: async () => {
+    try {
+      const episodes = await apiWithAuth(`/users/current/watching`);
+
+      return EpisodeWatchingArraySchema.parse(episodes);
+    } catch {
+      return null;
     }
   },
 };
