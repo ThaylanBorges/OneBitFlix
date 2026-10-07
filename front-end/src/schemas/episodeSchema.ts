@@ -19,6 +19,7 @@ export const WatchTimeSchema = z.object({
   userId: z.number().positive().int().optional(),
   episodeId: z.number().positive().int().optional(),
   seconds: z.number(),
+  completedAt: z.coerce.date().nullable(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
 });
