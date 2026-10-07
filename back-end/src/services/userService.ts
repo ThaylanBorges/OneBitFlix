@@ -94,7 +94,12 @@ export const usersServices = {
         include: [
           {
             association: "course",
-            attributes: ["id", "name", ["thumbnail_url", "thumbnailUrl"]],
+            attributes: [
+              "id",
+              "name",
+              "synopsis",
+              ["thumbnail_url", "thumbnailUrl"],
+            ],
           },
         ],
         through: {
