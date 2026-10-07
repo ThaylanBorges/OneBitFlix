@@ -105,6 +105,7 @@ export const usersServices = {
         through: {
           as: "watchTime",
           attributes: ["seconds", "updatedAt"],
+          where: { completedAt: null },
         },
       },
     });

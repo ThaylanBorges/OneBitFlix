@@ -106,7 +106,7 @@ export const episodeService = {
     return WatchTime.upsert({
       userId,
       episodeId,
-      seconds,
+      seconds: 0,
       completedAt: new Date(),
     });
   },
