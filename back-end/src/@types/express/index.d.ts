@@ -3,8 +3,6 @@ import "express";
 export interface SessionPayload {
   kind: "session";
   id: number;
-  firstName: string;
-  email: string;
 }
 
 export interface SessionStream {

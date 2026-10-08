@@ -43,8 +43,6 @@ export const authController = {
       setCookie(res, {
         kind: "session",
         id: user.id,
-        firstName: user.firstName,
-        email: user.email,
       });
 
       return res.status(201).json({
@@ -71,8 +69,6 @@ export const authController = {
       setCookie(res, {
         kind: "session",
         id: user.id,
-        firstName: user.firstName,
-        email: user.email,
       });
 
       return res.status(200).json({

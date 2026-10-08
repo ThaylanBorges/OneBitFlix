@@ -1,17 +1,11 @@
 import { DUMMY_HASH } from "../constants/dummy-hash.js";
-import { User } from "../models/User.js";
+import { User, UserAttributes } from "../models/User.js";
 import bycrypt from "bcrypt";
-
-interface AdminSession {
-  id: number;
-  email: string;
-  role: string;
-}
 
 export const authenticate = async (
   email: string,
   password: string,
-): Promise<AdminSession | null> => {
+): Promise<Pick<UserAttributes, "id" | "email" | "role"> | null> => {
   const user = await User.findOne({ where: { email } });
   const passwordHash = user?.password ?? DUMMY_HASH;
 
