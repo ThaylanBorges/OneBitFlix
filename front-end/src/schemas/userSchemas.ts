@@ -38,7 +38,7 @@ export type User = z.infer<typeof UserSchema>;
 const Password = z
   .string()
   .min(6, "A senha deve ter no mínimo 6 caracteres.")
-  .max(20, "A senha deve ter no máximo 20 caracteres.")
+  .max(64, "A senha deve ter no máximo 64 caracteres.")
   .trim();
 
 export const RegisterSchema = UserSchema.extend({
@@ -68,7 +68,7 @@ export type Register = z.infer<typeof RegisterSchema>;
 
 export const LoginSchema = z.object({
   email: z.email("E-mail inválido."),
-  password: Password,
+  password: z.string().min(1),
 });
 
 export type Login = z.infer<typeof LoginSchema>;

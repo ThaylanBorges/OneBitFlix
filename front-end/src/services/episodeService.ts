@@ -50,9 +50,7 @@ export const episodeService = {
         method: "POST",
         body: JSON.stringify({ seconds }),
       });
-    } catch (err) {
-      console.log(err);
-
+    } catch {
       return null;
     }
   },
