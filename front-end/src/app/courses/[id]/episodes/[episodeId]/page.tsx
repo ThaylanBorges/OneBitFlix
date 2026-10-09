@@ -142,7 +142,7 @@ export default async function EpisodePage({
         </main>
 
         <aside className="relative  translate-x-0">
-          <SidebarEpisodes id={id} />
+          <SidebarEpisodes id={id} episodeId={Number(episodeId)} />
         </aside>
       </div>
     </div>

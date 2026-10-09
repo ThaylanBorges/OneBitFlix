@@ -38,7 +38,6 @@ export const episodeService = {
   getWating: async () => {
     try {
       const episodes = await apiWithAuth(`/users/current/watching`);
-
       return EpisodeWatchingArraySchema.parse(episodes);
     } catch {
       return null;
