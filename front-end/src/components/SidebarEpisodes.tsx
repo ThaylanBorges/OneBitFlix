@@ -54,7 +54,7 @@ export async function SidebarEpisodes({
                       >
                         {episode.id === episodeId ? (
                           <span className="mt-0.5 flex h-6 items-center justify-center text-primary transition-colors">
-                            <Play />
+                            <Play className="shrink-0" />
                           </span>
                         ) : (
                           <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/20 text-xs font-bold text-white/40 transition-colors group-hover/item:border-primary group-hover/item:text-primary">

@@ -44,3 +44,13 @@ export type EpisodeWatching = z.infer<typeof EpisodeWatchingSchema>;
 export const EpisodeWatchingArraySchema = z.array(EpisodeWatchingSchema);
 
 export type EpisodeWatchingArray = z.infer<typeof EpisodeWatchingArraySchema>;
+
+export const EpisodeWatchingByCourseSchema = z.object({
+  id: z.number().positive().int(),
+  name: z.string(),
+  order: z.number().positive().int(),
+});
+
+export type EpisodeWatchingByCourse = z.infer<
+  typeof EpisodeWatchingByCourseSchema
+>;

@@ -1,5 +1,6 @@
 import {
   EpisodeWatchingArraySchema,
+  EpisodeWatchingByCourseSchema,
   WatchTimeSchema,
 } from "@/schemas/episodeSchema";
 import { apiWithAuth } from "./apiWithAuth";
@@ -35,10 +36,20 @@ export const episodeService = {
       return false;
     }
   },
-  getWating: async () => {
+  getWatching: async () => {
     try {
       const episodes = await apiWithAuth(`/users/current/watching`);
       return EpisodeWatchingArraySchema.parse(episodes);
+    } catch {
+      return null;
+    }
+  },
+  getWatchingByCourse: async (courseId: number) => {
+    try {
+      const episode = await apiWithAuth(
+        `/users/current/watching/course/${courseId}`,
+      );
+      return EpisodeWatchingByCourseSchema.parse(episode);
     } catch {
       return null;
     }

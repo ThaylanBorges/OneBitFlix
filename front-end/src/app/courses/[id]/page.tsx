@@ -3,6 +3,7 @@ import HeaderAuth from "@/components/home/HeaderAuth";
 import { SidebarEpisodes } from "@/components/SidebarEpisodes";
 import { Button } from "@/components/ui/button";
 import { courseService } from "@/services/courseService";
+import { episodeService } from "@/services/episodeService";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -19,6 +20,8 @@ export default async function CoursePage({
   const course = await courseService.getById(Number(id));
 
   if (!course) redirect("/home");
+
+  const currentEpisode = await episodeService.getWatchingByCourse(course.id);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-black">
@@ -39,12 +42,18 @@ export default async function CoursePage({
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
           <div className="container mx-auto relative z-10 flex h-full gap-5 flex-col justify-center p-4 text-white">
-            {course.category && (
-              <span className="mb-4 w-fit rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-white/70 backdrop-blur-sm">
-                {course.category.name}
-              </span>
-            )}
-
+            <div className="flex gap-5">
+              {course.category && (
+                <span className="mb-4 w-fit rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-white/70 backdrop-blur-sm">
+                  {course.category.name}
+                </span>
+              )}
+              {course.episodes?.length === 0 && (
+                <span className="mb-4 w-fit rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-white/70 backdrop-blur-sm">
+                  Em Breve!
+                </span>
+              )}
+            </div>
             <h1 className="max-w-xl text-4xl font-bold leading-tight tracking-tight lg:text-5xl">
               {course.name}
             </h1>
@@ -66,7 +75,8 @@ export default async function CoursePage({
                 <Button
                   render={
                     <Link
-                      href={`/courses/${course.id}/episodes/${course.episodes[0].id}`}
+                      aria-current="page"
+                      href={`/courses/${course.id}/episodes/${currentEpisode ? currentEpisode.id : course.episodes[0].id}`}
                     />
                   }
                   nativeButton={false}
@@ -74,7 +84,9 @@ export default async function CoursePage({
                   size="xl"
                   className="inline-flex items-center gap-3 rounded-xl border-2 border-white font-bold transition-all duration-150 hover:scale-105 hover:border-primary hover:text-primary"
                 >
-                  Comece Aqui!
+                  {currentEpisode
+                    ? `Continuar o episódio ${currentEpisode.order}`
+                    : "Comece aqui!"}
                   <Image
                     src="/buttonPlay.svg"
                     alt=""
