@@ -28,6 +28,12 @@ route.post("/login", validateBody(LoginSchema), authController.login);
 route.post("/logout", authController.logout);
 
 route.get("/users/current/watching", authMiddleware, usersController.watching);
+route.get(
+  "/users/current/watching/course/:id",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
+  usersController.watchByCourse,
+);
 route.get("/users/current", authMiddleware, usersController.show);
 route.put(
   "/users/current",

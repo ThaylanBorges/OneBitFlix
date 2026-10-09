@@ -51,28 +51,51 @@ export const usersServices = {
     await user.save();
   },
 
-  getKeepWatchingList: async (id: number) => {
+  getEpisodeByCourseId: async (userId: number, courseId: number) => {
     const sql = `
-      SELECT DISTINCT ON (e.course_id)
-        e.id, 
-        e.name, 
-        e.synopsis, 
-        e.order, 
-        e.video_url AS "videoUrl",  
-        e.seconds_long AS "secondsLong", 
-        e.course_id AS "courseId",
-        c.id AS "course.id",
-        c.name AS "course.name",
-        c.synopsis AS "course.synopsis",
-        c.thumbnail_url AS "course.thumbnailUrl",
-        wt.seconds AS "watchTime.seconds", 
-        wt.updated_at AS "watchTime.updatedAt"
+      SELECT e.id, e.name, e.order 
       FROM watch_times wt
       JOIN episodes e ON e.id = wt.episode_id
-      JOIN courses c ON e.course_id = c.id
       WHERE wt.user_id = :userId
         AND wt.completed_at IS NULL
-      ORDER BY e.course_id, e.order DESC;
+        AND e.course_id = :courseId
+      ORDER BY e.course_id, e.order DESC
+      LIMIT 1;
+    `;
+
+    const row = await sequelize.query(sql, {
+      replacements: { userId, courseId },
+      type: QueryTypes.SELECT,
+    });
+
+    return row[0] ?? null;
+  },
+
+  getKeepWatchingList: async (id: number) => {
+    const sql = `
+      SELECT * 
+      FROM (
+        SELECT DISTINCT ON (e.course_id)
+          e.id, 
+          e.name, 
+          e.synopsis, 
+          e.order, 
+          e.video_url AS "videoUrl",  
+          e.seconds_long AS "secondsLong", 
+          e.course_id AS "courseId",
+          c.id AS "course.id",
+          c.name AS "course.name",
+          c.synopsis AS "course.synopsis",
+          c.thumbnail_url AS "course.thumbnailUrl",
+          wt.seconds AS "watchTime.seconds", 
+          wt.updated_at AS "watchTime.updatedAt"
+        FROM watch_times wt
+        JOIN episodes e ON e.id = wt.episode_id
+        JOIN courses c ON e.course_id = c.id
+        WHERE wt.user_id = :userId
+          AND wt.completed_at IS NULL
+        ORDER BY e.course_id, e.order DESC
+      ) AS last_by_course ORDER BY "watchTime.updatedAt" DESC;
     `;
 
     const rows = await sequelize.query(sql, {

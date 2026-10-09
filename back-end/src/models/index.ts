@@ -49,11 +49,6 @@ WatchTime.belongsTo(Episode, {
   as: "episode",
 });
 
-User.belongsToMany(Episode, {
-  through: WatchTime,
-  foreignKey: "userId",
-  as: "watchingEpisodes",
-});
 Episode.belongsToMany(User, {
   through: WatchTime,
   foreignKey: "episodeId",

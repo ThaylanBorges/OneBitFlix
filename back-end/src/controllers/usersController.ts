@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { usersServices } from "../services/userService.js";
 import { UpdatePassword, UpdateUser } from "../schemas/userSchema.js";
+import { ParamsId } from "../schemas/commonSchemas.js";
 
 export const usersController = {
   watching: async (req: Request, res: Response, next: NextFunction) => {
@@ -9,6 +10,22 @@ export const usersController = {
         req.user!.id,
       );
       res.json(watchingList);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  watchByCourse: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user!.id;
+      const course = req.dataParams as ParamsId;
+
+      const wathcEpisode = await usersServices.getEpisodeByCourseId(
+        userId,
+        course.id,
+      );
+
+      res.json(wathcEpisode);
     } catch (err) {
       next(err);
     }

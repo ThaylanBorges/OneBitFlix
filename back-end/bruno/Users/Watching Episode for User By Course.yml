@@ -1,0 +1,20 @@
+info:
+  name: Watching Episode for User By Course
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{baseUrl}}/users/current/watching/course/:id"
+  params:
+    - name: id
+      value: "12"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
