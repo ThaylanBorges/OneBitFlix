@@ -1,33 +1,7 @@
+import { QueryTypes } from "sequelize";
+import { sequelize } from "../database/index.js";
 import { AppError } from "../errors/AppError.js";
-import { Episode } from "../models/Episodes.js";
 import { User, UserCreationAttributes } from "../models/User.js";
-
-function filterLastEpisodesByCourse(episodes: Episode[]) {
-  const courseOnList: number[] = [];
-
-  const lastEpisodes = episodes.reduce((currentList, episode) => {
-    if (!courseOnList.includes(episode.courseId)) {
-      courseOnList.push(episode.courseId);
-      currentList.push(episode);
-      return currentList;
-    }
-
-    const episodeFromSameCourse = currentList.find(
-      (ep) => ep.courseId === episode.courseId,
-    );
-
-    if (episodeFromSameCourse!.order > episode.order) return currentList;
-
-    const listWithoutEpisodeFromSameCourse = currentList.filter(
-      (ep) => ep.courseId !== episode.courseId,
-    );
-    listWithoutEpisodeFromSameCourse.push(episode);
-
-    return listWithoutEpisodeFromSameCourse;
-  }, [] as Episode[]);
-
-  return lastEpisodes;
-}
 
 export const usersServices = {
   findById: async (id: number) => {
@@ -78,46 +52,35 @@ export const usersServices = {
   },
 
   getKeepWatchingList: async (id: number) => {
-    const userWithWachingList = await User.findByPk(id, {
-      include: {
-        association: "watchingEpisodes",
+    const sql = `
+      SELECT DISTINCT ON (e.course_id)
+        e.id, 
+        e.name, 
+        e.synopsis, 
+        e.order, 
+        e.video_url AS "videoUrl",  
+        e.seconds_long AS "secondsLong", 
+        e.course_id AS "courseId",
+        c.id AS "course.id",
+        c.name AS "course.name",
+        c.synopsis AS "course.synopsis",
+        c.thumbnail_url AS "course.thumbnailUrl",
+        wt.seconds AS "watchTime.seconds", 
+        wt.updated_at AS "watchTime.updatedAt"
+      FROM watch_times wt
+      JOIN episodes e ON e.id = wt.episode_id
+      JOIN courses c ON e.course_id = c.id
+      WHERE wt.user_id = :userId
+        AND wt.completed_at IS NULL
+      ORDER BY e.course_id, e.order DESC;
+    `;
 
-        attributes: [
-          "id",
-          "name",
-          "synopsis",
-          "order",
-          ["video_url", "videoUrl"],
-          ["seconds_long", "secondsLong"],
-          ["course_id", "courseId"],
-        ],
-        include: [
-          {
-            association: "course",
-            attributes: [
-              "id",
-              "name",
-              "synopsis",
-              ["thumbnail_url", "thumbnailUrl"],
-            ],
-          },
-        ],
-        through: {
-          as: "watchTime",
-          attributes: ["seconds", "updatedAt"],
-          where: { completedAt: null },
-        },
-      },
+    const rows = await sequelize.query(sql, {
+      replacements: { userId: id },
+      type: QueryTypes.SELECT,
+      nest: true,
     });
 
-    if (!userWithWachingList) throw new AppError("User not found", 404);
-
-    const keepWatchingList = filterLastEpisodesByCourse(
-      userWithWachingList.watchingEpisodes!,
-    );
-
-    return keepWatchingList.sort((a, b) =>
-      a.watchTime!.updatedAt < b.watchTime!.updatedAt ? 1 : -1,
-    );
+    return rows;
   },
 };
