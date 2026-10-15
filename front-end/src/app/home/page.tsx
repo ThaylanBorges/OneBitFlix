@@ -13,20 +13,9 @@ export default async function Home() {
   return (
     <main>
       <FeaturedSection />
-      <div
-        id="continueWatching"
-        className="container mx-auto mt-16 scroll-mt-8 sm:mt-20"
-      >
-        <Animated type="fadeUp">
-          <SectionHeading
-            title="Continuar Assistindo"
-            description="Não perca tempo e volte de onde parou"
-          />
-        </Animated>
-        <Suspense fallback={<CoursesSlideSkeleton />}>
-          <WhatingEpisodesSection />
-        </Suspense>
-      </div>
+      <Suspense fallback={<CoursesSlideSkeleton />}>
+        <WhatingEpisodesSection />
+      </Suspense>
 
       <div className="container mx-auto mt-16 scroll-mt-8 sm:mt-20">
         <Animated type="fadeUp">

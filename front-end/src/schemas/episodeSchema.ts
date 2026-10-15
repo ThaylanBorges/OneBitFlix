@@ -7,6 +7,7 @@ export const EpisodeSchema = z.object({
   order: z.number().positive().int(),
   videoUrl: z.string().nullable(),
   secondsLong: z.number().nullable(),
+  completedAt: z.coerce.date().nullable().optional(),
 });
 
 export type Episode = z.infer<typeof EpisodeSchema>;

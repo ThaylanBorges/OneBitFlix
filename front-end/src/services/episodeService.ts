@@ -54,14 +54,24 @@ export const episodeService = {
       return null;
     }
   },
-  setCompleted: async (id: number, seconds: number) => {
+  setCompleted: async (id: number) => {
     try {
       await apiWithAuth(`/episodes/${id}/complete`, {
         method: "POST",
-        body: JSON.stringify({ seconds }),
       });
+      return true;
     } catch {
-      return null;
+      return false;
+    }
+  },
+  removeCompleted: async (id: number) => {
+    try {
+      await apiWithAuth(`/episodes/${id}/complete`, {
+        method: "DELETE",
+      });
+      return true;
+    } catch {
+      return false;
     }
   },
 };

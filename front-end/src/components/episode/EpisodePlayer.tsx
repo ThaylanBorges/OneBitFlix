@@ -64,10 +64,7 @@ export function EpisodePlayer({
   const completeEpisode = useCallback(async () => {
     stopInterval();
 
-    return await setCompletedEpisodeAction(
-      episodeId,
-      videoRef.current!.currentTime,
-    );
+    return await setCompletedEpisodeAction(episodeId);
   }, [episodeId, stopInterval]);
 
   useEffect(() => {

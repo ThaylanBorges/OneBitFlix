@@ -50,7 +50,7 @@ export function Search() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const name = e.target.value.trim();
-    latestRequest.current++; // invalida qualquer requisição em andamento
+    latestRequest.current++;
 
     if (!name) {
       search.cancel();
@@ -60,7 +60,6 @@ export function Search() {
       return;
     }
 
-    // Some com a lista velha e mostra "Buscando..." já na primeira tecla
     setCourses([]);
     setStatus("loading");
     setIsOpen(true);
@@ -74,7 +73,6 @@ export function Search() {
       return;
     }
 
-    // Enter no input abre o primeiro resultado (em um link, o Enter já funciona)
     if (e.key === "Enter" && e.target === inputRef.current) {
       const first = courses[0];
       if (status === "done" && first) {
@@ -137,8 +135,6 @@ export function Search() {
           maxLength={100}
           onChange={handleChange}
           onFocus={(e) => {
-            // Foco vindo de dentro do componente (ex.: voltou de um link pelo Esc)
-            // não deve reabrir a lista; só foco vindo de fora.
             if (
               containerRef.current?.contains(e.relatedTarget as Node | null)
             ) {
@@ -152,7 +148,6 @@ export function Search() {
         />
       </InputGroup>
 
-      {/* Região anunciada por leitores de tela; fica sempre montada */}
       <div role="status" aria-live="polite" className="sr-only">
         {statusText}
       </div>

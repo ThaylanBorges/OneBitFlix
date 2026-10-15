@@ -23,6 +23,10 @@ export default async function CoursePage({
 
   const currentEpisode = await episodeService.getWatchingByCourse(course.id);
 
+  const indexEpisode = course.episodes.findIndex(
+    (e) => e.id === currentEpisode?.id,
+  );
+
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-black">
       <div className="relative z-20 shrink-0 bg-black">
@@ -75,7 +79,6 @@ export default async function CoursePage({
                 <Button
                   render={
                     <Link
-                      aria-current="page"
                       href={`/courses/${course.id}/episodes/${currentEpisode ? currentEpisode.id : course.episodes[0].id}`}
                     />
                   }
@@ -84,19 +87,12 @@ export default async function CoursePage({
                   size="xl"
                   className="inline-flex items-center gap-3 rounded-xl border-2 border-white font-bold transition-all duration-150 hover:scale-105 hover:border-primary hover:text-primary"
                 >
-                  {currentEpisode
-                    ? `Continuar o episódio ${currentEpisode.order}`
-                    : "Comece aqui!"}
-                  <Image
-                    src="/buttonPlay.svg"
-                    alt=""
-                    aria-hidden="true"
-                    width={15}
-                    height={15}
-                  />
+                  {indexEpisode === -1
+                    ? "Comece Aqui!"
+                    : `Continuar Assistindo o Episódio ${indexEpisode + 1}`}
+                  <Image src="/buttonPlay.svg" alt="" width={15} height={15} />
                 </Button>
               )}
-
               <div className="flex items-center gap-2">
                 <SectionButtonsReact
                   favorited={course.favorited}

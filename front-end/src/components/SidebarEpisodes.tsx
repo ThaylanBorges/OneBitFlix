@@ -8,12 +8,12 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { courseService } from "@/services/courseService";
 import { redirect } from "next/navigation";
 import { ScrollArea } from "./ui/scroll-area";
 import Link from "next/link";
 import { formatDuration } from "@/utils/formatDuration";
-import { Play } from "lucide-react";
+import { CompleteBox } from "./episode/CompleteBox";
+import { courseService } from "@/services/courseService";
 
 export async function SidebarEpisodes({
   id,
@@ -47,24 +47,28 @@ export async function SidebarEpisodes({
               <SidebarMenu className="gap-0 py-2">
                 {course.episodes.map((episode, index) => (
                   <SidebarMenuItem key={episode.id}>
-                    <SidebarMenuButton className="group h-auto w-full rounded-none px-5 py-4">
-                      <Link
-                        href={`/courses/${course.id}/episodes/${episode.id}`}
-                        className="group/item flex w-full items-start gap-4 px-5 py-4 transition-colors "
+                    <div className="group/item flex items-center pl-3 transition-colors hover:bg-sidebar-accent">
+                      <CompleteBox
+                        completed={episode.completedAt ? true : false}
+                        episodeId={episode.id}
+                        name={episode.name}
+                      />
+                      <SidebarMenuButton
+                        className="h-auto w-full rounded-none flex items-start gap-4 px-5 py-4 transition-colors hover:bg-transparent active:bg-transparent"
+                        render={
+                          <Link
+                            href={`/courses/${course.id}/episodes/${episode.id}`}
+                            aria-current={
+                              episode.id === episodeId ? "page" : undefined
+                            }
+                          />
+                        }
                       >
-                        {episode.id === episodeId ? (
-                          <span className="mt-0.5 flex h-6 items-center justify-center text-primary transition-colors">
-                            <Play className="shrink-0" />
-                          </span>
-                        ) : (
-                          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/20 text-xs font-bold text-white/40 transition-colors group-hover/item:border-primary group-hover/item:text-primary">
-                            {index + 1}
-                          </span>
-                        )}
-
                         <div className="min-w-0 flex-1">
-                          <p className="line-clamp-2 text-sm font-medium leading-snug text-white/70 transition-colors group-hover/item:text-white">
-                            {episode.name}
+                          <p
+                            className={`line-clamp-2 text-sm font-medium leading-snug ${episode.id === episodeId ? "text-primary" : "text-white/70"} transition-colors group-hover/item:text-white`}
+                          >
+                            {`${index + 1}. ${episode.name}`}
                           </p>
                           {episode.secondsLong && (
                             <span className="flex items-center gap-1.5 text-xs text-white/30">
@@ -72,11 +76,11 @@ export async function SidebarEpisodes({
                             </span>
                           )}
                         </div>
-                      </Link>
-                    </SidebarMenuButton>
+                      </SidebarMenuButton>
+                    </div>
 
                     {index < course.episodes.length - 1 && (
-                      <div className="mx-5 border-b border-white/5" />
+                      <div className="mx-1 border-b border-white/5" />
                     )}
                   </SidebarMenuItem>
                 ))}
