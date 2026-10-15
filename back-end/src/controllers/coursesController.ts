@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { courseServices } from "../services/courseService.js";
-import { likeService } from "../services/likeService.js";
-import { favoriteService } from "../services/favoriteService.js";
 import { CourseSearch } from "../schemas/courseSchema.js";
 import { AppError } from "../errors/AppError.js";
 import { ParamsId } from "../schemas/commonSchemas.js";
@@ -22,21 +20,11 @@ export const coursesController = {
     const userId = req.user!.id;
 
     try {
-      const coursePromise = courseServices.findById(courseId);
-
-      const likedPromise = likeService.isLiked(userId, courseId);
-
-      const favoritedPromise = favoriteService.isFavorite(userId, courseId);
-
-      const [course, liked, favorited] = await Promise.all([
-        coursePromise,
-        likedPromise,
-        favoritedPromise,
-      ]);
+      const course = await courseServices.findById(courseId, userId);
 
       if (!course) throw new AppError("Course not found", 404);
 
-      res.json({ ...course.get(), liked, favorited });
+      res.json(course);
     } catch (err) {
       next(err);
     }

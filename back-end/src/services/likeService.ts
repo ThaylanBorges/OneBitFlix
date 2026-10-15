@@ -21,9 +21,4 @@ export const likeService = {
   delete: async (userId: number, courseId: number) => {
     await Likes.destroy({ where: { userId, courseId } });
   },
-
-  isLiked: async (userId: number, courseId: number) => {
-    const like = await Likes.findOne({ where: { userId, courseId } });
-    return like ? true : false;
-  },
 };

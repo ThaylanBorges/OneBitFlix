@@ -81,16 +81,26 @@ export const episodesController = {
 
   setCompleted: async (req: Request, res: Response, next: NextFunction) => {
     const { id: episodeId } = req.dataParams as ParamsId;
-    const { seconds } = req.dataBody as Seconds;
 
     try {
       const completeEpisode = await episodeService.setCompleted(
         req.user!.id,
         episodeId,
-        seconds,
       );
 
       res.json(completeEpisode[0]);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  removeCompleted: async (req: Request, res: Response, next: NextFunction) => {
+    const { id: episodeId } = req.dataParams as ParamsId;
+
+    try {
+      await episodeService.removeCompleted(req.user!.id, episodeId);
+
+      res.status(204).send();
     } catch (err) {
       next(err);
     }

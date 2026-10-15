@@ -105,8 +105,13 @@ route.post(
   "/episodes/:id/complete",
   authMiddleware,
   validateParams(ParamsIdSchema),
-  validateBody(SecondsSchema),
   episodesController.setCompleted,
+);
+route.delete(
+  "/episodes/:id/complete",
+  authMiddleware,
+  validateParams(ParamsIdSchema),
+  episodesController.removeCompleted,
 );
 
 route.get("/favorites", authMiddleware, favoritesController.index);

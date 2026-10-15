@@ -3,6 +3,8 @@ import { sequelize } from "../database/index.js";
 import { Course } from "../models/Course.js";
 import { PopularCourseArraySchema } from "../schemas/courseSchema.js";
 import { AppError } from "../errors/AppError.js";
+import { Category } from "../models/Category.js";
+import { Episode } from "../models/Episodes.js";
 
 export const courseServices = {
   findOrFailByPrimaryKey: async (key: string | number) => {
@@ -12,17 +14,39 @@ export const courseServices = {
 
     return course;
   },
-  findById: async (id: number) => {
-    const course = await Course.findOne({
-      where: { id },
-      attributes: ["id", "name", "synopsis", ["thumbnail_url", "thumbnailUrl"]],
+  findById: async (id: number, userId: number) => {
+    const course = await Course.findByPk(id, {
+      attributes: [
+        "id",
+        "name",
+        "synopsis",
+        ["thumbnail_url", "thumbnailUrl"],
+        [
+          sequelize.literal(`EXISTS (
+          SELECT 1 FROM likes
+          WHERE likes.course_id = "Course".id
+            AND likes.user_id = :userId
+        )`),
+          "liked",
+        ],
+        [
+          sequelize.literal(`EXISTS (
+          SELECT 1 FROM favorites
+          WHERE favorites.course_id = "Course".id
+            AND favorites.user_id = :userId
+        )`),
+          "favorited",
+        ],
+      ],
       include: [
         {
-          association: "category",
+          model: Category,
+          as: "category",
           attributes: ["id", "name"],
         },
         {
-          association: "episodes",
+          model: Episode,
+          as: "episodes",
           attributes: [
             "id",
             "name",
@@ -30,14 +54,23 @@ export const courseServices = {
             "order",
             ["video_url", "videoUrl"],
             ["seconds_long", "secondsLong"],
+            [
+              sequelize.literal(`(
+                SELECT watch_times.completed_at
+                FROM watch_times
+                WHERE watch_times.episode_id = "episodes".id
+                  AND watch_times.user_id = :userId
+                LIMIT 1
+              )`),
+              "completedAt",
+            ],
           ],
         },
       ],
-      order: [
-        ["episodes", "order", "ASC"],
-        ["episodes", "id", "ASC"],
-      ],
+      order: [[{ model: Episode, as: "episodes" }, "order", "ASC"]],
+      replacements: { userId },
     });
+
     return course;
   },
 

@@ -8,7 +8,7 @@ http:
   url: "{{baseUrl}}/users/current/watching/course/:id"
   params:
     - name: id
-      value: "12"
+      value: "1"
       type: path
   auth: inherit
 

@@ -2,7 +2,6 @@ import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../database/index.js";
 import bcrypt from "bcrypt";
 import { Course } from "./Course.js";
-import { Episode } from "./Episodes.js";
 import { env } from "../config/env.js";
 
 const saltRounds = env.BCRYPT_SALT_ROUNDS;
@@ -36,7 +35,6 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare role: "admin" | "user";
   declare createdAt: Date;
   declare favoritesCourses?: Course[];
-  declare watchingEpisodes?: Episode[];
 
   checkPassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
