@@ -6,12 +6,15 @@ info:
 http:
   method: POST
   url: "{{baseUrl}}/login"
+  headers:
+    - name: x-client-ip
+      value: 1.1.1.1.2
   body:
     type: json
     data: |-
       {
         "email": "taylan@hotmail.com",
-        "password": "123456" 
+        "password": "1234561" 
       }
 
 settings:

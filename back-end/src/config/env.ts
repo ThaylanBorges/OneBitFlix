@@ -6,6 +6,7 @@ import { PasswordSchema } from "../schemas/commonSchemas.js";
 const envSchema = z.object({
   JWT_SECRET: z.string().min(32, "JWT_SECRET é obrigatório"),
   FRONTEND_URL: z.url("FRONTEND_URL deve ser uma URL válida"),
+  INTERNAL_API_KEY: z.string().min(32),
   PORT: z.coerce.number().int().min(1).max(65535),
   DB_HOST: z.string().min(1),
   DB_PORT: z.coerce.number().int().min(1).max(65535),

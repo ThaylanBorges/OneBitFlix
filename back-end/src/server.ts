@@ -8,9 +8,11 @@ import { env } from "./config/env.js";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import { clientKey } from "./utils/clientKey.js";
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
+  keyGenerator: clientKey,
   limit: 10,
   standardHeaders: "draft-8",
   legacyHeaders: false,
@@ -19,6 +21,7 @@ const authLimiter = rateLimit({
 
 const generalLimiter = rateLimit({
   windowMs: 60 * 1000,
+  keyGenerator: clientKey,
   limit: 100,
   standardHeaders: "draft-8",
   legacyHeaders: false,

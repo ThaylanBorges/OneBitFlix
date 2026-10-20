@@ -45,7 +45,7 @@ export const usersServices = {
 
     const passwordMatch = await user.checkPassword(currentPassword);
 
-    if (!passwordMatch) throw new AppError("Current Password Incorrect", 400);
+    if (!passwordMatch) throw new AppError("Current Password Incorrect", 403);
 
     user.password = password;
     await user.save();
