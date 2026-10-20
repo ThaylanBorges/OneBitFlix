@@ -1,5 +1,5 @@
 import { courseService } from "@/services/courseService";
-import Slide from "../Slide";
+import Slide from "../slide/Slide";
 
 export default async function FavoriteSection() {
   const courses = await courseService.getFavorites();
@@ -7,7 +7,7 @@ export default async function FavoriteSection() {
   return (
     <Slide
       courses={courses}
-      errorMessage="Nenhum curso foi favoritado ainda."
+      emptyMessage="Nenhum curso foi favoritado ainda."
     />
   );
 }

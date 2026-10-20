@@ -6,7 +6,15 @@ export const metadata = {
   title: "Onebitflix - Login",
 };
 
-export default function Login() {
+type LoginPageProps = {
+  searchParams: Promise<{ callbackUrl?: string | string[] }>;
+};
+
+export default async function Login({ searchParams }: LoginPageProps) {
+  const { callbackUrl } = await searchParams;
+
+  const search = Array.isArray(callbackUrl) ? callbackUrl[0] : callbackUrl;
+
   return (
     <AuthShell
       eyebrow="Bem-vindo(a) de volta"
@@ -24,7 +32,7 @@ export default function Login() {
         </>
       }
     >
-      <LoginForm />
+      <LoginForm search={search} />
     </AuthShell>
   );
 }

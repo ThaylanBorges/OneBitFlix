@@ -1,7 +1,7 @@
 import { PROTECTED_PREFIXES } from "@/constants/routes";
 import z from "zod";
 
-export const internalRouteSchema = z
+export const InternalRouteSchema = z
   .string()
   .refine(
     (route) =>

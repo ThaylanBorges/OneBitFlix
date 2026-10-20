@@ -2,15 +2,19 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { authService } from "@/services/authService";
 import { toast } from "sonner";
 import { Login, LoginSchema } from "@/schemas/userSchemas";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FieldGroup } from "../ui/field";
 import { FormField } from "../ui/form-field";
-import { internalRouteSchema } from "@/schemas/urlSchema";
+import { loginAction } from "@/actions/authActions";
+import { InternalRouteSchema } from "@/schemas/urlSchema";
 
-export default function LoginForm() {
+type LoginProps = {
+  search: string | undefined;
+};
+
+export default function LoginForm({ search }: LoginProps) {
   const {
     control,
     handleSubmit,
@@ -25,21 +29,18 @@ export default function LoginForm() {
 
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const search = searchParams.get("callbackUrl");
-
   const onSubmit = async (data: Login) => {
-    try {
-      await authService.login(data);
+    const result = await loginAction(data);
 
-      const result = internalRouteSchema.safeParse(search);
+    if (result.success) {
+      const parsed = InternalRouteSchema.safeParse(search);
 
-      const redirectUrl = result.success ? result.data : "/home";
+      const redirectUrl = parsed.success ? parsed.data : "/home";
 
       router.replace(redirectUrl);
       router.refresh();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Internal Error.", {
+    } else {
+      toast.error(result.message, {
         className: "mt-15",
       });
     }

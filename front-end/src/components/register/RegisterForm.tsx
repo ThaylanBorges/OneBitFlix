@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Register, RegisterSchema } from "@/schemas/userSchemas";
 import { FieldGroup } from "../ui/field";
-import { authService } from "@/services/authService";
 import { formatPhone } from "@/utils/formatter";
 import { FormField } from "../ui/form-field";
+import { registerAction } from "@/actions/authActions";
 
 export default function RegisterForm() {
   const {
@@ -32,13 +32,13 @@ export default function RegisterForm() {
   const router = useRouter();
 
   const onSubmit = async (data: Register) => {
-    try {
-      await authService.register(data);
+    const result = await registerAction(data);
 
+    if (result.success) {
       router.replace("/home");
       router.refresh();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Internal Error.", {
+    } else {
+      toast.error(result.message, {
         className: "mt-15",
       });
     }

@@ -1,5 +1,5 @@
 import { categoryService } from "@/services/categoryService";
-import Slide from "../Slide";
+import Slide from "../slide/Slide";
 
 type CategoryListProps = {
   categoryId: number;
@@ -8,7 +8,9 @@ type CategoryListProps = {
 export default async function CategorySection({
   categoryId,
 }: CategoryListProps) {
-  const category = await categoryService.getCoursesWithCategory(categoryId);
+  const courses = await categoryService.getCoursesWithCategory(categoryId);
 
-  return <Slide courses={category ? category.courses : []} />;
+  return (
+    <Slide courses={courses} emptyMessage="Nenhum curso foi adicionado." />
+  );
 }

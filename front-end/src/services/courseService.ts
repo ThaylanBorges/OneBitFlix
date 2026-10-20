@@ -18,9 +18,10 @@ export const courseService = {
   getNewestCourses: async () => {
     try {
       const res = await api("/courses/newest");
+
       return CoursesArraySchema.parse(res);
     } catch {
-      return [];
+      return null;
     }
   },
   getFeaturedCourses: async () => {
@@ -76,7 +77,7 @@ export const courseService = {
 
       return CoursesArraySchema.parse(courses);
     } catch {
-      return [];
+      return null;
     }
   },
   search: async (name: string) => {

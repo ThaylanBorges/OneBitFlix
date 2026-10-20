@@ -88,3 +88,9 @@ export const EditPasswordSchema = z
   });
 
 export type EditPassword = z.infer<typeof EditPasswordSchema>;
+
+export const TokenResponseSchema = z.object({
+  token: z.string(),
+});
+
+export type TokenResponse = z.infer<typeof TokenResponseSchema>;

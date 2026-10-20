@@ -29,11 +29,3 @@ export const SearchCourseSchema = z.object({
 });
 
 export type SeachCourse = z.infer<typeof SearchCourseSchema>;
-
-export const CoursesWithCategorySchema = z.object({
-  id: z.number().positive().int(),
-  name: z.string(),
-  courses: z.array(CourseSchema),
-});
-
-export type CoursesWithCategory = z.infer<typeof CoursesWithCategorySchema>;

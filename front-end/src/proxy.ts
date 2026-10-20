@@ -16,6 +16,8 @@ const isValidToken = async (token: string) => {
 };
 
 export async function proxy(request: NextRequest) {
+  if (!process.env.JWT_SECRET) console.error("JWT_SECRET não declarado no env");
+
   const { pathname } = request.nextUrl;
   const tokenCookie = request.cookies.get("token");
   const token = tokenCookie?.value;
@@ -54,12 +56,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/",
-    "/login",
-    "/register",
-    "/home/:path*",
-    "/profile",
-    "/courses/:path*",
-  ],
+  matcher: ["/", "/login", "/register", "/home", "/profile", "/courses/:path*"],
 };

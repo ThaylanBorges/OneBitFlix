@@ -34,12 +34,18 @@ export function SectionButtonsReact({
     try {
       if (!favorite) {
         const success = await addFavoriteAction(courseId);
-        if (!success) return toast("Falha ao favoritar");
-        setFavorite(true);
+        if (success) {
+          setFavorite(true);
+        } else {
+          toast.error("Falha ao favoritar");
+        }
       } else {
         const success = await removeFavoriteAction(courseId);
-        if (!success) return toast("Falha ao remover dos favoritos");
-        setFavorite(false);
+        if (success) {
+          setFavorite(false);
+        } else {
+          toast.error("Falha ao remover dos favoritos");
+        }
       }
     } finally {
       submittingFavorite.current = false;
@@ -54,12 +60,18 @@ export function SectionButtonsReact({
     try {
       if (!like) {
         const success = await addLikeAction(courseId);
-        if (!success) return toast("Falha ao curtir");
-        setLike(true);
+        if (success) {
+          setLike(true);
+        } else {
+          toast.error("Falha ao curtir");
+        }
       } else {
         const success = await removeLikeAction(courseId);
-        if (!success) return toast("Falha ao remover curtida");
-        setLike(false);
+        if (success) {
+          setLike(false);
+        } else {
+          toast.error("Falha ao remover curtida");
+        }
       }
     } finally {
       submittingLike.current = false;

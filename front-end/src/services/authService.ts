@@ -14,9 +14,4 @@ export const authService = {
       body: JSON.stringify(data),
     });
   },
-  logout: async () => {
-    return api("/logout", {
-      method: "POST",
-    });
-  },
 };

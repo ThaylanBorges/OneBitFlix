@@ -5,6 +5,7 @@ import { setCompletedEpisodeAction } from "@/actions/setCompletedEpisodeAction";
 import { Check } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 type CompleteBoxProps = {
   episodeId: number;
@@ -23,10 +24,18 @@ export function CompleteBox({ episodeId, name, completed }: CompleteBoxProps) {
     try {
       if (check) {
         const result = await removeCompletedAction(episodeId);
-        if (result) setCheck(false);
+        if (result) {
+          setCheck(false);
+        } else {
+          toast.error("Falha ao desmarcar o episódio");
+        }
       } else {
         const result = await setCompletedEpisodeAction(episodeId);
-        if (result) setCheck(true);
+        if (result) {
+          setCheck(true);
+        } else {
+          toast.error("Falha ao concluir episódio");
+        }
       }
     } finally {
       submitting.current = false;

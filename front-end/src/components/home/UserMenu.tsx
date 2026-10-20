@@ -7,12 +7,12 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { authService } from "@/services/authService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { UserRound, LogOut } from "lucide-react";
 import { User } from "@/schemas/userSchemas";
+import { logoutAction } from "@/actions/authActions";
 
 type UserMenuProps = {
   user?: User | null;
@@ -27,7 +27,7 @@ export default function UserMenu({ user }: UserMenuProps) {
 
   async function handleLogout() {
     try {
-      await authService.logout();
+      await logoutAction();
       router.replace("/");
       router.refresh();
     } catch {
