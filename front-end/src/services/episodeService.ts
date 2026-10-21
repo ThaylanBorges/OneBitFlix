@@ -4,11 +4,14 @@ import {
   WatchTimeSchema,
 } from "@/schemas/episodeSchema";
 import { apiWithAuth } from "./apiWithAuth";
+import { VideoUrlSchema } from "@/schemas/videoUrlSchema";
 
 export const episodeService = {
-  getTokenStream: async (episodeId: number) => {
+  getVideoUrl: async (episodeId: number) => {
     try {
-      return await apiWithAuth(`/episodes/${episodeId}/token`);
+      return VideoUrlSchema.parse(
+        await apiWithAuth(`/episodes/${episodeId}/video`),
+      );
     } catch {
       return null;
     }

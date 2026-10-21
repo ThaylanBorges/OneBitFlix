@@ -10,8 +10,6 @@ import { formatDuration } from "@/utils/formatDuration";
 import { episodeService } from "@/services/episodeService";
 import { EpisodePlayer } from "@/components/episode/EpisodePlayer";
 
-const apiUrl = process.env.NEXT_PUBLIC_BASEURL!;
-
 export default async function EpisodePage({
   params,
 }: {
@@ -19,9 +17,11 @@ export default async function EpisodePage({
 }) {
   const { episodeId, id } = await params;
 
-  const token = await episodeService.getTokenStream(Number(episodeId));
+  const response = await episodeService.getVideoUrl(Number(episodeId));
 
-  if (!token) redirect("/home");
+  if (!response) redirect("/home");
+
+  const { url } = response;
 
   const course = await courseService.getById(Number(id));
   if (!course) redirect("/home");
@@ -53,7 +53,7 @@ export default async function EpisodePage({
                 <EpisodePlayer
                   key={episode.id}
                   episodeId={episode.id}
-                  videoUrl={`${apiUrl}/episodes/stream/${episodeId}?token=${token}`}
+                  videoUrl={url}
                   secondsWatched={savedSeconds}
                 />
               </div>
