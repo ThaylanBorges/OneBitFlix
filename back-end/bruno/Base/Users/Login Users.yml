@@ -13,9 +13,14 @@ http:
     type: json
     data: |-
       {
-        "email": "taylan@hotmail.com",
+        "email": "millena@hotmail.com",
         "password": "123456" 
       }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("userToken", res.body.token)
 
 settings:
   encodeUrl: true

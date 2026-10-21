@@ -9,6 +9,8 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { clientKey } from "./utils/clientKey.js";
+import { adminMiddleware, authMiddleware } from "./middlewares/auth.js";
+import managementRoute from "./managementRoute.js";
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -86,6 +88,7 @@ app.use(express.static("public"));
 app.use(express.json({ limit: "10kb" }));
 app.use(adminJs.options.rootPath, adminJsRouter);
 app.use(route);
+app.use("/management", authMiddleware, adminMiddleware, managementRoute);
 
 app.use(errorHandler);
 
