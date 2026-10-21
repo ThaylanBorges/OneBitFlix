@@ -3,7 +3,7 @@ import { categoryController } from "./controllers/categoryController.js";
 import { coursesController } from "./controllers/coursesController.js";
 import { episodesController } from "./controllers/episodesController.js";
 import { authController } from "./controllers/authController.js";
-import { authMiddleware, authMiddlewareQuery } from "./middlewares/auth.js";
+import { authMiddleware } from "./middlewares/auth.js";
 import { favoritesController } from "./controllers/favoritesController.js";
 import { likesController } from "./controllers/likesController.js";
 import { usersController } from "./controllers/usersController.js";
@@ -76,16 +76,10 @@ route.get(
   coursesController.show,
 );
 route.get(
-  "/episodes/:id/token",
+  "/episodes/:id/video",
   authMiddleware,
   validateParams(ParamsIdSchema),
-  episodesController.getTokenStream,
-);
-route.get(
-  "/episodes/stream/:id",
-  authMiddlewareQuery,
-  validateParams(ParamsIdSchema),
-  episodesController.stream,
+  episodesController.video,
 );
 route.get(
   "/episodes/:id/watchTime",

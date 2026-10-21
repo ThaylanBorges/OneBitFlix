@@ -14,7 +14,7 @@ http:
     data: |-
       {
         "email": "taylan@hotmail.com",
-        "password": "1234561" 
+        "password": "123456" 
       }
 
 settings:
