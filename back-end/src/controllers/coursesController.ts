@@ -20,7 +20,10 @@ export const coursesController = {
     const userId = req.user!.id;
 
     try {
-      const course = await courseServices.findById(courseId, userId);
+      const course = await courseServices.getCourseWithEpisodes(
+        courseId,
+        userId,
+      );
 
       if (!course) throw new AppError("Course not found", 404);
 
@@ -33,7 +36,7 @@ export const coursesController = {
   popular: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const topTen = await courseServices.getTopTenByLikes();
-      res.status(200).json(topTen ?? []);
+      res.status(200).json(topTen);
     } catch (err) {
       next(err);
     }

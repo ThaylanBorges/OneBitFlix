@@ -4,4 +4,7 @@ info:
   seq: 2
 
 request:
+  headers:
+    - name: Cookie
+      value: token={{userToken}}
   auth: inherit

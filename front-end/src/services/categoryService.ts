@@ -14,7 +14,7 @@ export const categoryService = {
   },
   getCoursesWithCategory: async (categoryId: number) => {
     try {
-      const category = await apiWithAuth(`/categories/${categoryId}`);
+      const category = await apiWithAuth(`/categories/${categoryId}/courses`);
       const courses = category.courses;
 
       if (!courses) return [];

@@ -1,0 +1,29 @@
+info:
+  name: Edit Course
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{adminUrl}}/courses/:id"
+  headers:
+    - name: Cookie
+      value: token={{adminToken}}
+  params:
+    - name: id
+      value: "7"
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "synopsis": "Lorem 2"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

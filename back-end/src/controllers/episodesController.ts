@@ -12,7 +12,7 @@ export const episodesController = {
 
       const episode = await episodeService.findById(id);
 
-      if (!episode?.videoUrl) throw new AppError("Episode not found", 404);
+      if (!episode?.videoUrl) throw new AppError("Not found", 404);
 
       const expiresIn = (episode.secondsLong ?? 0) + 3600;
 
@@ -39,13 +39,17 @@ export const episodesController = {
   },
 
   setWatchTime: async (req: Request, res: Response, next: NextFunction) => {
-    const { id: episodeId } = req.dataParams as ParamsId;
+    const { id } = req.dataParams as ParamsId;
     const { seconds } = req.dataBody as Seconds;
 
     try {
+      const episode = await episodeService.findById(Number(id));
+
+      if (!episode) throw new AppError("Not found", 404);
+
       const watchTime = await episodeService.setWatchTime(
         req.user!.id,
-        episodeId,
+        id,
         seconds,
       );
 
@@ -56,12 +60,16 @@ export const episodesController = {
   },
 
   setCompleted: async (req: Request, res: Response, next: NextFunction) => {
-    const { id: episodeId } = req.dataParams as ParamsId;
+    const { id } = req.dataParams as ParamsId;
 
     try {
+      const episode = await episodeService.findById(id);
+
+      if (!episode) throw new AppError("Not found", 404);
+
       const completeEpisode = await episodeService.setCompleted(
         req.user!.id,
-        episodeId,
+        id,
       );
 
       res.json(completeEpisode[0]);
@@ -71,10 +79,14 @@ export const episodesController = {
   },
 
   removeCompleted: async (req: Request, res: Response, next: NextFunction) => {
-    const { id: episodeId } = req.dataParams as ParamsId;
+    const { id } = req.dataParams as ParamsId;
 
     try {
-      await episodeService.removeCompleted(req.user!.id, episodeId);
+      const episode = await episodeService.findById(id);
+
+      if (!episode) throw new AppError("Not found", 404);
+
+      await episodeService.removeCompleted(req.user!.id, id);
 
       res.status(204).send();
     } catch (err) {

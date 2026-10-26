@@ -5,7 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/courses/search/?name=A &page=&perPage="
+  url: "{{baseUrl}}/courses/search/?name=A "
+  headers:
+    - name: Cookie
+      value: token={{adminToken}}
   params:
     - name: name
       value: "A "
@@ -13,9 +16,11 @@ http:
     - name: page
       value: ""
       type: query
+      disabled: true
     - name: perPage
       value: ""
       type: query
+      disabled: true
   auth: inherit
 
 settings:
@@ -23,3 +28,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

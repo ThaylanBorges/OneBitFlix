@@ -6,6 +6,9 @@ info:
 http:
   method: GET
   url: "{{baseUrl}}/courses/:id"
+  headers:
+    - name: Cookie
+      value: token={{adminToken}}
   params:
     - name: id
       value: "2"
@@ -17,3 +20,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

@@ -6,6 +6,9 @@ info:
 http:
   method: GET
   url: "{{baseUrl}}/favorites"
+  headers:
+    - name: Cookie
+      value: token={{adminToken}}
   auth: inherit
 
 runtime:

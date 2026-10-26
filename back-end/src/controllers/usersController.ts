@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { usersServices } from "../services/userService.js";
 import { UpdatePassword, UpdateUser } from "../schemas/userSchema.js";
 import { ParamsId } from "../schemas/commonSchemas.js";
+import { AppError } from "../errors/AppError.js";
 
 export const usersController = {
   watching: async (req: Request, res: Response, next: NextFunction) => {
@@ -55,11 +56,19 @@ export const usersController = {
     const { currentPassword, newPassword } = req.dataBody as UpdatePassword;
 
     try {
-      await usersServices.updatePassword(
-        req.user!.id,
+      const user = await usersServices.findById(req.user!.id);
+
+      if (!user) throw new AppError("Not found", 404);
+
+      const updatePassword = await usersServices.updatePassword(
+        user.id,
         currentPassword,
         newPassword,
       );
+
+      if (!updatePassword)
+        throw new AppError("Current Password Incorrect", 403);
+
       res.status(200).send();
     } catch (err) {
       next(err);

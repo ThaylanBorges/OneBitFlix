@@ -6,9 +6,12 @@ info:
 http:
   method: POST
   url: "{{baseUrl}}/likes/:id"
+  headers:
+    - name: Cookie
+      value: token={{adminToken}}
   params:
     - name: id
-      value: "1"
+      value: "9"
       type: path
   body:
     type: json

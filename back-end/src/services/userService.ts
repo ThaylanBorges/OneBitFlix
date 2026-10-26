@@ -1,25 +1,22 @@
 import { QueryTypes } from "sequelize";
 import { sequelize } from "../database/index.js";
-import { AppError } from "../errors/AppError.js";
 import { User, UserCreationAttributes } from "../models/User.js";
+import bcrypt from "bcrypt";
 
 export const usersServices = {
   findById: async (id: number) => {
-    const user = await User.findOne({
+    return await User.findOne({
       where: { id },
       attributes: { exclude: ["password"] },
     });
-    return user;
   },
 
   findByEmail: async (email: string) => {
-    const user = await User.findOne({ where: { email } });
-    return user;
+    return await User.findOne({ where: { email } });
   },
 
   create: async (attributes: UserCreationAttributes) => {
-    const newUser = await User.create(attributes);
-    return newUser;
+    return await User.create(attributes);
   },
 
   update: async (
@@ -35,20 +32,20 @@ export const usersServices = {
   },
 
   updatePassword: async (
-    id: number,
+    userId: number,
     currentPassword: string,
     password: string,
   ) => {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(userId);
 
-    if (!user) throw new AppError("User not found", 404);
+    const checkPassword = await bcrypt.compare(currentPassword, user!.password);
 
-    const passwordMatch = await user.checkPassword(currentPassword);
+    if (!checkPassword) return null;
 
-    if (!passwordMatch) throw new AppError("Current Password Incorrect", 403);
+    user!.password = password;
+    await user!.save();
 
-    user.password = password;
-    await user.save();
+    return user;
   },
 
   getEpisodeByCourseId: async (userId: number, courseId: number) => {

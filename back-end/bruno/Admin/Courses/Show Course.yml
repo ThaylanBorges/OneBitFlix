@@ -1,0 +1,23 @@
+info:
+  name: Show Course
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{adminUrl}}/courses/:id"
+  headers:
+    - name: Cookie
+      value: token={{adminToken}}
+  params:
+    - name: id
+      value: "1"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

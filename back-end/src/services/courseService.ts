@@ -1,21 +1,41 @@
 import { Op, QueryTypes } from "sequelize";
 import { sequelize } from "../database/index.js";
 import { Course } from "../models/Course.js";
-import { PopularCourseArraySchema } from "../schemas/courseSchema.js";
-import { AppError } from "../errors/AppError.js";
-import { Category } from "../models/Category.js";
+import {
+  CourseInput,
+  PopularCourseArraySchema,
+} from "../schemas/courseSchema.js";
 import { Episode } from "../models/Episodes.js";
+import { Category } from "../models/index.js";
 
 export const courseServices = {
-  findOrFailByPrimaryKey: async (key: string | number) => {
-    const course = await Course.findByPk(key);
+  findAll: async (page: number, perPage: number) => {
+    const { rows, count } = await Course.findAndCountAll({
+      limit: perPage,
+      offset: (page - 1) * perPage,
+      order: [
+        ["id", "ASC"],
+        ["name", "ASC"],
+      ],
+    });
 
-    if (!course) throw new AppError("Course not found", 404);
-
-    return course;
+    return { courses: rows, page, perPage, total: count };
   },
-  findById: async (id: number, userId: number) => {
-    const course = await Course.findByPk(id, {
+
+  findById: async (id: string | number) => {
+    return await Course.findByPk(id);
+  },
+
+  create: async (data: CourseInput) => {
+    return await Course.create(data);
+  },
+
+  delete: async (id: number) => {
+    return await Course.destroy({ where: { id } });
+  },
+
+  getCourseWithEpisodes: async (id: number, userId: number) => {
+    return await Course.findByPk(id, {
       attributes: [
         "id",
         "name",
@@ -70,29 +90,23 @@ export const courseServices = {
       order: [[{ model: Episode, as: "episodes" }, "order", "ASC"]],
       replacements: { userId },
     });
-
-    return course;
   },
 
   getRandomFeaturedCourses: async () => {
-    const randomFeaturedCourses = await Course.findAll({
+    return await Course.findAll({
       attributes: ["id", "name", "synopsis", ["thumbnail_url", "thumbnailUrl"]],
       where: { featured: true },
       order: sequelize.literal("RANDOM()"),
       limit: 3,
     });
-
-    return randomFeaturedCourses;
   },
 
   getTenNewCourses: async () => {
-    const newCourses = await Course.findAll({
+    return await Course.findAll({
       attributes: ["id", "name", "synopsis", ["thumbnail_url", "thumbnailUrl"]],
       order: [["created_at", "DESC"]],
       limit: 10,
     });
-
-    return newCourses;
   },
 
   findByName: async (name: string, page: number, perPage: number) => {

@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { favoriteService } from "../services/favoriteService.js";
 import { ParamsId } from "../schemas/commonSchemas.js";
+import { courseServices } from "../services/courseService.js";
+import { AppError } from "../errors/AppError.js";
 
 export const favoritesController = {
   save: async (req: Request, res: Response, next: NextFunction) => {
     const { id: courseId } = req.dataParams as ParamsId;
 
     try {
+      const course = await courseServices.findById(courseId);
+
+      if (!course) throw new AppError("Not found", 404);
+
       const favorite = await favoriteService.create(req.user!.id, courseId);
 
       if (!favorite) return res.status(200).send();
@@ -30,6 +36,10 @@ export const favoritesController = {
     const { id: courseId } = req.dataParams as ParamsId;
 
     try {
+      const course = await courseServices.findById(courseId);
+
+      if (!course) throw new AppError("Not found", 404);
+
       await favoriteService.delete(req.user!.id, courseId);
       res.status(200).send();
     } catch (err) {

@@ -1,12 +1,9 @@
 import { UniqueConstraintError } from "sequelize";
 import { Favorite, User } from "../models/index.js";
-import { courseServices } from "./courseService.js";
 
 export const favoriteService = {
   create: async (userId: number, courseId: number) => {
     try {
-      await courseServices.findOrFailByPrimaryKey(courseId);
-
       return await Favorite.create({ userId, courseId });
     } catch (err) {
       if (err instanceof UniqueConstraintError) {

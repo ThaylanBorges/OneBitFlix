@@ -5,7 +5,7 @@ export interface CourseAttributes {
   id: number;
   name: string;
   synopsis: string;
-  thumbnailUrl: string;
+  thumbnailUrl: string | null;
   featured: boolean;
   categoryId: number;
   createdAt: Date;
@@ -21,7 +21,7 @@ export class Course extends Model<CourseAttributes, CourseCreationAttributes> {
   declare id: number;
   declare name: string;
   declare synopsis: string;
-  declare thumbnailUrl: string;
+  declare thumbnailUrl: string | null;
   declare featured: boolean;
   declare categoryId: number;
   declare createdAt: Date;

@@ -1,4 +1,5 @@
-import { Category } from "../models/index.js";
+import { Category } from "../models/Category.js";
+import { CategoryWithCoursesSchema } from "../schemas/categorySchema.js";
 
 export const categoryService = {
   findAllPaginated: async (page: number, perPage: number) => {
@@ -16,9 +17,21 @@ export const categoryService = {
     };
   },
 
+  create: async (name: string, position: number) => {
+    return await Category.create({ name, position });
+  },
+
+  findById: async (id: number) => {
+    return await Category.findByPk(id);
+  },
+
+  delete: async (id: number) => {
+    return Category.destroy({ where: { id } });
+  },
+
   findByIdWithCourses: async (id: number) => {
     const category = await Category.findByPk(id, {
-      attributes: ["id", "name"],
+      attributes: ["id", "name", "position"],
       include: {
         association: "courses",
         attributes: [
@@ -29,6 +42,9 @@ export const categoryService = {
         ],
       },
     });
-    return category;
+
+    if (!category) return null;
+
+    return CategoryWithCoursesSchema.parse(category);
   },
 };

@@ -35,10 +35,6 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare role: "admin" | "user";
   declare createdAt: Date;
   declare favoritesCourses?: Course[];
-
-  checkPassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
-  }
 }
 
 User.init(

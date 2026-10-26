@@ -53,11 +53,12 @@ route.get(
   validateQuery(PaginationSchema),
   categoryController.index,
 );
+
 route.get(
-  "/categories/:id",
-  validateParams(ParamsIdSchema),
+  "/categories/:id/courses",
   authMiddleware,
-  categoryController.show,
+  validateParams(ParamsIdSchema),
+  categoryController.categoryWithCourses,
 );
 
 route.get("/courses/featured", authMiddleware, coursesController.featured);

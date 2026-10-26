@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { env } from "../config/env.js";
 import { AppError } from "../errors/AppError.js";
-import { UniqueConstraintError } from "sequelize";
+import { ForeignKeyConstraintError, UniqueConstraintError } from "sequelize";
 
 export function errorHandler(
   err: unknown,
@@ -20,6 +20,13 @@ export function errorHandler(
     return res.status(409).json({
       status: "error",
       message: "A value provided is already in use",
+    });
+  }
+
+  if (err instanceof ForeignKeyConstraintError) {
+    return res.status(409).json({
+      status: "error",
+      message: "The operation conflicts with related records",
     });
   }
 

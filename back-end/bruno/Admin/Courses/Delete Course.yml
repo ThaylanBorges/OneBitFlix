@@ -1,0 +1,23 @@
+info:
+  name: Delete Course
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{adminUrl}}/courses/:id"
+  headers:
+    - name: Cookie
+      value: token={{adminToken}}
+  params:
+    - name: id
+      value: "10"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
