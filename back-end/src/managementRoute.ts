@@ -15,6 +15,12 @@ import {
   CourseInputSchema,
   CourseUpdateSchema,
 } from "./schemas/courseSchema.js";
+import { episodesController } from "./controllers/episodesController.js";
+import {
+  EpisodeInputSchema,
+  EpisodeUpdateSchema,
+  PaginationEpisodeSchema,
+} from "./schemas/episodeSchema.js";
 
 const managementRoute = Router();
 
@@ -78,6 +84,37 @@ managementRoute.delete(
   "/courses/:id",
   validateParams(ParamsIdSchema),
   courseManagementController.delete,
+);
+
+managementRoute.get(
+  "/episodes",
+  validateQuery(PaginationEpisodeSchema),
+  episodesController.index,
+);
+
+managementRoute.get(
+  "/episodes/:id",
+  validateParams(ParamsIdSchema),
+  episodesController.show,
+);
+
+managementRoute.post(
+  "/episodes",
+  validateBody(EpisodeInputSchema),
+  episodesController.create,
+);
+
+managementRoute.patch(
+  "/episodes/:id",
+  validateParams(ParamsIdSchema),
+  validateBody(EpisodeUpdateSchema),
+  episodesController.edit,
+);
+
+managementRoute.delete(
+  "/episodes/:id",
+  validateParams(ParamsIdSchema),
+  episodesController.delete,
 );
 
 export default managementRoute;

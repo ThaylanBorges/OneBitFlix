@@ -1,0 +1,25 @@
+info:
+  name: Create Episode
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{adminUrl}}/episodes"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Teste 1",
+        "synopsis": "Lorem",
+        "order": 3,
+        "courseId": 2 
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

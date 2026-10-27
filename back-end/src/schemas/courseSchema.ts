@@ -13,7 +13,7 @@ export const CourseSchema = z.object({
 export type CourseSchema = z.infer<typeof CourseSchema>;
 
 export const CourseInputSchema = z.object({
-  name: z.string().trim().min(1).max(250),
+  name: z.string().trim().min(1).max(100),
   synopsis: z.string().trim().min(1).max(250),
   thumbnailUrl: z.string().optional().nullable(),
   featured: z.boolean().optional(),
