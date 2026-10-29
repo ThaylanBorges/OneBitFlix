@@ -8,8 +8,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-const apiUrl = process.env.NEXT_PUBLIC_BASEURL;
-
 export default async function CoursePage({
   params,
 }: {
@@ -36,7 +34,7 @@ export default async function CoursePage({
       <div className="relative flex min-h-0 flex-1">
         <div className="relative flex-1 overflow-hidden">
           <Image
-            src={`${apiUrl}/${course.thumbnailUrl}`}
+            src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${course.thumbnailUrl}`}
             alt={`Thumbnail do curso ${course.name}`}
             className="object-cover object-center"
             fill

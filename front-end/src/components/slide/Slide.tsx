@@ -39,7 +39,7 @@ export default function Slide({ courses, emptyMessage }: SlideProps) {
               <Link href={`/courses/${course.id}`} className="group mt-8 block">
                 <div className="relative aspect-video overflow-hidden rounded-xl bg-muted ring-1 ring-white/10 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-black/50 group-hover:ring-2 group-hover:ring-primary/70">
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_BASEURL}/${course.thumbnailUrl}`}
+                    src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${course.thumbnailUrl}`}
                     alt={`Capa do curso ${course.name}`}
                     fill
                     className="object-cover"

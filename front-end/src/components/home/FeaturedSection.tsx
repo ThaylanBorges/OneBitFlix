@@ -5,8 +5,6 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import Animated from "../Animated";
 
-const apiUrl = process.env.NEXT_PUBLIC_BASEURL;
-
 export async function FeaturedSection() {
   const featuredCourses = await courseService.getFeaturedCourses();
   const featured = featuredCourses[0];
@@ -20,7 +18,7 @@ export async function FeaturedSection() {
       </div>
 
       <Image
-        src={`${apiUrl}/${featured.thumbnailUrl}`}
+        src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${featured.thumbnailUrl}`}
         alt={`Foto ${featured.name}`}
         fill
         preload
