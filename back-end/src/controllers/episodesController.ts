@@ -4,12 +4,15 @@ import {
   EpisodeInput,
   EpisodeUpdate,
   PaginationEpisode,
-  Seconds,
+  UploadVideo,
 } from "../schemas/episodeSchema.js";
 import { AppError } from "../errors/AppError.js";
 import { ParamsId } from "../schemas/commonSchemas.js";
 import { storageService } from "../services/storageService.js";
 import { courseServices } from "../services/courseService.js";
+import { randomUUID } from "node:crypto";
+import { WatchTime } from "../schemas/watchTimeSchema.js";
+import { env } from "../config/env.js";
 
 export const episodesController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
@@ -114,9 +117,36 @@ export const episodesController = {
 
       const expiresIn = (episode.secondsLong ?? 0) + 3600;
 
-      const url = await storageService.getVideoUrl(episode.videoUrl, expiresIn);
+      const url = await storageService.getContentUrl(
+        env.R2_VIDEO_BUCKET,
+        episode.videoUrl,
+        expiresIn,
+      );
 
       res.json({ url });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  createVideo: async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.dataParams as ParamsId;
+    const { contentType } = req.dataBody as UploadVideo;
+
+    try {
+      const episode = await episodeService.findById(id);
+
+      if (!episode) throw new AppError("Not found", 404);
+
+      const key = `videos/course-${episode.courseId}/episodes-${episode.id}-${randomUUID()}.mp4`;
+
+      const uploadUrl = await storageService.getUploadUrl(
+        env.R2_VIDEO_BUCKET,
+        key,
+        1800,
+        contentType,
+      );
+      res.json({ uploadUrl, key });
     } catch (err) {
       next(err);
     }
@@ -138,7 +168,7 @@ export const episodesController = {
 
   setWatchTime: async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.dataParams as ParamsId;
-    const { seconds } = req.dataBody as Seconds;
+    const { seconds } = req.dataBody as WatchTime;
 
     try {
       const episode = await episodeService.findById(Number(id));

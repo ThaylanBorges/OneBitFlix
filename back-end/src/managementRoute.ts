@@ -14,12 +14,14 @@ import { courseManagementController } from "./controllers/coursesManagementContr
 import {
   CourseInputSchema,
   CourseUpdateSchema,
+  UploadThumbnaiSchema,
 } from "./schemas/courseSchema.js";
 import { episodesController } from "./controllers/episodesController.js";
 import {
   EpisodeInputSchema,
   EpisodeUpdateSchema,
   PaginationEpisodeSchema,
+  UploadVideoSchema,
 } from "./schemas/episodeSchema.js";
 
 const managementRoute = Router();
@@ -65,6 +67,13 @@ managementRoute.post(
   "/courses",
   validateBody(CourseInputSchema),
   courseManagementController.create,
+);
+
+managementRoute.post(
+  "/courses/:id/thumbnai-upload",
+  validateParams(ParamsIdSchema),
+  validateBody(UploadThumbnaiSchema),
+  courseManagementController.createThumbnail,
 );
 
 managementRoute.get(
@@ -115,6 +124,13 @@ managementRoute.delete(
   "/episodes/:id",
   validateParams(ParamsIdSchema),
   episodesController.delete,
+);
+
+managementRoute.post(
+  "/episodes/:id/video-upload",
+  validateParams(ParamsIdSchema),
+  validateBody(UploadVideoSchema),
+  episodesController.createVideo,
 );
 
 export default managementRoute;

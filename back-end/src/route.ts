@@ -15,11 +15,11 @@ import {
 import { LoginSchema, RegisterSchema } from "./schemas/authSchema.js";
 import { PaginationSchema, ParamsIdSchema } from "./schemas/commonSchemas.js";
 import { CourseSearchSchema } from "./schemas/courseSchema.js";
-import { SecondsSchema } from "./schemas/episodeSchema.js";
 import {
   UpdatePasswordSchema,
   UpdateUserSchema,
 } from "./schemas/userSchema.js";
+import { WatchTimeSchema } from "./schemas/watchTimeSchema.js";
 
 const route = Router();
 
@@ -92,7 +92,7 @@ route.post(
   "/episodes/:id/watchTime",
   authMiddleware,
   validateParams(ParamsIdSchema),
-  validateBody(SecondsSchema),
+  validateBody(WatchTimeSchema),
   episodesController.setWatchTime,
 );
 route.post(

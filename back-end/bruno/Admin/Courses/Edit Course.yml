@@ -17,7 +17,7 @@ http:
     type: json
     data: |-
       {
-        "synopsis": "Lorem 2"
+        "thumbnailUrl": "Lorem 2"
       }
   auth: inherit
 

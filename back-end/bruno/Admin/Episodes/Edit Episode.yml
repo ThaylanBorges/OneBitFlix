@@ -8,13 +8,13 @@ http:
   url: "{{adminUrl}}/episodes/:id"
   params:
     - name: id
-      value: "8"
+      value: "6"
       type: path
   body:
     type: json
     data: |-
       {
-        "synopsis": "Lorem, cavalo!"
+        "videoUrl": "videos/course-7/episodes-6-a471b6cb-306b-485d-81bc-9cf70a803bb2.mp4"
       }
   auth: inherit
 

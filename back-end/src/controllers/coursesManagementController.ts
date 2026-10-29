@@ -2,8 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import { Pagination, ParamsId } from "../schemas/commonSchemas.js";
 import { courseServices } from "../services/courseService.js";
 import { AppError } from "../errors/AppError.js";
-import { CourseInput, CourseUpdate } from "../schemas/courseSchema.js";
+import {
+  CourseInput,
+  CourseUpdate,
+  UploadThumbnai,
+} from "../schemas/courseSchema.js";
 import { categoryService } from "../services/categoryService.js";
+import { randomUUID } from "node:crypto";
+import { storageService } from "../services/storageService.js";
+import { env } from "../config/env.js";
 
 export const courseManagementController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
@@ -41,6 +48,32 @@ export const courseManagementController = {
 
       const course = await courseServices.create(data);
       res.status(201).json(course);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  createThumbnail: async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.dataParams as ParamsId;
+    const { contentType } = req.dataBody as UploadThumbnai;
+
+    try {
+      const course = await courseServices.findById(id);
+
+      if (!course) throw new AppError("Not found", 404);
+
+      const extension = contentType.split("/")[1];
+
+      const key = `thumbnails/course-${course.id}/${randomUUID()}.${extension}`;
+
+      const uploadUrl = await storageService.getUploadUrl(
+        env.R2_IMAGES_BUCKET,
+        key,
+        1800,
+        contentType,
+      );
+
+      res.json({ uploadUrl, key });
     } catch (err) {
       next(err);
     }

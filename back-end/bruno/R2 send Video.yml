@@ -1,0 +1,49 @@
+info:
+  name: R2 send Video
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: https://onebitflix-videos.6d10b38f3841d108ccadb1897dcd7882.r2.cloudflarestorage.com/videos/course-1/episodes-1-eb85134e-c57a-4d63-a72d-2a3c98f8db52.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=122547ad73228412d83385c55683d6f3%2F20261028%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20261028T152921Z&X-Amz-Expires=1800&X-Amz-Signature=6ca6e03034e3afc9c44e523c4403f7f6c98b48dab717d5c31bdd5ecc2a6426ca&X-Amz-SignedHeaders=host&x-id=PutObject
+  headers:
+    - name: Content-Type
+      value: video/mp4
+  params:
+    - name: X-Amz-Algorithm
+      value: AWS4-HMAC-SHA256
+      type: query
+    - name: X-Amz-Content-Sha256
+      value: UNSIGNED-PAYLOAD
+      type: query
+    - name: X-Amz-Credential
+      value: 122547ad73228412d83385c55683d6f3%2F20261028%2Fauto%2Fs3%2Faws4_request
+      type: query
+    - name: X-Amz-Date
+      value: 20261028T152921Z
+      type: query
+    - name: X-Amz-Expires
+      value: "1800"
+      type: query
+    - name: X-Amz-Signature
+      value: 6ca6e03034e3afc9c44e523c4403f7f6c98b48dab717d5c31bdd5ecc2a6426ca
+      type: query
+    - name: X-Amz-SignedHeaders
+      value: host
+      type: query
+    - name: x-id
+      value: PutObject
+      type: query
+  body:
+    type: file
+    data:
+      - filePath: /home/thaylan/Documentos/Projetos/OneBitFlix/back-end/uploads/videos/course-1/239034_small.mp4
+        contentType: video/mp4
+        selected: true
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
