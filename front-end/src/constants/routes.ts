@@ -1,1 +1,1 @@
-export const PROTECTED_PREFIXES = ["/home", "/profile", "/courses"];
+export const PROTECTED_PREFIXES = ["/home", "/profile", "/courses", "/admin"];

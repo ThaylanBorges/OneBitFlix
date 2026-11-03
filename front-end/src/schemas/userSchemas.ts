@@ -94,3 +94,7 @@ export const TokenResponseSchema = z.object({
 });
 
 export type TokenResponse = z.infer<typeof TokenResponseSchema>;
+
+export const CurrentUserSchema = UserSchema.extend({
+  role: z.enum(["admin", "user"]),
+});

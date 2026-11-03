@@ -3,13 +3,13 @@ import { api } from "./api";
 
 export const authService = {
   register: async (data: Register) => {
-    return api("/register", {
+    return api("/auth/register", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
   login: async (data: Login) => {
-    return api("/login", {
+    return api("/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
     });
