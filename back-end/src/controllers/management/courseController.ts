@@ -1,18 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { Pagination, ParamsId } from "../schemas/commonSchemas.js";
-import { courseServices } from "../services/courseService.js";
-import { AppError } from "../errors/AppError.js";
+import { Pagination, ParamsId } from "../../schemas/commonSchemas.js";
+import { courseServices } from "../../services/courseService.js";
+import { AppError } from "../../errors/AppError.js";
 import {
   CourseInput,
   CourseUpdate,
   UploadThumbnai,
-} from "../schemas/courseSchema.js";
-import { categoryService } from "../services/categoryService.js";
-import { randomUUID } from "node:crypto";
-import { storageService } from "../services/storageService.js";
-import { env } from "../config/env.js";
+} from "../../schemas/courseSchema.js";
+import { categoryService } from "../../services/categoryService.js";
+import { randomUUID } from "crypto";
+import { storageService } from "../../services/storageService.js";
+import { env } from "../../config/env.js";
 
-export const courseManagementController = {
+export const courseController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     const { page, perPage } = req.dataQuery as Pagination;
 

@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { Pagination, ParamsId } from "../schemas/commonSchemas.js";
-import { AppError } from "../errors/AppError.js";
-import { CategoryInputType } from "../schemas/categorySchema.js";
-import { categoryService } from "../services/categoryService.js";
+import { Pagination, ParamsId } from "../../schemas/commonSchemas.js";
+import { categoryService } from "../../services/categoryService.js";
+import { CategoryInputType } from "../../schemas/categorySchema.js";
+import { AppError } from "../../errors/AppError.js";
 
-export const categoryController = {
+export const categoriesController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     const { page, perPage } = req.dataQuery as Pagination;
 
@@ -76,24 +76,6 @@ export const categoryController = {
       await categoryService.delete(id);
 
       res.status(204).send();
-    } catch (err) {
-      next(err);
-    }
-  },
-
-  categoryWithCourses: async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    const { id } = req.dataParams as ParamsId;
-
-    try {
-      const category = await categoryService.findByIdWithCourses(id);
-
-      if (!category) throw new AppError("Category not found.", 404);
-
-      res.json(category);
     } catch (err) {
       next(err);
     }

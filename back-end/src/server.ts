@@ -1,7 +1,6 @@
 import { adminJs, adminJsRouter } from "./adminjs/index.js";
 import { sequelize } from "./database/index.js";
 import express from "express";
-import route from "./route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { env } from "./config/env.js";
@@ -9,8 +8,9 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { clientKey } from "./utils/clientKey.js";
+import { adminRoute } from "./routes/management/index.js";
+import { route } from "./routes/index.js";
 import { adminMiddleware, authMiddleware } from "./middlewares/auth.js";
-import managementRoute from "./managementRoute.js";
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -73,8 +73,8 @@ app.use((req, res, next) => {
 });
 
 app.use(generalLimiter);
-app.use("/login", authLimiter);
-app.use("/register", authLimiter);
+app.use("/auth/login", authLimiter);
+app.use("/auth/register", authLimiter);
 app.use(cookieParser());
 app.use(
   cors({
@@ -88,7 +88,7 @@ app.use(express.static("public"));
 app.use(express.json({ limit: "10kb" }));
 app.use(adminJs.options.rootPath, adminJsRouter);
 app.use(route);
-app.use("/management", authMiddleware, adminMiddleware, managementRoute);
+app.use("/management", authMiddleware, adminMiddleware, adminRoute);
 
 app.use(errorHandler);
 
