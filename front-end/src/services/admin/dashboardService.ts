@@ -1,7 +1,10 @@
+import { DashboardSchema } from "@/schemas/admin/dashboardSchema";
 import { apiWithAuth } from "../apiWithAuth";
 
 export const dashboardService = {
   dashboard: async () => {
-    return await apiWithAuth("/management/dashboard");
+    const result = await apiWithAuth("/management/dashboard");
+
+    return DashboardSchema.parse(result);
   },
 };

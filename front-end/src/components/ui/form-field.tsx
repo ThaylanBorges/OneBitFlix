@@ -17,7 +17,7 @@ type FormFieldProsp<T extends FieldValues> = {
   label?: string;
   placeholder?: string;
   type?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: string) => unknown;
 };
 
 export function FormField<T extends FieldValues>({
@@ -30,6 +30,16 @@ export function FormField<T extends FieldValues>({
 }: FormFieldProsp<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
+
+  const parseValue = (value: string) => {
+    if (onChange) return onChange(value);
+
+    if (type === "number") {
+      return value === "" ? undefined : Number(value);
+    }
+
+    return value;
+  };
 
   return (
     <Controller
@@ -47,11 +57,7 @@ export function FormField<T extends FieldValues>({
                 type={showPassword ? "text" : "password"}
                 className="text-base"
                 placeholder={placeholder}
-                onChange={(e) =>
-                  onChange
-                    ? field.onChange(onChange(e.target.value))
-                    : field.onChange(e.target.value)
-                }
+                onChange={(e) => field.onChange(parseValue(e.target.value))}
               />
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
@@ -72,11 +78,7 @@ export function FormField<T extends FieldValues>({
               type={type}
               className="h-12 text-base w-full"
               placeholder={placeholder}
-              onChange={(e) =>
-                onChange
-                  ? field.onChange(onChange(e.target.value))
-                  : field.onChange(e.target.value)
-              }
+              onChange={(e) => field.onChange(parseValue(e.target.value))}
             />
           )}
 

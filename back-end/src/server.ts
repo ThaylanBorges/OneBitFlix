@@ -28,8 +28,8 @@ const generalLimiter = rateLimit({
   standardHeaders: "draft-8",
   legacyHeaders: false,
   skip: (req) =>
-    req.path.startsWith("/login") ||
-    req.path.startsWith("/register") ||
+    req.path.startsWith("/auth/login") ||
+    req.path.startsWith("/auth/register") ||
     req.path.startsWith("/admin"),
 });
 

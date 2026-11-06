@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Pagination, ParamsId } from "../schemas/commonSchemas.js";
 import { AppError } from "../errors/AppError.js";
-import { CategoryInputType } from "../schemas/categorySchema.js";
 import { categoryService } from "../services/categoryService.js";
 
 export const categoryController = {
