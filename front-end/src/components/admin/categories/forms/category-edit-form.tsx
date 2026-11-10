@@ -1,9 +1,10 @@
 "use client";
 
-import { editCategoryAction } from "@/actions/admin/category/editCategoryAction";
-import { CategoryInputType } from "@/schemas/admin/categorySchema";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
+import { editCategoryAction } from "@/actions/admin/category/editCategoryAction";
+import { CategoryInputType } from "@/schemas/admin/categorySchema";
 import { CategoryForm } from "./category-form";
 
 type CategoryEditFormProps = {
@@ -18,13 +19,20 @@ export function CategoryEditForm({ id, defaultValues }: CategoryEditFormProps) {
     const result = await editCategoryAction(id, data);
 
     if (result.success) {
-      router.replace("/admin/categories");
+      toast.success("Alterações salvas");
+      router.replace(`/admin/categories/${id}`);
+      router.refresh();
     } else {
-      toast.error(result.message, {
-        className: "mt-15",
-      });
+      toast.error(result.message);
     }
   };
 
-  return <CategoryForm onSubmit={onSubmit} defaultValues={defaultValues} />;
+  return (
+    <CategoryForm
+      onSubmit={onSubmit}
+      defaultValues={defaultValues}
+      cancelHref={`/admin/categories/${id}`}
+      submitLabel="Salvar alterações"
+    />
+  );
 }

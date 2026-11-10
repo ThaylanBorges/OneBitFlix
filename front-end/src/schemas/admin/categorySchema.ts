@@ -9,12 +9,14 @@ export const CategorySchema = z.object({
 
 export type CategoryType = z.infer<typeof CategorySchema>;
 
-export const CategoryArraySchema = z.array(
-  CategorySchema.extend({
-    createdAt: z.string().transform((dateString) => new Date(dateString)),
-    updatedAt: z.string().transform((dateString) => new Date(dateString)),
-  }),
-);
+export const CategoryDetailSchema = CategorySchema.extend({
+  createdAt: z.string().transform((dateString) => new Date(dateString)),
+  updatedAt: z.string().transform((dateString) => new Date(dateString)),
+});
+
+export type CategoryDetailType = z.infer<typeof CategoryDetailSchema>;
+
+export const CategoryArraySchema = z.array(CategoryDetailSchema);
 
 export type CategoryArrayType = z.infer<typeof CategoryArraySchema>;
 

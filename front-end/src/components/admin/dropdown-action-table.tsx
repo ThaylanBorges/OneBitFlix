@@ -1,61 +1,62 @@
 "use client";
 
-import { Eye, Menu, SquarePen, Trash } from "lucide-react";
+import Link from "next/link";
+import { Eye, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
+
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import Link from "next/link";
 
-type DropdowActionTableProps = {
+type DropdownActionTableProps = {
   urlName: string;
   id: number;
-  onDelete: (id: number) => Promise<void>;
+  /** Chamado ao clicar em "Excluir" — normalmente abre um diálogo de confirmação */
+  onDelete: (id: number) => void;
 };
 
 export function DropdownActionTable({
   id,
   urlName,
   onDelete,
-}: DropdowActionTableProps) {
+}: DropdownActionTableProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant={"secondary"}>
-            <Menu />
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Abrir ações"
+            className="text-white/60 hover:text-white"
+          >
+            <MoreHorizontal />
           </Button>
         }
       />
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end" className="min-w-40">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Link
-              className="flex items-center p-2 gap-2"
-              href={`/admin/${urlName}/${id}`}
-            >
-              <Eye />
-              Visualizar
-            </Link>
+          <DropdownMenuItem render={<Link href={`/admin/${urlName}/${id}`} />}>
+            <Eye />
+            Visualizar
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              className="flex items-center p-2 gap-2"
-              href={`/admin/${urlName}/${id}/edit`}
-            >
-              <SquarePen /> Editar
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={async () => await onDelete(id)}>
-            <span className="flex items-center p-2 gap-2">
-              <Trash /> Deletar
-            </span>
+          <DropdownMenuItem
+            render={<Link href={`/admin/${urlName}/${id}/edit`} />}
+          >
+            <SquarePen />
+            Editar
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive" onClick={() => onDelete(id)}>
+          <Trash2 />
+          Excluir
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

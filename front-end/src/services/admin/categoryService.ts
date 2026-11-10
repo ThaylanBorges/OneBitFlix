@@ -1,4 +1,5 @@
 import {
+  CategoryDetailSchema,
   CategoryInputType,
   CategoryListSchema,
 } from "@/schemas/admin/categorySchema";
@@ -18,7 +19,8 @@ export const categoryService = {
 
   show: async (id: number) => {
     try {
-      return await apiWithAuth(`/management/categories/${id}`);
+      const result = await apiWithAuth(`/management/categories/${id}`);
+      return CategoryDetailSchema.parse(result);
     } catch {
       return null;
     }
