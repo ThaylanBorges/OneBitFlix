@@ -1,4 +1,5 @@
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
@@ -40,6 +41,15 @@ export const storageService = {
         ContentType: contentType,
       }),
       { expiresIn, signableHeaders: new Set(["content-type"]) },
+    );
+  },
+
+  deleteFile: async (bucket: string, key: string) => {
+    await s3.send(
+      new DeleteObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      }),
     );
   },
 };

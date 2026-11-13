@@ -12,7 +12,18 @@ export const categoryService = {
         `/management/categories?page=${currentPage}`,
       );
       return CategoryListSchema.parse(result);
-    } catch {
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  },
+
+  findAll: async () => {
+    try {
+      const result = await apiWithAuth(`/management/categories/?perPage=100`);
+      return CategoryListSchema.parse(result);
+    } catch (err) {
+      console.error(err);
       return null;
     }
   },
@@ -21,7 +32,8 @@ export const categoryService = {
     try {
       const result = await apiWithAuth(`/management/categories/${id}`);
       return CategoryDetailSchema.parse(result);
-    } catch {
+    } catch (err) {
+      console.error(err);
       return null;
     }
   },

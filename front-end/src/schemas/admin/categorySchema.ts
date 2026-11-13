@@ -1,5 +1,5 @@
 import z from "zod";
-import { IdSchema } from "./commonSchemas";
+import { DateSchema, IdSchema, PaginationSchema } from "./commonSchemas";
 
 export const CategorySchema = z.object({
   id: IdSchema,
@@ -10,8 +10,8 @@ export const CategorySchema = z.object({
 export type CategoryType = z.infer<typeof CategorySchema>;
 
 export const CategoryDetailSchema = CategorySchema.extend({
-  createdAt: z.string().transform((dateString) => new Date(dateString)),
-  updatedAt: z.string().transform((dateString) => new Date(dateString)),
+  createdAt: DateSchema,
+  updatedAt: DateSchema,
 });
 
 export type CategoryDetailType = z.infer<typeof CategoryDetailSchema>;
@@ -24,10 +24,7 @@ export const CategoryInputSchema = CategorySchema.omit({ id: true });
 
 export type CategoryInputType = z.infer<typeof CategoryInputSchema>;
 
-export const CategoryListSchema = z.object({
-  page: z.number().int().nonnegative(),
-  perPage: z.number().int().positive(),
-  total: z.number().int().nonnegative(),
+export const CategoryListSchema = PaginationSchema.extend({
   categories: CategoryArraySchema,
 });
 

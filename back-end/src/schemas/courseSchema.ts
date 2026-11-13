@@ -1,5 +1,5 @@
 import z from "zod";
-import { IdSchema, PaginationSchema } from "./commonSchemas.js";
+import { DateSchema, IdSchema, PaginationSchema } from "./commonSchemas.js";
 import { MAX_IMAGE_SIZE } from "../constants/file-size.js";
 
 const thumbnailUrl = z

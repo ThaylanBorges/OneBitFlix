@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{adminUrl}}/courses/:id/thumbnai-upload"
+  url: "{{adminUrl}}/courses/:id/thumbnail"
   params:
     - name: id
       value: "1"

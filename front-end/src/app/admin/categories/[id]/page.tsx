@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft, CalendarClock, CalendarPlus, Hash, ListOrdered } from "lucide-react";
+import {
+  ArrowLeft,
+  CalendarClock,
+  CalendarPlus,
+  Hash,
+  ListOrdered,
+} from "lucide-react";
 
 import { CategoryButtonAction } from "@/components/admin/categories/category-button-action";
 import { PageHeader } from "@/components/admin/page-header";
@@ -22,7 +28,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const fields = [
     { label: "ID", value: `#${category.id}`, icon: Hash, mono: true },
-    { label: "Posição na home", value: String(category.position), icon: ListOrdered },
+    {
+      label: "Posição na home",
+      value: String(category.position),
+      icon: ListOrdered,
+    },
     {
       label: "Criada em",
       value: formatDateTime(category.createdAt),

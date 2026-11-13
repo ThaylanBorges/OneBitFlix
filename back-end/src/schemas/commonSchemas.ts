@@ -20,3 +20,9 @@ export type ParamsId = z.infer<typeof ParamsIdSchema>;
 export const PasswordSchema = z.string().min(6).max(64);
 
 export const seconds = z.number().int().min(0).max(86400);
+
+export const DateSchema = z
+  .string()
+  .transform((dateString) => new Date(dateString));
+
+export type DateType = z.infer<typeof DateSchema>;

@@ -22,7 +22,7 @@ courseRoute.get("/", validateQuery(PaginationSchema), courseController.index);
 courseRoute.post("/", validateBody(CourseInputSchema), courseController.create);
 
 courseRoute.post(
-  "/:id/thumbnai-upload",
+  "/:id/thumbnail",
   validateParams(ParamsIdSchema),
   validateBody(UploadThumbnaiSchema),
   courseController.createThumbnail,

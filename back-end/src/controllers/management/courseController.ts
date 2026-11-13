@@ -64,7 +64,9 @@ export const courseController = {
 
       const extension = contentType.split("/")[1];
 
-      const key = `thumbnails/course-${course.id}/${randomUUID()}.${extension}`;
+      const key =
+        course.thumbnailUrl ??
+        `thumbnails/course-${course.id}/${randomUUID()}.${extension}`;
 
       const uploadUrl = await storageService.getUploadUrl(
         env.R2_IMAGES_BUCKET,
@@ -110,6 +112,13 @@ export const courseController = {
       if (!course) throw new AppError("Not found", 404);
 
       await courseServices.delete(id);
+
+      if (course.thumbnailUrl) {
+        await storageService.deleteFile(
+          env.R2_IMAGES_BUCKET,
+          course.thumbnailUrl,
+        );
+      }
 
       res.status(204).send();
     } catch (err) {

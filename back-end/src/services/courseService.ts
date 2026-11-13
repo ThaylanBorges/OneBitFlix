@@ -1,4 +1,4 @@
-import { Op, QueryTypes } from "sequelize";
+import { Op, QueryTypes, Sequelize } from "sequelize";
 import { sequelize } from "../database/index.js";
 import { Course } from "../models/Course.js";
 import {
@@ -23,7 +23,16 @@ export const courseServices = {
   },
 
   findById: async (id: string | number) => {
-    return await Course.findByPk(id);
+    return await Course.findByPk(id, {
+      attributes: {
+        include: [[Sequelize.col("category.name"), "categoryName"]],
+      },
+      include: {
+        model: Category,
+        as: "category",
+        attributes: [],
+      },
+    });
   },
 
   create: async (data: CourseInput) => {
