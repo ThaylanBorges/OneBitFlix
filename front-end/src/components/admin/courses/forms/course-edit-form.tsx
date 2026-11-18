@@ -43,7 +43,7 @@ export function CourseEditForm({
         if (result.success) {
           const { uploadUrl, key } = result.data;
 
-          await fetch(uploadUrl, {
+          const res = await fetch(uploadUrl, {
             method: "PUT",
             body: thumbnail,
             headers: {
@@ -51,9 +51,15 @@ export function CourseEditForm({
             },
           });
 
-          await editCourseAction(id!, { thumbnailUrl: key });
+          if (!res.ok) {
+            toast.error("Falha ao salvar imagem");
+            return;
+          }
+
+          await editCourseAction(id, { thumbnailUrl: key });
         } else {
           toast.error(result.message);
+          return;
         }
       }
 

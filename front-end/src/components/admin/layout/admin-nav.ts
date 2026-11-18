@@ -1,4 +1,9 @@
-import { LayoutDashboard, Tags, type LucideIcon } from "lucide-react";
+import {
+  Clapperboard,
+  LayoutDashboard,
+  Tags,
+  type LucideIcon,
+} from "lucide-react";
 
 export type AdminNavItem = {
   title: string;
@@ -39,7 +44,12 @@ export const adminNav: AdminNavGroup[] = [
         icon: Tags,
         description: "Organize os cursos por categoria",
       },
-      // { title: "Cursos", href: "/admin/courses", icon: Clapperboard },
+      {
+        title: "Cursos",
+        href: "/admin/courses",
+        icon: Clapperboard,
+        description: "Organize os episódios por cursos",
+      },
       // { title: "Episódios", href: "/admin/episodes", icon: PlayCircle },
       // { title: "Usuários", href: "/admin/users", icon: Users },
     ],

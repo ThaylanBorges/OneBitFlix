@@ -1,5 +1,5 @@
 import z from "zod";
-import { DateSchema, IdSchema, PaginationSchema } from "./commonSchemas";
+import { DateSchema, IdSchema, PaginationSchema } from "../commonSchemas";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
 const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/webp"];

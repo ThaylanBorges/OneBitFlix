@@ -8,14 +8,14 @@ http:
   url: "{{adminUrl}}/courses/:id/thumbnail"
   params:
     - name: id
-      value: "1"
+      value: "32"
       type: path
   body:
     type: json
     data: |-
       {
         "contentType": "image/png",
-        "size": 123
+        "size": 170
       }
   auth: inherit
 

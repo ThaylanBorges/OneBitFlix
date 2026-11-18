@@ -28,6 +28,12 @@ courseRoute.post(
   courseController.createThumbnail,
 );
 
+courseRoute.delete(
+  "/:id/thumbnail",
+  validateParams(ParamsIdSchema),
+  courseController.deleteThumbnail,
+);
+
 courseRoute.get("/:id", validateParams(ParamsIdSchema), courseController.show);
 
 courseRoute.patch(

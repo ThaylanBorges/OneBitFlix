@@ -55,6 +55,12 @@ export const courseService = {
     });
   },
 
+  removeThumbnail: async (id: number) => {
+    return await apiWithAuth(`/management/courses/${id}/thumbnail`, {
+      method: "DELETE",
+    });
+  },
+
   edit: async (id: number, data: CourseUpdateType) => {
     return await apiWithAuth(`/management/courses/${id}`, {
       method: "PATCH",

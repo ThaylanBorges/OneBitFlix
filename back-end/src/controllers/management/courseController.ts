@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { Pagination, ParamsId } from "../../schemas/commonSchemas.js";
+import {
+  Pagination,
+  ParamsId,
+  ParamsIdSchema,
+} from "../../schemas/commonSchemas.js";
 import { courseServices } from "../../services/courseService.js";
 import { AppError } from "../../errors/AppError.js";
 import {
@@ -64,9 +68,7 @@ export const courseController = {
 
       const extension = contentType.split("/")[1];
 
-      const key =
-        course.thumbnailUrl ??
-        `thumbnails/course-${course.id}/${randomUUID()}.${extension}`;
+      const key = `thumbnails/course-${course.id}/${randomUUID()}.${extension}`;
 
       const uploadUrl = await storageService.getUploadUrl(
         env.R2_IMAGES_BUCKET,
@@ -76,6 +78,22 @@ export const courseController = {
       );
 
       res.json({ uploadUrl, key });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  deleteThumbnail: async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.dataParams as ParamsId;
+    try {
+      const course = await courseServices.findById(id);
+
+      if (!course || !course.thumbnailUrl) throw new AppError("Not found", 404);
+
+      await storageService.deleteFile(
+        env.R2_IMAGES_BUCKET,
+        course.thumbnailUrl,
+      );
     } catch (err) {
       next(err);
     }
@@ -96,7 +114,25 @@ export const courseController = {
 
       if (!course) throw new AppError("Not found", 404);
 
+      const oldKey = course.thumbnailUrl;
+
+      if (
+        data.thumbnailUrl &&
+        !data.thumbnailUrl.startsWith(`thumbnails/course-${id}/`)
+      ) {
+        throw new AppError("Invalid thumbnail", 400);
+      }
+
       await course.update(data);
+
+      if (oldKey && data.thumbnailUrl && oldKey !== data.thumbnailUrl) {
+        try {
+          await storageService.deleteFile(env.R2_IMAGES_BUCKET, oldKey);
+        } catch (err) {
+          console.error("Falha ao apagar a thumbnail antiga:", err);
+        }
+      }
+
       res.status(200).send(course);
     } catch (err) {
       next(err);

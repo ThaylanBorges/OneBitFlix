@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { CourseForm } from "./course-form";
-import { CourseInputType } from "@/schemas/admin/courseSchema";
+import { CourseFormType } from "@/schemas/admin/courseSchema";
 import { createCourseAction } from "@/actions/admin/course/createCourseAction";
 import { SelectOption } from "@/components/ui/form-select";
 import { getCourseUploadUrlAction } from "@/actions/admin/course/getCourseUploadUrlAction";
@@ -17,7 +17,7 @@ type CourseNewFormProps = {
 export function CourseNewForm({ categoryOptions }: CourseNewFormProps) {
   const router = useRouter();
 
-  const onSubmit = async (data: CourseInputType) => {
+  const onSubmit = async (data: CourseFormType) => {
     const { name, synopsis, featured, thumbnail, categoryId } = data;
 
     const course = await createCourseAction({

@@ -1,5 +1,5 @@
 import z from "zod";
-import { DateSchema } from "./commonSchemas";
+import { DateSchema } from "../commonSchemas";
 
 export const UserSchema = z.object({
   id: z.number().int().nonnegative(),

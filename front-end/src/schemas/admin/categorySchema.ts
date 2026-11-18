@@ -1,5 +1,5 @@
 import z from "zod";
-import { DateSchema, IdSchema, PaginationSchema } from "./commonSchemas";
+import { DateSchema, IdSchema, PaginationSchema } from "../commonSchemas";
 
 export const CategorySchema = z.object({
   id: IdSchema,
