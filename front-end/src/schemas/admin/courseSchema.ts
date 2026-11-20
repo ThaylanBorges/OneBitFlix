@@ -70,3 +70,10 @@ export const CourseFormSchema = CourseSchema.omit({
 });
 
 export type CourseFormType = z.infer<typeof CourseFormSchema>;
+
+export const ThumbnailUrlSchema = z.object({
+  uploadUrl: z.url().min(1),
+  key: z.string().min(1),
+});
+
+export type ThumbnailUrlType = z.infer<typeof ThumbnailUrlSchema>;

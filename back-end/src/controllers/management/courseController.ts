@@ -1,9 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import {
-  Pagination,
-  ParamsId,
-  ParamsIdSchema,
-} from "../../schemas/commonSchemas.js";
+import { Pagination, ParamsId } from "../../schemas/commonSchemas.js";
 import { courseServices } from "../../services/courseService.js";
 import { AppError } from "../../errors/AppError.js";
 import {
@@ -78,22 +74,6 @@ export const courseController = {
       );
 
       res.json({ uploadUrl, key });
-    } catch (err) {
-      next(err);
-    }
-  },
-
-  deleteThumbnail: async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.dataParams as ParamsId;
-    try {
-      const course = await courseServices.findById(id);
-
-      if (!course || !course.thumbnailUrl) throw new AppError("Not found", 404);
-
-      await storageService.deleteFile(
-        env.R2_IMAGES_BUCKET,
-        course.thumbnailUrl,
-      );
     } catch (err) {
       next(err);
     }

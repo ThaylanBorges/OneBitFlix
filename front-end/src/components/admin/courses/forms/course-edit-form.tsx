@@ -7,7 +7,7 @@ import { CourseForm } from "./course-form";
 import { CourseFormType, CourseUpdateType } from "@/schemas/admin/courseSchema";
 import { editCourseAction } from "@/actions/admin/course/editCourseAction";
 import { SelectOption } from "@/components/ui/form-select";
-import { getCourseUploadUrlAction } from "@/actions/admin/course/getCourseUploadUrlAction";
+import { uploadThumbnail } from "./upload-thumbnail";
 
 type CourseEditFormProps = {
   id: number;
@@ -32,42 +32,22 @@ export function CourseEditForm({
       categoryId,
     });
 
-    if (course.success) {
-      if (thumbnail) {
-        const result = await getCourseUploadUrlAction(
-          id,
-          thumbnail.type,
-          thumbnail.size,
-        );
-
-        if (result.success) {
-          const { uploadUrl, key } = result.data;
-
-          const res = await fetch(uploadUrl, {
-            method: "PUT",
-            body: thumbnail,
-            headers: {
-              "Content-Type": thumbnail.type,
-            },
-          });
-
-          if (!res.ok) {
-            toast.error("Falha ao salvar imagem");
-            return;
-          }
-
-          await editCourseAction(id, { thumbnailUrl: key });
-        } else {
-          toast.error(result.message);
-          return;
-        }
-      }
-
-      toast.success(`Curso "${data.name}" atulizado`);
-      router.replace("/admin/courses");
-    } else {
+    if (!course.success) {
       toast.error(course.message);
+      return;
     }
+
+    if (thumbnail) {
+      const res = await uploadThumbnail(id, thumbnail);
+
+      if (!res.success) {
+        toast.error(`Curso ${data.name} Editado, mas a imagem não foi salva`);
+        return;
+      }
+    }
+
+    toast.success(`Curso "${data.name}" atulizado`);
+    router.replace("/admin/courses");
   };
 
   return (

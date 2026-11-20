@@ -1,6 +1,7 @@
 import {
   Clapperboard,
   LayoutDashboard,
+  PlayCircle,
   Tags,
   type LucideIcon,
 } from "lucide-react";
@@ -50,7 +51,7 @@ export const adminNav: AdminNavGroup[] = [
         icon: Clapperboard,
         description: "Organize os episódios por cursos",
       },
-      // { title: "Episódios", href: "/admin/episodes", icon: PlayCircle },
+      { title: "Episódios", href: "/admin/episodes", icon: PlayCircle },
       // { title: "Usuários", href: "/admin/users", icon: Users },
     ],
   },
