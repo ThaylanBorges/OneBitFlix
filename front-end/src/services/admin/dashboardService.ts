@@ -4,7 +4,6 @@ import { apiWithAuth } from "../apiWithAuth";
 export const dashboardService = {
   dashboard: async () => {
     const result = await apiWithAuth("/management/dashboard");
-
     return DashboardSchema.parse(result);
   },
 };

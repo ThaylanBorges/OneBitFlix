@@ -4,31 +4,26 @@ import {
   CourseSchema,
   CourseShowSchema,
   CourseUpdateType,
+  ThumbnailUrlSchema,
 } from "@/schemas/admin/courseSchema";
 import { apiWithAuth } from "../apiWithAuth";
+import { ApiError } from "../errors";
 
 export const courseService = {
   list: async (currentPage: number) => {
-    try {
-      const result = await apiWithAuth(
-        `/management/courses?page=${currentPage}`,
-      );
-
-      return CourseListSchema.parse(result);
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
+    const result = await apiWithAuth(`/management/courses?page=${currentPage}`);
+    return CourseListSchema.parse(result);
   },
 
   show: async (id: number) => {
     try {
-      const result = await apiWithAuth(`/management/courses/${id}`);
-
-      return CourseShowSchema.parse(result);
+      return CourseShowSchema.parse(
+        await apiWithAuth(`/management/courses/${id}`),
+      );
     } catch (err) {
-      console.error(err);
-      return null;
+      if (err instanceof ApiError && err.status === 404) return null;
+
+      throw err;
     }
   },
 
@@ -46,13 +41,15 @@ export const courseService = {
     contentType: string,
     size: number,
   ) => {
-    return await apiWithAuth(`/management/courses/${id}/thumbnail`, {
-      method: "POST",
-      body: JSON.stringify({
-        contentType,
-        size,
+    return ThumbnailUrlSchema.parse(
+      await apiWithAuth(`/management/courses/${id}/thumbnail`, {
+        method: "POST",
+        body: JSON.stringify({
+          contentType,
+          size,
+        }),
       }),
-    });
+    );
   },
 
   edit: async (id: number, data: CourseUpdateType) => {

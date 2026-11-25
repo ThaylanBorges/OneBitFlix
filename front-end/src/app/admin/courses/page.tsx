@@ -21,8 +21,6 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
 
   const result = await courseService.list(currentPage);
 
-  if (!result) redirect("/admin");
-
   const totalPages = Math.max(1, Math.ceil(result.total / result.perPage));
 
   if (result.courses.length === 0 && currentPage > totalPages) {

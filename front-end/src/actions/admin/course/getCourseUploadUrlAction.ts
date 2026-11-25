@@ -1,10 +1,7 @@
 "use server";
 
 import { ActionResult } from "@/actions/types";
-import {
-  ThumbnailUrlSchema,
-  ThumbnailUrlType,
-} from "@/schemas/admin/courseSchema";
+import { ThumbnailUrlType } from "@/schemas/admin/courseSchema";
 import { courseService } from "@/services/admin/courseService";
 
 export async function getCourseUploadUrlAction(
@@ -15,13 +12,9 @@ export async function getCourseUploadUrlAction(
   try {
     const result = await courseService.urlForSaveThumbnail(id, format, size);
 
-    const parsed = ThumbnailUrlSchema.safeParse(result);
-
-    if (!parsed.success) return { success: false, message: "Formato inválido" };
-
     return {
       success: true,
-      data: parsed.data,
+      data: result,
     };
   } catch (err) {
     console.error(err);

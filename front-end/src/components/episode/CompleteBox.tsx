@@ -24,19 +24,23 @@ export function CompleteBox({ episodeId, name, completed }: CompleteBoxProps) {
     try {
       if (check) {
         const result = await removeCompletedAction(episodeId);
-        if (result) {
-          setCheck(false);
-        } else {
+
+        if (!result.success) {
           toast.error("Falha ao desmarcar o episódio");
+          return;
         }
-      } else {
-        const result = await setCompletedEpisodeAction(episodeId);
-        if (result) {
-          setCheck(true);
-        } else {
-          toast.error("Falha ao concluir episódio");
-        }
+
+        setCheck(false);
+        return;
       }
+
+      const result = await setCompletedEpisodeAction(episodeId);
+
+      if (!result.success) {
+        toast.error("Falha ao concluir episódio");
+        return;
+      }
+      setCheck(true);
     } finally {
       submitting.current = false;
     }

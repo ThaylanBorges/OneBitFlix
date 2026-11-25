@@ -1,12 +1,15 @@
 "use server";
 
+import { ActionResult } from "@/actions/types";
 import {
   CategoryInputSchema,
   CategoryInputType,
 } from "@/schemas/admin/categorySchema";
 import { categoryService } from "@/services/admin/categoryService";
 
-export async function createCategoryAction(data: CategoryInputType) {
+export async function createCategoryAction(
+  data: CategoryInputType,
+): Promise<ActionResult> {
   try {
     const parsed = CategoryInputSchema.safeParse(data);
 
@@ -21,6 +24,7 @@ export async function createCategoryAction(data: CategoryInputType) {
 
     return {
       success: true,
+      data: null,
     };
   } catch (err) {
     console.error(err);

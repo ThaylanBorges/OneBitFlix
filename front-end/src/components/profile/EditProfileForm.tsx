@@ -33,12 +33,14 @@ export default function EditProfileForm({ user }: EditProfileUserProps) {
     const result = await editProfileAction(data);
 
     if (!result.success) {
-      return toast.error(result.message, {
+      toast.error(result.message, {
         className: "mt-15",
       });
+
+      return;
     }
 
-    toast.success("Usuário editado com sucesso");
+    toast.success("Usuário atualizado com sucesso");
   };
 
   return (

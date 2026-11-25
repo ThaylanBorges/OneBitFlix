@@ -19,7 +19,9 @@ export default async function EpisodePage({
 
   const response = await episodeService.getVideoUrl(Number(episodeId));
 
-  if (!response) redirect("/home");
+  if (!response) {
+    redirect("/home");
+  }
 
   const { url } = response;
 

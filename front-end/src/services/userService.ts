@@ -8,12 +8,8 @@ import { cache } from "react";
 
 export const userService = {
   getCurrentUser: cache(async () => {
-    try {
-      const user = await apiWithAuth("/users/current");
-      return CurrentUserSchema.parse(user);
-    } catch {
-      return null;
-    }
+    const user = await apiWithAuth("/users/current");
+    return CurrentUserSchema.parse(user);
   }),
   editUser: async (data: EditProfile) => {
     return apiWithAuth("/users/current", {

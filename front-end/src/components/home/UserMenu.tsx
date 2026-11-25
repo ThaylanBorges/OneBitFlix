@@ -26,13 +26,15 @@ export default function UserMenu({ user }: UserMenuProps) {
     : "?";
 
   async function handleLogout() {
-    try {
-      await logoutAction();
-      router.replace("/");
-      router.refresh();
-    } catch {
+    const result = await logoutAction();
+
+    if (!result.success) {
       toast.error("Erro ao sair da conta");
+      return;
     }
+
+    router.replace("/");
+    router.refresh();
   }
 
   return (

@@ -3,6 +3,7 @@
 import { setCompletedEpisodeAction } from "@/actions/setCompletedEpisodeAction";
 import { setWatchTimeAction } from "@/actions/setWatchTimeAction";
 import { useCallback, useEffect, useRef } from "react";
+import { toast } from "sonner";
 
 type EpisodePlayerReactProps = {
   episodeId: number;
@@ -32,17 +33,21 @@ export function EpisodePlayer({
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const stopInterval = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
+    if (!intervalRef.current) return;
+
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
   }, []);
 
   const saveWatchTime = useCallback(async () => {
-    if (videoRef.current) {
-      const currentTime = videoRef.current.currentTime;
+    if (!videoRef.current) return;
 
-      await setWatchTimeAction(episodeId, Math.floor(currentTime));
+    const currentTime = videoRef.current.currentTime;
+
+    const result = await setWatchTimeAction(episodeId, Math.floor(currentTime));
+
+    if (!result.success) {
+      toast.error(result.message);
     }
   }, [episodeId]);
 
@@ -64,7 +69,14 @@ export function EpisodePlayer({
   const completeEpisode = useCallback(async () => {
     stopInterval();
 
-    return await setCompletedEpisodeAction(episodeId);
+    const result = await setCompletedEpisodeAction(episodeId);
+
+    if (!result.success) {
+      toast.error(result.message);
+      return;
+    }
+
+    return result;
   }, [episodeId, stopInterval]);
 
   useEffect(() => {

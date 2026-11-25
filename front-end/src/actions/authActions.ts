@@ -10,10 +10,7 @@ import {
 import { authService } from "@/services/authService";
 import { ApiError, NetworkError } from "@/services/errors";
 import { cookies } from "next/headers";
-
-type ActionResult = Promise<
-  { success: true } | { success: false; message: string }
->;
+import { ActionResult } from "./types";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -23,7 +20,7 @@ const COOKIE_OPTIONS = {
   maxAge: 7 * 24 * 60 * 60,
 } as const;
 
-export async function loginAction(data: Login): ActionResult {
+export async function loginAction(data: Login): Promise<ActionResult> {
   try {
     const parsed = LoginSchema.safeParse(data);
 
@@ -50,7 +47,7 @@ export async function loginAction(data: Login): ActionResult {
 
     cookieStore.set("token", tokenDecoded.data.token, COOKIE_OPTIONS);
 
-    return { success: true };
+    return { success: true, data: null };
   } catch (err) {
     if (err instanceof NetworkError)
       return {
@@ -79,7 +76,7 @@ export async function loginAction(data: Login): ActionResult {
   }
 }
 
-export async function registerAction(data: Register): ActionResult {
+export async function registerAction(data: Register): Promise<ActionResult> {
   try {
     const parsed = RegisterSchema.safeParse(data);
 
@@ -101,7 +98,7 @@ export async function registerAction(data: Register): ActionResult {
 
     cookieStore.set("token", tokenDecoded.data.token, COOKIE_OPTIONS);
 
-    return { success: true };
+    return { success: true, data: null };
   } catch (err) {
     if (err instanceof NetworkError)
       return {
@@ -130,7 +127,21 @@ export async function registerAction(data: Register): ActionResult {
   }
 }
 
-export async function logoutAction() {
-  const cookieStore = await cookies();
-  cookieStore.delete("token");
+export async function logoutAction(): Promise<ActionResult> {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete("token");
+
+    return {
+      success: true,
+      data: null,
+    };
+  } catch (err) {
+    console.error(err);
+
+    return {
+      success: false,
+      message: "Falha ao sair da conta",
+    };
+  }
 }

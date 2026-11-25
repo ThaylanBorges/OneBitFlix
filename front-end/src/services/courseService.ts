@@ -5,86 +5,54 @@ import {
 import { api } from "./api";
 import { apiWithAuth } from "./apiWithAuth";
 import { cache } from "react";
+import { ApiError } from "./errors";
 
 export const courseService = {
   getById: cache(async (id: number) => {
     try {
-      const res = await apiWithAuth(`/courses/${id}`);
-      return CourseWithEpisodesSchema.parse(res);
-    } catch {
-      return null;
+      return CourseWithEpisodesSchema.parse(
+        await apiWithAuth(`/courses/${id}`),
+      );
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 404) return null;
+
+      throw err;
     }
   }),
   getNewestCourses: async () => {
-    try {
-      const res = await api("/courses/newest");
-
-      return CoursesArraySchema.parse(res);
-    } catch {
-      return null;
-    }
+    const res = await api("/courses/newest");
+    return CoursesArraySchema.parse(res);
   },
   getFeaturedCourses: async () => {
-    try {
-      const res = await apiWithAuth("/courses/featured");
-      return CoursesArraySchema.parse(res);
-    } catch {
-      return [];
-    }
+    const res = await apiWithAuth("/courses/featured");
+    return CoursesArraySchema.parse(res);
   },
   addToFavorites: async (courseId: number) => {
-    try {
-      await apiWithAuth(`/favorites/${courseId}`, {
-        method: "POST",
-      });
-      return true;
-    } catch {
-      return false;
-    }
+    return await apiWithAuth(`/favorites/${courseId}`, {
+      method: "POST",
+    });
   },
   removeFromFavorites: async (courseId: number) => {
-    try {
-      await apiWithAuth(`/favorites/${courseId}`, {
-        method: "DELETE",
-      });
-      return true;
-    } catch {
-      return false;
-    }
+    return await apiWithAuth(`/favorites/${courseId}`, {
+      method: "DELETE",
+    });
   },
   addLike: async (courseId: number) => {
-    try {
-      await apiWithAuth(`/likes/${courseId}`, {
-        method: "POST",
-      });
-
-      return true;
-    } catch {
-      return false;
-    }
+    return await apiWithAuth(`/likes/${courseId}`, {
+      method: "POST",
+    });
   },
   removeLike: async (courseId: number) => {
-    try {
-      await apiWithAuth(`/likes/${courseId}`, { method: "DELETE" });
-      return true;
-    } catch {
-      return false;
-    }
+    return await apiWithAuth(`/likes/${courseId}`, { method: "DELETE" });
   },
   getFavorites: async () => {
-    try {
-      const { courses } = await apiWithAuth("/favorites");
-
-      return CoursesArraySchema.parse(courses);
-    } catch {
-      return null;
-    }
+    const { courses } = await apiWithAuth("/favorites");
+    return CoursesArraySchema.parse(courses);
   },
   search: async (name: string) => {
     const { courses } = await apiWithAuth(
       `/courses/search/?name=${encodeURIComponent(name)}`,
     );
-
     return CoursesArraySchema.parse(courses);
   },
 };

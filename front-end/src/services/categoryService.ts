@@ -4,26 +4,11 @@ import { CoursesArraySchema } from "@/schemas/courseSchema";
 
 export const categoryService = {
   getCategories: async () => {
-    try {
-      const { categories } = await apiWithAuth("/categories");
-
-      return CategoryArraySchema.parse(categories);
-    } catch {
-      return [];
-    }
+    const { categories } = await apiWithAuth("/categories");
+    return CategoryArraySchema.parse(categories);
   },
   getCoursesWithCategory: async (categoryId: number) => {
-    try {
-      const category = await apiWithAuth(`/categories/${categoryId}/courses`);
-      const courses = category.courses;
-
-      if (!courses) return [];
-
-      return CoursesArraySchema.parse(courses);
-    } catch (err) {
-      console.error(err);
-
-      return null;
-    }
+    const category = await apiWithAuth(`/categories/${categoryId}/courses`);
+    return CoursesArraySchema.parse(category.courses);
   },
 };

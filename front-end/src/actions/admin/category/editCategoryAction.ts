@@ -1,12 +1,16 @@
 "use server";
 
+import { ActionResult } from "@/actions/types";
 import {
   CategoryInputSchema,
   CategoryInputType,
 } from "@/schemas/admin/categorySchema";
 import { categoryService } from "@/services/admin/categoryService";
 
-export async function editCategoryAction(id: number, data: CategoryInputType) {
+export async function editCategoryAction(
+  id: number,
+  data: CategoryInputType,
+): Promise<ActionResult> {
   try {
     const parsed = CategoryInputSchema.safeParse(data);
 
@@ -20,6 +24,7 @@ export async function editCategoryAction(id: number, data: CategoryInputType) {
 
     return {
       success: true,
+      data: null,
     };
   } catch (err) {
     console.error(err);

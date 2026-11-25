@@ -4,37 +4,30 @@ import {
   CategoryListSchema,
 } from "@/schemas/admin/categorySchema";
 import { apiWithAuth } from "../apiWithAuth";
+import { ApiError } from "../errors";
 
 export const categoryService = {
   list: async (currentPage: number) => {
-    try {
-      const result = await apiWithAuth(
-        `/management/categories?page=${currentPage}`,
-      );
-      return CategoryListSchema.parse(result);
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
+    const result = await apiWithAuth(
+      `/management/categories?page=${currentPage}`,
+    );
+    return CategoryListSchema.parse(result);
   },
 
   findAll: async () => {
-    try {
-      const result = await apiWithAuth(`/management/categories/?perPage=100`);
-      return CategoryListSchema.parse(result);
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
+    const result = await apiWithAuth(`/management/categories/?perPage=100`);
+    return CategoryListSchema.parse(result);
   },
 
   show: async (id: number) => {
     try {
-      const result = await apiWithAuth(`/management/categories/${id}`);
-      return CategoryDetailSchema.parse(result);
+      return CategoryDetailSchema.parse(
+        await apiWithAuth(`/management/categories/${id}`),
+      );
     } catch (err) {
-      console.error(err);
-      return null;
+      if (err instanceof ApiError && err.status === 404) return null;
+
+      throw err;
     }
   },
 

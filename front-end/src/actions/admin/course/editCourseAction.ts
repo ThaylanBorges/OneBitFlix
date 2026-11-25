@@ -15,7 +15,7 @@ export async function editCourseAction(
 
     if (!parsed.success) return { success: false, message: "Formato inválido" };
 
-    await courseService.edit(id, data);
+    await courseService.edit(id, parsed.data);
     return {
       success: true,
       data: null,

@@ -33,20 +33,24 @@ export function SectionButtonsReact({
 
     try {
       if (!favorite) {
-        const success = await addFavoriteAction(courseId);
-        if (success) {
-          setFavorite(true);
-        } else {
+        const result = await addFavoriteAction(courseId);
+        if (!result.success) {
           toast.error("Falha ao favoritar");
+          return;
         }
-      } else {
-        const success = await removeFavoriteAction(courseId);
-        if (success) {
-          setFavorite(false);
-        } else {
-          toast.error("Falha ao remover dos favoritos");
-        }
+
+        setFavorite(true);
+        return;
       }
+
+      const result = await removeFavoriteAction(courseId);
+
+      if (!result.success) {
+        toast.error("Falha ao remover dos favoritos");
+        return;
+      }
+
+      setFavorite(false);
     } finally {
       submittingFavorite.current = false;
     }
@@ -59,20 +63,25 @@ export function SectionButtonsReact({
 
     try {
       if (!like) {
-        const success = await addLikeAction(courseId);
-        if (success) {
-          setLike(true);
-        } else {
+        const result = await addLikeAction(courseId);
+
+        if (!result.success) {
           toast.error("Falha ao curtir");
+          return;
         }
-      } else {
-        const success = await removeLikeAction(courseId);
-        if (success) {
-          setLike(false);
-        } else {
-          toast.error("Falha ao remover curtida");
-        }
+
+        setLike(true);
+        return;
       }
+
+      const result = await removeLikeAction(courseId);
+
+      if (!result.success) {
+        toast.error("Falha ao remover curtida");
+        return;
+      }
+
+      setLike(false);
     } finally {
       submittingLike.current = false;
     }

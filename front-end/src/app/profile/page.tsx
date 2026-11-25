@@ -1,12 +1,9 @@
 import HeaderAuth from "@/components/home/HeaderAuth";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 import { userService } from "@/services/userService";
-import { redirect } from "next/navigation";
 
 export default async function Profile() {
   const user = await userService.getCurrentUser();
-
-  if (!user) redirect("/login");
 
   return (
     <main>

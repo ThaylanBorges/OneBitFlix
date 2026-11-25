@@ -54,13 +54,15 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
   };
 
   async function handleLogout() {
-    try {
-      await logoutAction();
-      router.replace("/");
-      router.refresh();
-    } catch {
+    const result = await logoutAction();
+
+    if (!result.success) {
       toast.error("Erro ao sair da conta");
+      return;
     }
+
+    router.replace("/");
+    router.refresh();
   }
 
   return (
@@ -84,7 +86,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                   width={110}
                   height={20}
                   loading="eager"
-                  className="h-auto w-[110px]"
+                  className="h-auto w-27.5"
                 />
                 <span className="text-[12px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
                   Painel Admin
@@ -113,7 +115,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                         render={
                           <Link href={item.href} onClick={closeOnMobile} />
                         }
-                        className="relative h-9 text-[13.5px] text-white/75 hover:text-white data-active:bg-primary/12 data-active:text-white data-active:[&_svg]:text-primary before:absolute before:inset-y-2 before:left-0 before:w-[3px] before:rounded-full before:bg-primary before:opacity-0 data-active:before:opacity-100 group-data-[collapsible=icon]:before:hidden"
+                        className="relative h-9 text-[13.5px] text-white/75 hover:text-white data-active:bg-primary/12 data-active:text-white data-active:[&_svg]:text-primary before:absolute before:inset-y-2 before:left-0 before:w-0.75 before:rounded-full before:bg-primary before:opacity-0 data-active:before:opacity-100 group-data-[collapsible=icon]:before:hidden"
                       >
                         <item.icon />
                         <span>{item.title}</span>

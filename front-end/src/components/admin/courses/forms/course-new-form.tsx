@@ -27,7 +27,7 @@ export function CourseNewForm({ categoryOptions }: CourseNewFormProps) {
     });
 
     if (!course.success) {
-      toast.error(`Falha ao criar curso ${course.message}`);
+      toast.error(course.message);
       return;
     }
 

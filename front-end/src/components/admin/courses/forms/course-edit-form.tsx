@@ -41,7 +41,9 @@ export function CourseEditForm({
       const res = await uploadThumbnail(id, thumbnail);
 
       if (!res.success) {
-        toast.error(`Curso ${data.name} Editado, mas a imagem não foi salva`);
+        toast.error(
+          `Curso ${data.name} atualizado, mas a imagem não foi salva`,
+        );
         return;
       }
     }

@@ -23,8 +23,6 @@ export default async function CategoriesPage({
 
   const result = await categoryService.list(currentPage);
 
-  if (!result) redirect("/admin");
-
   const totalPages = Math.max(1, Math.ceil(result.total / result.perPage));
 
   // ex.: excluiu o último item da última página
@@ -78,7 +76,10 @@ export default async function CategoriesPage({
         ) : (
           <>
             {/* key força o reset do estado local da tabela ao trocar de página */}
-            <CategoryTable key={currentPage} categorieList={result.categories} />
+            <CategoryTable
+              key={currentPage}
+              categorieList={result.categories}
+            />
             <Pagination
               basePath="/admin/categories"
               page={currentPage}

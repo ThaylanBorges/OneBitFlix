@@ -30,13 +30,14 @@ export function Search() {
     try {
       const result = await searchCourseAction(name);
       if (requestId !== latestRequest.current) return;
-      if (result) {
-        setCourses(result);
-        setStatus("done");
-      } else {
+      if (!result.success) {
         setCourses([]);
         setStatus("error");
+        return;
       }
+
+      setCourses(result.data);
+      setStatus("done");
     } catch {
       if (requestId !== latestRequest.current) return;
       setCourses([]);

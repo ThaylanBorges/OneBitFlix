@@ -3,15 +3,14 @@
 import { EditPassword } from "@/schemas/userSchemas";
 import { ApiError, NetworkError } from "@/services/errors";
 import { userService } from "@/services/userService";
+import { ActionResult } from "./types";
 
-type ActionResult = Promise<
-  { success: true } | { success: false; message: string }
->;
-
-export async function editPasswordAction(data: EditPassword): ActionResult {
+export async function editPasswordAction(
+  data: EditPassword,
+): Promise<ActionResult> {
   try {
     await userService.editPassword(data);
-    return { success: true };
+    return { success: true, data: null };
   } catch (err) {
     if (err instanceof NetworkError)
       return {
